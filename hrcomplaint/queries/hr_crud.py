@@ -111,8 +111,10 @@ def get_hrclients(db:Session,id: Optional[int] = None):
     return query.order_by(hr_model.Hrcommunications.created_at.desc()).all()
 
 
-def get_complaints(db:Session,id: Optional[int] = None):
+def get_complaints(db:Session,id: Optional[int] = None,hrtype: Optional[int] = None):
     query = db.query(hr_model.Hrcomplaints)
     if id is not None:
         query = query.filter(hr_model.Hrcomplaints.id == id)   
+    if hrtype is not None:
+        query = query.filter(hr_model.Hrcomplaints.hrtype == hrtype)
     return query.order_by(hr_model.Hrcomplaints.created_at.desc()).all()
