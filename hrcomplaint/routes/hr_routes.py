@@ -82,9 +82,10 @@ async def get_questions(
 async def get_complaints(
     id: Optional[int] = None,
     hrtype: Optional[int] = None,
+    sphere_id: Optional[int] = None,
     db: Session = Depends(get_db),
     current_user: user_sch.User = Depends(get_current_user)):
-    return paginate(hr_crud.get_complaints(db, id,hrtype))
+    return paginate(hr_crud.get_complaints(db, id,hrtype,sphere_id))
 
 @hr_router.put('/hr/complaints',summary="update complaint",tags=["HR"])
 async def update_complaint(
