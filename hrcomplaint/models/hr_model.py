@@ -1,0 +1,93 @@
+from sqlalchemy import (
+    Column,
+    Integer,
+    String,
+    ForeignKey,
+    Float,
+    DateTime,
+    Boolean,
+    BIGINT,
+    Table,
+    Time,
+    JSON,
+    VARCHAR,
+    Date,
+)
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
+from sqlalchemy.sql import func
+from sqlalchemy.dialects.postgresql import UUID, ARRAY, JSONB
+from datetime import datetime
+import pytz
+import uuid
+from database import Base
+from users.models.user_model import Users
+
+timezonetash = pytz.timezone("Asia/Tashkent")
+
+class Hrspheras(Base):
+    __tablename__ = "hrspheras"
+    id = Column(BIGINT, primary_key=True, index=True)
+    name = Column(String, nullable=True)
+    status = Column(Integer, default=1)
+    created_at = Column(DateTime(timezone=True), default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    hrcomplaint = relationship("Hrcomplaints",back_populates="hrsphere")
+    hrquestion = relationship("Hrquestions",back_populates="hrsphere")
+
+
+class Hrcomplaints(Base):
+    __tablename__ = "hrcomplaints"
+    id = Column(BIGINT, primary_key=True, index=True)
+    complaint = Column(String, nullable=True)
+    sphere_id = Column(BIGINT, ForeignKey("hrspheras.id"))
+    hrsphere = relationship("Hrspheras",back_populates="hrcomplaint")
+    hrcommunication = relationship("Hrcommunications",back_populates="hrcomplaint")
+    hrclient_id = Column(BIGINT, ForeignKey("hrclients.id"))
+    hrclient = relationship("Hrclients",back_populates="hrcomplaint")
+    hrtype = Column(Integer, nullable=True)
+    status = Column(Integer, default=1)
+    created_at = Column(DateTime(timezone=True), default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+
+
+class Hrclients(Base):
+    __tablename__ = "hrclients"
+    id = Column(BIGINT, primary_key=True, index=True)
+    name = Column(String, nullable=True)
+    status = Column(Integer, default=1)
+    sphere = Column(Integer, nullable=True)
+    lang = Column(Integer, nullable=True)
+    hrcomplaint = relationship("Hrcomplaints",back_populates="hrclient")
+    created_at = Column(DateTime(timezone=True), default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+
+
+
+class Hrcommunications(Base):
+    __tablename__ = "hrcommunications"
+    id = Column(BIGINT, primary_key=True, index=True)
+    hrcomplaint_id = Column(BIGINT,ForeignKey('hrcomplaints.id'),nullable=True)
+    hrcomplaint = relationship("Hrcomplaints",back_populates="hrcommunication")
+    text = Column(String, nullable=True)
+    status = Column(Integer, default=0)
+    url = Column(String, nullable=True)
+    user_id = Column(BIGINT, ForeignKey("users.id"), nullable=True)
+    user = relationship("Users",back_populates="hrcommunication")
+    created_at = Column(DateTime(timezone=True), default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+
+
+
+class Hrquestions(Base):
+    __tablename__ = "hrquestions"
+    id = Column(BIGINT, primary_key=True, index=True)
+    question_uz = Column(String, nullable=True)
+    question_ru = Column(String, nullable=True)
+    sphere_id = Column(BIGINT, ForeignKey("hrspheras.id"))
+    hrsphere = relationship("Hrspheras",back_populates="hrquestion")
+    answer_uz = Column(String, nullable=True)
+    answer_ru = Column(String, nullable=True)
+    status = Column(Integer, default=1)
+    created_at = Column(DateTime(timezone=True), default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
