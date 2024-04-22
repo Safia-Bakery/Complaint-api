@@ -97,6 +97,13 @@ def create_sphere(db: Session, form_data: hr_schema.SphereCreate):
     db.refresh(query)
     return query
 
+def get_sphere(db:Session,id):
+    query = db.query(hr_model.Hrspheras)
+    if id is not None:
+        query = query.filter(hr_model.Hrspheras.id == id)
+    return query.all()
+
+
 def get_hrclients(db:Session,id: Optional[int] = None):
     query = db.query(hr_model.Hrclients).join(hr_model.Hrcomplaints).join(hr_model.Hrcommunications)
     if id is not None:

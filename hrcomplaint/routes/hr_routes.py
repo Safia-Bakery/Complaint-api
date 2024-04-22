@@ -43,6 +43,15 @@ async def create_sphere(
     return hr_crud.create_sphere(db, form_data)
 
 
+@hr_router.get("/hr/sphere", summary="Get sphere",tags=["HR"],response_model=list[hr_schema.Sphere])
+async def get_sphere(
+    id: Optional[int] = None,
+    db: Session = Depends(get_db),
+    current_user: user_sch.User = Depends(get_current_user)):
+    return hr_crud.get_sphere(db, id)
+
+
+
 
 @hr_router.post("/hr/questions", summary="Create questions",tags=["HR"],response_model=hr_schema.Questions)
 async def create_questions(
