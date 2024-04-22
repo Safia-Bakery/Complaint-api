@@ -113,7 +113,6 @@ class Hrcomplaints(BaseModel):
     status: Optional[int]=None
     created_at: Optional[datetime]=None
     updated_at: Optional[datetime]=None
-    hrtype: Optional[int]=None
     class Config:
         orm_mode = True
 
