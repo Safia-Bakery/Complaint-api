@@ -118,7 +118,7 @@ async def manu(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db) -> int:
                                     reply_markup=ReplyKeyboardMarkup(manu_button,resize_keyboard=True))
         return MANU
     elif update.message.text == 'Chat':
-        await update.message.reply_text('Чат',reply_markup=ReplyKeyboardMarkup([['⬅️ Назад']],resize_keyboard=True))
+        await update.message.reply_text('Чат',reply_markup=ReplyKeyboardMarkup([text[languagees[context.user_data['lang']]]['back']],resize_keyboard=True))
         return CHAT
 
 
