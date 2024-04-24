@@ -77,7 +77,7 @@ class Hrcommunication(BaseModel):
     status: Optional[int]=None
     url: Optional[str]=None
     user_id: Optional[int]=None
-    user: Optional[Dict]=None
+    user: Optional[User]=None
     created_at: Optional[datetime]=None
     updated_at: Optional[datetime]=None
     class Config:

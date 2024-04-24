@@ -5,6 +5,7 @@ from fastapi_pagination import paginate, Page, add_pagination
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from typing import Optional,Annotated
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
+from datetime import datetime
 from uuid import UUID
 import random
 from services import (
@@ -139,6 +140,52 @@ async def get_branch(
     current_user: user_sch.User = Depends(get_current_user)):
     return paginate(crud.get_branch(db, id=id,name=name,status=status,country_id=country_id))
 
+
+
+@complain_router.post("/complaints", summary="Create complaint",tags=["Complaint"],response_model=schema.Complaints)
+async def create_complaint(
+    files: list[UploadFile] = None,
+    product_name:Annotated[str,Form(...)]=None,
+    client_name:Annotated[int,Form(...)]=None,
+    client_number:Annotated[str,Form(...)]=None,
+    client_gender:Annotated[str,Form(...)]=None,
+    date_purchase:Annotated[datetime,Form(...)]=None,
+    date_return:Annotated[datetime,Form(...)]=None,
+    comment:Annotated[str,Form(...)]=None,
+    autonumber:Annotated[str,Form(...)]=None,
+    subcategory_id:Annotated[int,Form(...)]=None,
+    branch_id:Annotated[int,Form(...)]=None,
+    db: Session = Depends(get_db)):
+    create_complaint = crud.create_complaint(db,product_name=product_name,
+                                 branch_id=branch_id,
+                                 subcategory_id=subcategory_id,
+                                 client_name=client_name,
+                                 client_number=client_number,
+                                 client_gender=client_gender,
+                                 date_purchase=date_purchase,
+                                 date_return=date_return,
+                                 comment=comment,
+                                 autonumber=autonumber)
+    if files:
+        for file in files:
+            file_path = f"files/{generate_random_filename()}{file.filename}"
+            
+            with open(file_path, "wb") as buffer:
+                while True:
+                    chunk = await file.read(1024)
+                    if not chunk:
+                        break
+                    buffer.write(chunk)
+
+            crud.create_file(db=db,complaint_id=create_complaint.id,file_path=file_path)
+    return create_complaint
+
+@complain_router.put("/complaints", summary="Update complaint",tags=["Complaint"],response_model=schema.Complaints)
+async def update_complaint(
+    form_data: schema.UpdateComplaint,
+    db: Session = Depends(get_db),
+    current_user: user_sch.User = Depends(get_current_user)):
+    return crud.update_complaints(db, form_data)
 
 
 

@@ -154,3 +154,78 @@ def update_branch_pass(db:Session,id,password):
     db.commit()
     db.refresh(query)
     return query
+
+
+def create_complaint(db:Session,product_name:Optional[str]=None,
+                     branch_id:Optional[int]=None,
+                     subcategory_id:Optional[int]=None,
+                     client_name:Optional[str]=None,
+                     client_number:Optional[str]=None,
+                     client_gender:Optional[str]=None,
+                     date_purchase:Optional[datetime]=None,
+                    date_return:Optional[datetime]=None,
+                    comment:Optional[str]=None,
+                    autonumber:Optional[str]=None
+                     ):
+    query = request_model.Complaints(product_name=product_name,
+                                        branch_id=branch_id,
+                                        subcategory_id=subcategory_id,
+                                        client_name=client_name,
+                                        client_number=client_number,
+                                        client_gender=client_gender,
+                                        date_purchase=date_purchase,
+                                        date_return=date_return,
+                                        comment=comment,
+                                        autonumber=autonumber,
+
+                                     )
+    db.add(query)
+    db.commit()
+    db.refresh(query)
+    return query
+
+
+def create_file(db:Session,complaint_id:int,file_path:str):
+    query = request_model.Files(complaint_id=complaint_id,url=file_path)
+    db.add(query)
+    db.commit()
+    db.refresh(query)
+    return query
+
+
+def update_complaints(db:Session,form_data:schema.UpdateComplaint):
+    query = db.query(request_model.Complaints).filter(request_model.Complaints.id==form_data.id).first()
+    if form_data.product_name is not None:
+        query.product_name = form_data.product_name
+    if form_data.client_name is not None:
+        query.client_name = form_data.client_name
+    if form_data.client_number is not None:
+        query.client_number = form_data.client_number
+    if form_data.client_gender is not None:
+        query.client_gender = form_data.client_gender
+    if form_data.date_purchase is not None:
+        query.date_purchase = form_data.date_purchase
+    if form_data.date_return is not None:
+
+        query.date_return = form_data.date_return
+    if form_data.comment is not None:
+        query.comment = form_data.comment
+    if form_data.otk_status is not None:
+        query.otk_status = form_data.otk_status
+    if form_data.status is not None:
+        query.status = form_data.status
+    if form_data.corrections is not None:
+        query.corrections = form_data.corrections
+
+    if form_data.autonumber is not None:
+        query.autonumber = form_data.autonumber
+    if form_data.subcategory_id is not None:
+        query.subcategory_id = form_data.subcategory_id
+    if form_data.branch_id is not None:
+        query.branch_id = form_data.branch_id
+    db.commit()
+    db.refresh(query)
+    return query
+
+    
+        

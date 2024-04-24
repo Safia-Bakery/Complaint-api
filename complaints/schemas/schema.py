@@ -129,3 +129,69 @@ class Branchs(BaseModel):
 
 
 
+class Files(BaseModel):
+    id:int
+    url: Optional[str]=None
+    status: Optional[int]=None
+    created_at: Optional[datetime]=None
+    updated_at: Optional[datetime]=None
+    class Config:
+        orm_mode = True
+
+class Clients(BaseModel):
+    id:int
+    name: Optional[str]=None
+    status: Optional[int]=None
+    created_at: Optional[datetime]=None
+    updated_at: Optional[datetime]=None
+    class Config:
+        orm_mode = True
+
+class Complaints(BaseModel):
+    id:int
+    product_name: Optional[str]=None
+    client_name: Optional[str]=None
+    client_number: Optional[str]=None
+    client_gender: Optional[str]=None
+    date_purchase: Optional[datetime]=None
+    date_return: Optional[datetime]=None
+    comment: Optional[str]=None
+    otk_status: Optional[int]=None
+    status: Optional[int]=None
+    is_client: Optional[bool]=None
+    corrections: Optional[str]=None
+    autonumber: Optional[str]=None
+    subcategory_id: Optional[int]=None
+    branch_id: Optional[int]=None
+    subcategory: Optional[SubCategory]=None
+    branch: Optional[Branchs]=None
+    file: Optional[Files]=None
+    changes: Optional[Dict]=None
+    client_id: Optional[int]=None
+    client: Optional[Clients]=None
+    created_at: Optional[datetime]=None
+    updated_at: Optional[datetime]=None
+    class Config:
+        orm_mode = True
+
+
+
+
+class UpdateComplaint(BaseModel):
+    id:int
+    product_name: Optional[str]=None
+    client_name: Optional[str]=None
+    client_number: Optional[str]=None
+    client_gender: Optional[str]=None
+    date_purchase: Optional[datetime]=None
+    date_return: Optional[datetime]=None
+    comment: Optional[str]=None
+    otk_status: Optional[int]=None
+    status: Optional[int]=None
+    corrections: Optional[str]=None
+    autonumber: Optional[str]=None
+    subcategory_id: Optional[int]=None
+    branch_id: Optional[int]=None
+
+
+    
