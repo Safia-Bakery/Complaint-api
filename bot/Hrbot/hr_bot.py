@@ -97,7 +97,7 @@ async def manu(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db) -> int:
                     question_list.append([i.question_uz])
                 else:
                     question_list.append([i.question_ru])
-            question_list.append([text[languagees[context.user_data['lang']]]['back']])
+            question_list.append([[text[languagees[context.user_data['lang']]]['back']]])
             await update.message.reply_text('Часто задаваемые вопосы',reply_markup=ReplyKeyboardMarkup(question_list,resize_keyboard=True))
             return QUESTIONS
         else:
