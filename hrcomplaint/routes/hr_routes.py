@@ -145,12 +145,3 @@ async def create_communication(
     return query
 
 
-
-
-
-
-
-
-
-
-

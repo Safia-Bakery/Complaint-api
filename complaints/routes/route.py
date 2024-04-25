@@ -74,7 +74,7 @@ async def update_category(
     current_user: user_sch.User = Depends(get_current_user)):
     return crud.update_category(db, form_data)
 
-@complain_router.get("/category", summary="Get category",tags=["Complaint"],response_model=Page[schema.Category])
+@complain_router.get("/category", summary="Get category",tags=["Complaint"],response_model=list[schema.Category])
 async def get_category(
     id: Optional[int] = None,
     db: Session = Depends(get_db),
@@ -97,10 +97,12 @@ async def update_sub_category(
 
 @complain_router.get("/sub-category", summary="Get sub-category",tags=["Complaint"],response_model=Page[schema.SubCategory])
 async def get_sub_category(
+    category_id: Optional[int] = None,
     id: Optional[int] = None,
+    country_id: Optional[int] = None,
     db: Session = Depends(get_db),
     current_user: user_sch.User = Depends(get_current_user)):
-    return crud.get_subcategory(db, id)
+    return paginate(crud.get_subcategory(db=db,id=id,category_id=category_id,country_id=country_id))
 
 
 
@@ -186,6 +188,21 @@ async def update_complaint(
     db: Session = Depends(get_db),
     current_user: user_sch.User = Depends(get_current_user)):
     return crud.update_complaints(db, form_data)
+
+
+@complain_router.get("/complaints", summary="Get complaint",tags=["Complaint"],response_model=Page[schema.Complaints])
+async def get_complaints(
+    id: Optional[int] = None,
+    subcategory_id: Optional[int] = None,
+    branch_id: Optional[int] = None,
+    status: Optional[int] = None,
+    otk_status: Optional[int] = None,
+    db: Session = Depends(get_db),
+    current_user: user_sch.User = Depends(get_current_user)):
+    return paginate(crud.get_complaints(db=db,id=id,subcategory_id=subcategory_id,branch_id=branch_id,otk_status=otk_status,status=status))
+
+
+
 
 
 

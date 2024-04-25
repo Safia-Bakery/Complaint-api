@@ -78,9 +78,9 @@ class Branchs(Base):
     password = Column(String, nullable=True)
     status = Column(Integer, default=1)
     complaint = relationship("Complaints",back_populates="branch")
+    rating = relationship("Ratings",back_populates="branch")
     created_at = Column(DateTime(timezone=True), default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
-
 
 
 
@@ -90,6 +90,20 @@ class Clients(Base):
     name = Column(String)
     status = Column(Integer, default=1)
     complaint = relationship("Complaints",back_populates="client")
+    rating = relationship("Ratings",back_populates="client")
+    created_at = Column(DateTime(timezone=True), default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+
+
+class Ratings(Base):
+    __tablename__ = "ratings"
+    id = Column(BIGINT, primary_key=True, index=True)
+    rating = Column(Integer, default=0)
+    branch_id = Column(BIGINT, ForeignKey("branchs.id"))
+    branch = relationship("Branchs",back_populates="rating")
+    client_id = Column(BIGINT, ForeignKey("clients.id"),nullable=True)
+    client = relationship("Clients",back_populates="rating")
+    status = Column(Integer, default=1)
     created_at = Column(DateTime(timezone=True), default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
