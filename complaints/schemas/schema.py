@@ -195,4 +195,13 @@ class UpdateComplaint(BaseModel):
     expense: Optional[float]=None
 
 
-    
+class Communications(BaseModel):
+    id:int
+    complaint_id: Optional[int]=None
+    user_id: Optional[int]=None
+    text: Optional[str]=None
+    url:Optional[str]=None
+    created_at: Optional[datetime]=None
+    updated_at: Optional[datetime]=None
+    class Config:
+        orm_mode = True

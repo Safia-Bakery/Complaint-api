@@ -182,8 +182,8 @@ def create_complaint(db:Session,product_name:Optional[str]=None,
                                         date_return=date_return,
                                         comment=comment,
                                         autonumber=autonumber,
-                                        expense=expense
-
+                                        expense=expense,
+                                        is_client=False
                                      )
     db.add(query)
     db.commit()
@@ -248,8 +248,26 @@ def get_complaints(db:Session,id:Optional[int]=None,branch_id:Optional[int]=None
         query = query.filter(request_model.Complaints.status == status)
     if otk_status is not None:
         query = query.filter(request_model.Complaints.otk_status == otk_status)
-    return query.all()
+    return query.order_by(request_model.Complaints.id.desc()).all()
 
 
-    
-        
+
+def create_communication(db:Session,complaint_id:int,text:str,url:str):
+    query = request_model.Communications(complaint_id=complaint_id,text=text,url=url)
+    db.add(query)
+    db.commit()
+    db.refresh(query)
+    return query
+
+def get_communications(db:Session,client_id,complaint_id):
+    query = db.query(request_model.Communications).join(request_model.Complaints)
+    if client_id is not None:
+        query = query.filter(request_model.Complaints.client_id == client_id)
+
+    if complaint_id is not None:    
+        query = query.filter(request_model.Communications.complaint_id == complaint_id)
+
+    return query.order_by(request_model.Communications.created_at.desc()).all()
+
+
+

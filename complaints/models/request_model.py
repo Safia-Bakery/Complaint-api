@@ -160,9 +160,7 @@ class Communications(Base):
     user = relationship("Users",back_populates="communication")
     text = Column(String, nullable=True)
     status = Column(Integer, default=1)
+    url=  Column(String, nullable=True)
     created_at = Column(DateTime(timezone=True), default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
-
-
-
 

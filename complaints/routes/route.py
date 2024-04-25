@@ -193,10 +193,10 @@ async def update_complaint(
     current_user: user_sch.User = Depends(get_current_user)):
 
 
-    if form_data.status ==1:
-        complaint = crud.get_complaints(db=db,id=form_data.id)
-        if complaint[0].status == 0:
-            send_textmessage_telegram(f"Complaint {complaint.id} is accepted")
+    #if form_data.status ==1:
+    #    complaint = crud.get_complaints(db=db,id=form_data.id)
+    #    if complaint.status == 0:
+    #        send_textmessage_telegram()
     return crud.update_complaints(db, form_data)
 
 
@@ -212,10 +212,38 @@ async def get_complaints(
     return paginate(crud.get_complaints(db=db,id=id,subcategory_id=subcategory_id,branch_id=branch_id,otk_status=otk_status,status=status))
 
 
+@complain_router.post("/communications", summary="Create communication",tags=["Complaint"],response_model=schema.Communications)
+async def create_communication(
+    file: UploadFile = None,
+    complaint_id:Annotated[int,Form()]=None,
+    text:Annotated[str,Form()]=None,
+    db: Session = Depends(get_db),
+    current_user: user_sch.User = Depends(get_current_user)):
+    complaint_data = crud.get_complaints(db=db,id=complaint_id)
+    if  not complaint_data[0].client_id:
+        raise HTTPException(status_code=400,detail="Client not found. You cannot send message to this complaint")
+
+    if file is not None:
+        file_path = f"files/{generate_random_filename()}{file.filename}"
+        with open(file_path, "wb") as buffer:
+            while True:
+                chunk = await file.read(1024)
+                if not chunk:
+                    break
+                buffer.write(chunk)
+    else:
+        file_path =None
+    
+    return crud.create_communication(db=db,complaint_id=complaint_id,text=text,url=file_path)
 
 
-
-
+@complain_router.get("/communications", summary="Get communication",tags=["Complaint"],response_model=Page[schema.Communications])
+async def get_communication(
+    complaint_id: Optional[int] = None,
+    client_id: Optional[int] = None,
+    db: Session = Depends(get_db),
+    current_user: user_sch.User = Depends(get_current_user)):
+    return paginate(crud.get_communications(db=db,complaint_id=complaint_id,client_id=client_id))
 
 
 
