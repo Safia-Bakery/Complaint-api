@@ -165,7 +165,7 @@ class Complaints(BaseModel):
     branch_id: Optional[int]=None
     subcategory: Optional[SubCategory]=None
     branch: Optional[Branchs]=None
-    file: Optional[Files]=None
+    file: Optional[list[Files]]=None
     changes: Optional[Dict]=None
     client_id: Optional[int]=None
     client: Optional[Clients]=None
@@ -192,6 +192,7 @@ class UpdateComplaint(BaseModel):
     autonumber: Optional[str]=None
     subcategory_id: Optional[int]=None
     branch_id: Optional[int]=None
+    expense: Optional[float]=None
 
 
     

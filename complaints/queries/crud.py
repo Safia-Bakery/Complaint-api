@@ -169,7 +169,8 @@ def create_complaint(db:Session,product_name:Optional[str]=None,
                      date_purchase:Optional[datetime]=None,
                     date_return:Optional[datetime]=None,
                     comment:Optional[str]=None,
-                    autonumber:Optional[str]=None
+                    autonumber:Optional[str]=None,
+                    expense:Optional[float]=None
                      ):
     query = request_model.Complaints(product_name=product_name,
                                         branch_id=branch_id,
@@ -181,6 +182,7 @@ def create_complaint(db:Session,product_name:Optional[str]=None,
                                         date_return=date_return,
                                         comment=comment,
                                         autonumber=autonumber,
+                                        expense=expense
 
                                      )
     db.add(query)
@@ -227,6 +229,8 @@ def update_complaints(db:Session,form_data:schema.UpdateComplaint):
         query.subcategory_id = form_data.subcategory_id
     if form_data.branch_id is not None:
         query.branch_id = form_data.branch_id
+    if form_data.expense is not None:
+        query.expense = form_data.expense
     db.commit()
     db.refresh(query)
     return query

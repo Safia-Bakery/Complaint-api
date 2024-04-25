@@ -123,6 +123,7 @@ class Complaints(Base):
     is_client = Column(Boolean, default=False)
     corrections = Column(String, nullable=True)
     autonumber = Column(String, nullable=True)
+    expense = Column(Float, nullable=True)
     subcategory_id = Column(BIGINT, ForeignKey("subcategories.id"))
     subcategory = relationship("Subcategories",back_populates="complaint")
     branch_id = Column(BIGINT, ForeignKey("branchs.id"))

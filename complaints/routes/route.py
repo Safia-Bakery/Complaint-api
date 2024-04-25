@@ -15,7 +15,9 @@ from services import (
     get_current_user,
     verify_password,
     verify_refresh_token,
-    generate_random_filename
+    generate_random_filename,
+    send_file_telegram,
+    send_textmessage_telegram
 
 )
 from typing import Optional
@@ -148,7 +150,7 @@ async def get_branch(
 async def create_complaint(
     files: list[UploadFile] = None,
     product_name:Annotated[str,Form(...)]=None,
-    client_name:Annotated[int,Form(...)]=None,
+    client_name:Annotated[str,Form(...)]=None,
     client_number:Annotated[str,Form(...)]=None,
     client_gender:Annotated[str,Form(...)]=None,
     date_purchase:Annotated[datetime,Form(...)]=None,
@@ -157,6 +159,7 @@ async def create_complaint(
     autonumber:Annotated[str,Form(...)]=None,
     subcategory_id:Annotated[int,Form(...)]=None,
     branch_id:Annotated[int,Form(...)]=None,
+    expense:Annotated[float,Form(...)]=None,
     db: Session = Depends(get_db)):
     create_complaint = crud.create_complaint(db,product_name=product_name,
                                  branch_id=branch_id,
@@ -167,7 +170,8 @@ async def create_complaint(
                                  date_purchase=date_purchase,
                                  date_return=date_return,
                                  comment=comment,
-                                 autonumber=autonumber)
+                                 autonumber=autonumber,
+                                 expense=expense)
     if files:
         for file in files:
             file_path = f"files/{generate_random_filename()}{file.filename}"
@@ -187,6 +191,12 @@ async def update_complaint(
     form_data: schema.UpdateComplaint,
     db: Session = Depends(get_db),
     current_user: user_sch.User = Depends(get_current_user)):
+
+
+    if form_data.status ==1:
+        complaint = crud.get_complaints(db=db,id=form_data.id)
+        if complaint[0].status == 0:
+            send_textmessage_telegram(f"Complaint {complaint.id} is accepted")
     return crud.update_complaints(db, form_data)
 
 
