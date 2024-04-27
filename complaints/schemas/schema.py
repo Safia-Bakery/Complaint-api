@@ -205,3 +205,5 @@ class Communications(BaseModel):
     updated_at: Optional[datetime]=None
     class Config:
         orm_mode = True
+
+

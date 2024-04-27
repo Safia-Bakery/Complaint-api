@@ -9,6 +9,7 @@ from typing import Optional
 from fastapi_pagination import paginate,Page,add_pagination
 from fastapi.staticfiles import StaticFiles
 from database import Base
+
 from database import engine
 from users.routes.user_routes import user_router
 from hrcomplaint.routes.hr_routes import hr_router
@@ -28,6 +29,7 @@ app.include_router(complain_router, tags=["Complaint"])
 from users.models import user_model
 from hrcomplaint.models import hr_model
 from complaints.models import request_model
+
 Base.metadata.create_all(bind=engine)
 app.mount("/files", StaticFiles(directory="files"), name="files")
 #app.include_router(user_route.user_router, tags=["User"])
