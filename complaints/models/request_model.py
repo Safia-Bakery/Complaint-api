@@ -20,6 +20,7 @@ from sqlalchemy.dialects.postgresql import UUID, ARRAY, JSONB
 from datetime import datetime
 import pytz
 import uuid
+
 from database import Base
 
 
@@ -91,6 +92,7 @@ class Clients(Base):
     status = Column(Integer, default=1)
     complaint = relationship("Complaints",back_populates="client")
     rating = relationship("Ratings",back_populates="client")
+    branch_id = Column(BIGINT, nullable=True)
     created_at = Column(DateTime(timezone=True), default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
