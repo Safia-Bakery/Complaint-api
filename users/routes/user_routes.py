@@ -96,7 +96,7 @@ async def reset_password(
     db: Session = Depends(get_db),
     current_user: user_sch.User = Depends(get_current_user)
 ):
-    query.user_update(db=db,id=current_user.id,password=form_data.password,phone_number=form_data.phone_number,name=form_data.name)
+    query.user_update(db=db,id=form_data.id,password=form_data.password,phone_number=form_data.phone_number,name=form_data.name)
     return {"message":"Password reset successfully",'success':True}
 
 

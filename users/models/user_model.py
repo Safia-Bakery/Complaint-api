@@ -20,9 +20,9 @@ from sqlalchemy.dialects.postgresql import UUID, ARRAY, JSONB
 from datetime import datetime
 import pytz
 import uuid
-from database import Base 
+
 from hrcomplaint.models.hr_model import Hrcommunications
-from complaints.models.request_model import Communications
+from complaints.models.request_model import Communications,Base
 
 timezonetash = pytz.timezone("Asia/Tashkent")
 

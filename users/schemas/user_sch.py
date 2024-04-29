@@ -76,6 +76,7 @@ class UserUpdate(BaseModel):
     password:Optional[str]=None
     name: Optional[str]=None
     phone_number: Optional[str]=None
+    id:int
 
 
 
