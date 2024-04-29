@@ -136,6 +136,7 @@ class Complaints(Base):
     client_id = Column(BIGINT, ForeignKey("clients.id"),nullable=True)
     client = relationship("Clients",back_populates="complaint")
     changes = Column(JSONB, nullable=True)
+    updated_by = Column(String,nullable=True)
     created_at = Column(DateTime(timezone=True), default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 

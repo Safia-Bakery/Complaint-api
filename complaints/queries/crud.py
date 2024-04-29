@@ -44,10 +44,12 @@ def update_country(db:Session,form_data:schema.UpdateCountry):
     db.refresh(query)
     return query
 
-def get_country(db: Session, id: Optional[int] = None):
+def get_country(db: Session, id: Optional[int] = None,status:Optional[int]=None):
     query = db.query(request_model.Countries)
     if id is not None:
         query = query.filter(request_model.Countries.id == id)
+    if status is not None:
+        query = query.filter(request_model.Countries.status == status)
     return query.all()
 
 
@@ -71,10 +73,12 @@ def update_category(db:Session,form_data:schema.UpdateCategory):
     db.refresh(query)
     return query
 
-def get_category(db: Session, id: Optional[int] = None):
+def get_category(db: Session, id: Optional[int] = None,status:Optional[int]=None):
     query = db.query(request_model.Categories)
     if id is not None:
         query = query.filter(request_model.Categories.id == id)
+    if status is not None:
+        query = query.filter(request_model.Categories.status == status)
     return query.all()
 
 
@@ -102,7 +106,7 @@ def update_subcategory(db:Session,form_data:schema.UpdateSubCategory):
     return query
 
 
-def get_subcategory(db: Session, id: Optional[int] = None,country_id: Optional[int] = None,category_id: Optional[int] = None):
+def get_subcategory(db: Session, id: Optional[int] = None,country_id: Optional[int] = None,category_id: Optional[int] = None,status:Optional[int]=None):
     query = db.query(request_model.Subcategories)
     if id is not None:
         query = query.filter(request_model.Subcategories.id == id)
@@ -110,6 +114,9 @@ def get_subcategory(db: Session, id: Optional[int] = None,country_id: Optional[i
         query = query.filter(request_model.Subcategories.country_id == country_id)
     if category_id is not None:
         query = query.filter(request_model.Subcategories.category_id == category_id)
+    if status is not None:
+        query = query.filter(request_model.Subcategories.status == status)
+
     return query.all()
 
 
@@ -200,7 +207,7 @@ def create_file(db:Session,complaint_id:int,file_path:str):
     return query
 
 
-def update_complaints(db:Session,form_data:schema.UpdateComplaint):
+def update_complaints(db:Session,form_data:schema.UpdateComplaint,updated_by):
     query = db.query(request_model.Complaints).filter(request_model.Complaints.id==form_data.id).first()
     if form_data.product_name is not None:
         query.product_name = form_data.product_name
@@ -232,11 +239,12 @@ def update_complaints(db:Session,form_data:schema.UpdateComplaint):
         query.branch_id = form_data.branch_id
     if form_data.expense is not None:
         query.expense = form_data.expense
+    query.updated_by = updated_by   
     db.commit()
     db.refresh(query)
     return query
 
-def get_complaints(db:Session,id:Optional[int]=None,branch_id:Optional[int]=None,subcategory_id:Optional[int]=None,status:Optional[int]=None,otk_status:Optional[int]=None):
+def get_complaints(db:Session,id:Optional[int]=None,branch_id:Optional[int]=None,subcategory_id:Optional[int]=None,status:Optional[int]=None,otk_status:Optional[int]=None,category:Optional[int]=None):
     query = db.query(request_model.Complaints)
     if id is not None:
         query = query.filter(request_model.Complaints.id == id)
@@ -249,6 +257,9 @@ def get_complaints(db:Session,id:Optional[int]=None,branch_id:Optional[int]=None
         query = query.filter(request_model.Complaints.status == status)
     if otk_status is not None:
         query = query.filter(request_model.Complaints.otk_status == otk_status)
+
+    if category is not None:
+        query = query.join(request_model.Subcategories).join(request_model.Categories).filter(request_model.Categories.id == category)
     return query.order_by(request_model.Complaints.id.desc()).all()
 
 

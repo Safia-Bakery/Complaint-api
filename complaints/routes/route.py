@@ -57,9 +57,10 @@ async def update_country(
 @complain_router.get("/country", summary="Get country",tags=["Complaint"],response_model=Page[schema.Country])
 async def get_country(
     id: Optional[int] = None,
+    status: Optional[int] = None,
     db: Session = Depends(get_db),
     current_user: user_sch.User = Depends(get_current_user)):
-    return paginate(crud.get_country(db, id))
+    return paginate(crud.get_country(db, id=id,status=status))
 
 
 @complain_router.post("/category", summary="Create category",tags=["Complaint"],response_model=schema.Category)
@@ -79,9 +80,10 @@ async def update_category(
 @complain_router.get("/category", summary="Get category",tags=["Complaint"],response_model=list[schema.Category])
 async def get_category(
     id: Optional[int] = None,
+    status:Optional[int]=None,
     db: Session = Depends(get_db),
     current_user: user_sch.User = Depends(get_current_user)):
-    return crud.get_category(db, id)
+    return crud.get_category(db, id,status)
 
 @complain_router.post("/sub-category", summary="Create sub-category",tags=["Complaint"],response_model=schema.SubCategory)
 async def create_sub_category(
@@ -102,9 +104,10 @@ async def get_sub_category(
     category_id: Optional[int] = None,
     id: Optional[int] = None,
     country_id: Optional[int] = None,
+    status: Optional[int] = None,
     db: Session = Depends(get_db),
     current_user: user_sch.User = Depends(get_current_user)):
-    return paginate(crud.get_subcategory(db=db,id=id,category_id=category_id,country_id=country_id))
+    return paginate(crud.get_subcategory(db=db,id=id,category_id=category_id,country_id=country_id,status=status))
 
 
 
@@ -197,7 +200,7 @@ async def update_complaint(
     #    complaint = crud.get_complaints(db=db,id=form_data.id)
     #    if complaint.status == 0:
     #        send_textmessage_telegram()
-    return crud.update_complaints(db, form_data)
+    return crud.update_complaints(db, form_data,updated_by=current_user.name)
 
 
 @complain_router.get("/complaints", summary="Get complaint",tags=["Complaint"],response_model=Page[schema.Complaints])
@@ -207,9 +210,10 @@ async def get_complaints(
     branch_id: Optional[int] = None,
     status: Optional[int] = None,
     otk_status: Optional[int] = None,
+    category:Optional[int]=None,
     db: Session = Depends(get_db),
     current_user: user_sch.User = Depends(get_current_user)):
-    return paginate(crud.get_complaints(db=db,id=id,subcategory_id=subcategory_id,branch_id=branch_id,otk_status=otk_status,status=status))
+    return paginate(crud.get_complaints(db=db,id=id,subcategory_id=subcategory_id,branch_id=branch_id,otk_status=otk_status,status=status,category=category))
 
 
 @complain_router.post("/communications", summary="Create communication",tags=["Complaint"],response_model=schema.Communications)

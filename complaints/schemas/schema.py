@@ -169,6 +169,7 @@ class Complaints(BaseModel):
     changes: Optional[Dict]=None
     client_id: Optional[int]=None
     client: Optional[Clients]=None
+    expense: Optional[float]=None
     created_at: Optional[datetime]=None
     updated_at: Optional[datetime]=None
     class Config:
