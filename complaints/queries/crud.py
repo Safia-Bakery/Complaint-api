@@ -170,7 +170,7 @@ def create_complaint(db:Session,product_name:Optional[str]=None,
                     date_return:Optional[datetime]=None,
                     comment:Optional[str]=None,
                     autonumber:Optional[str]=None,
-                    expense:Optional[float]=None
+                    expense:Optional[float]=None,
                      ):
     query = request_model.Complaints(product_name=product_name,
                                         branch_id=branch_id,
@@ -183,7 +183,8 @@ def create_complaint(db:Session,product_name:Optional[str]=None,
                                         comment=comment,
                                         autonumber=autonumber,
                                         expense=expense,
-                                        is_client=False
+                                        is_client=False,
+                                        status=0
                                      )
     db.add(query)
     db.commit()
