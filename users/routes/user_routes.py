@@ -74,7 +74,7 @@ async def refresh(
 
 
 
-@user_router.post("/register",response_model=user_sch.User, summary="Register a new user",tags=["User"])
+@user_router.post("/register",response_model=user_sch.Users, summary="Register a new user",tags=["User"])
 async def register(
     form_data: user_sch.UserCreate,
     db: Session = Depends(get_db)):
@@ -91,7 +91,7 @@ async def current_user(db:Session=Depends(get_db),current_user: user_sch.User = 
     return current_user
 
 
-@user_router.put('/update',summary="Reset password",tags=["User"])
+@user_router.put('/update',summary="Reset password",tags=["User"],response_model=user_sch.Users)
 async def reset_password(
     form_data:user_sch.UserUpdate,
 
@@ -102,7 +102,7 @@ async def reset_password(
     return {"message":"Password reset successfully",'success':True}
 
 
-@user_router.get('/users',summary="Get all users",tags=["User"],response_model=Page[user_sch.User])
+@user_router.get('/users',summary="Get all users",tags=["User"],response_model=Page[user_sch.Users])
 async def get_users(name: Optional[str]=None,
                     id: Optional[int]=None,
                     phone_number: Optional[str]=None,

@@ -194,13 +194,14 @@ async def update_complaint(
     form_data: schema.UpdateComplaint,
     db: Session = Depends(get_db),
     current_user: user_sch.User = Depends(get_current_user)):
-
-
     #if form_data.status ==1:
     #    complaint = crud.get_complaints(db=db,id=form_data.id)
     #    if complaint.status == 0:
     #        send_textmessage_telegram()
-    return crud.update_complaints(db, form_data,updated_by=current_user.name)
+    query =crud.update_complaints(db, form_data,updated_by=current_user.name)
+    if form_data.status == 1 and query.subcategory.category_id == 3:
+        crud.update_statuses(db=db,di=query.id,okk_status=1)
+    return query
 
 
 @complain_router.get("/complaints", summary="Get complaint",tags=["Complaint"],response_model=Page[schema.Complaints])

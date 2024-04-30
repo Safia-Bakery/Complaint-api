@@ -59,7 +59,22 @@ class User(BaseModel):
     role_id: Optional[int]=None
     created_at: Optional[datetime]=None
     updated_at: Optional[datetime]=None
-    permissions: Optional[dict]=dict
+    permissions: Optional[dict]={}
+    class Config:
+        orm_mode = True
+
+
+
+class Users(BaseModel):
+    id:int
+    name: Optional[str]=None
+    username: Optional[str]=None
+    phone_number: Optional[str]=None
+    status: int
+    role_id: Optional[int]=None
+    created_at: Optional[datetime]=None
+    updated_at: Optional[datetime]=None
+    role: Optional[Roles]=None
     class Config:
         orm_mode = True
 

@@ -240,6 +240,19 @@ def update_complaints(db:Session,form_data:schema.UpdateComplaint,updated_by):
     if form_data.expense is not None:
         query.expense = form_data.expense
     query.updated_by = updated_by   
+        
+    db.commit()
+    db.refresh(query)
+    return query
+
+
+def update_statuses(db:Session,status,id,okk_status):
+    query = db.query(request_model.Complaints).filter(request_model.Complaints.id==id).first()
+    if status is not None:
+
+        query.status = status
+    if okk_status is not None:
+        query.otk_status = okk_status
     db.commit()
     db.refresh(query)
     return query
