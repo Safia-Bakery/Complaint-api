@@ -91,7 +91,7 @@ async def current_user(db:Session=Depends(get_db),current_user: user_sch.User = 
     return current_user
 
 
-@user_router.put('/update',summary="Reset password",tags=["User"],response_model=user_sch.Users)
+@user_router.put('/update',summary="Reset password",tags=["User"])
 async def reset_password(
     form_data:user_sch.UserUpdate,
 
@@ -99,7 +99,7 @@ async def reset_password(
     current_user: user_sch.User = Depends(get_current_user)
 ):
     query.user_update(db=db,id=form_data.id,password=form_data.password,phone_number=form_data.phone_number,name=form_data.name,role_id=form_data.role_id,status=form_data.status)
-    return {"message":"Password reset successfully",'success':True}
+    return {"message":"Updated successfully",'success':True}
 
 
 @user_router.get('/users',summary="Get all users",tags=["User"],response_model=Page[user_sch.Users])
