@@ -53,11 +53,13 @@ class Roles(BaseModel):
 class User(BaseModel):
     id:int
     name: Optional[str]=None
+    username: Optional[str]=None
     phone_number: Optional[str]=None
     status: int
     role_id: Optional[int]=None
     created_at: Optional[datetime]=None
     updated_at: Optional[datetime]=None
+    permissions: Optional[dict]=dict
     class Config:
         orm_mode = True
 
@@ -77,6 +79,8 @@ class UserUpdate(BaseModel):
     name: Optional[str]=None
     phone_number: Optional[str]=None
     id:int
+    role_id:Optional[int]=None
+    status:Optional[int]=None
 
 
 

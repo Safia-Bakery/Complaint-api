@@ -53,6 +53,8 @@ def user_update(db:Session,id:int,status:Optional[int]=None,password:Optional[st
         db_user.phone_number = phone_number
     if name is not None:
         db_user.name = name
+    if role_id is not None:
+        db_user.role_id = role_id
     db.commit()
     db.refresh(db_user)
     return db_user

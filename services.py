@@ -121,11 +121,11 @@ async def get_current_user(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Could not find user",
         )
-    permission_list = []
+    permission_list = {}
     if user.role is not None:
         for i in user.role.permission:
-            permission_list.append(i.action_id)
-    user.permission_list = permission_list
+            permission_list[i.action_id] = True
+    user.permissions = permission_list
     return user
 
 def verify_refresh_token(refresh_token: str) -> Union[str, None]:

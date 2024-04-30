@@ -87,16 +87,18 @@ async def register(
 
 @user_router.get("/me", response_model=user_sch.User, summary="Get current user",tags=["User"])
 async def current_user(db:Session=Depends(get_db),current_user: user_sch.User = Depends(get_current_user)):
+    
     return current_user
 
 
 @user_router.put('/update',summary="Reset password",tags=["User"])
 async def reset_password(
     form_data:user_sch.UserUpdate,
+
     db: Session = Depends(get_db),
     current_user: user_sch.User = Depends(get_current_user)
 ):
-    query.user_update(db=db,id=form_data.id,password=form_data.password,phone_number=form_data.phone_number,name=form_data.name)
+    query.user_update(db=db,id=form_data.id,password=form_data.password,phone_number=form_data.phone_number,name=form_data.name,role_id=form_data.role_id,status=form_data.status)
     return {"message":"Password reset successfully",'success':True}
 
 
@@ -106,7 +108,6 @@ async def get_users(name: Optional[str]=None,
                     phone_number: Optional[str]=None,
                     status: Optional[int]=None,
                     role_id: Optional[int]=None,
-
                     db: Session = Depends(get_db),
                     current_user: user_sch.User = Depends(get_current_user)):
     users = query.get_users(db,name=name,id=id,phone_number=phone_number,status=status,role_id=role_id)
@@ -115,12 +116,12 @@ async def get_users(name: Optional[str]=None,
 
 @user_router.post('/roles',summary="Create a new role",tags=["User"],response_model=user_sch.RoleGet)
 async def create_role(
-    name:str,
+    form_data:user_sch.RoleCreate,
     db: Session = Depends(get_db),
     current_user: user_sch.User = Depends(get_current_user)
 ):
     
-    return query.create_role(db=db,name=name)
+    return query.create_role(db=db,form_data=form_data)
 
 
 
