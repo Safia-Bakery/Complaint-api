@@ -38,7 +38,7 @@ backend_location = 'app/'
 #Base.metadata.create_all(bind=engine)
 BOTTOKEN = os.environ.get('BOT_TOKEN_HR')
 url = f"https://api.telegram.org/bot{BOTTOKEN}/sendMessage"
-LANGUAGE,MANU,SPHERE,COMMENTS,QUESTIONS,LANGUPDATE,SETTINGS,SPHEREUPDATE,CHAT= range(10)
+LANGUAGE,MANU,SPHERE,COMMENTS,QUESTIONS,LANGUPDATE,SETTINGS,SPHEREUPDATE,CHAT= range(9)
 persistence = PicklePersistence(filepath='hello.pickle')
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db) -> int:
