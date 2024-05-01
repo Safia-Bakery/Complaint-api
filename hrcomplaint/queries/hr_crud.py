@@ -59,6 +59,10 @@ def update_complaint(db: Session, form_data: hr_schema.UpdateComplaint):
         db_complaint.complaint = form_data.complaint
     if form_data.status is not None:
         db_complaint.status = form_data.status
+    if form_data.deny_reason is not None:
+        db_complaint.deny_reason = form_data.deny_reason
+    if form_data.category_id is not None:
+        db_complaint.category_id = form_data.category_id
     db.commit()
     db.refresh(db_complaint)
     return db_complaint

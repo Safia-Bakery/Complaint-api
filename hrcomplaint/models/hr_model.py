@@ -59,6 +59,7 @@ class Hrcomplaints(Base):
     hrclient = relationship("Hrclients",back_populates="hrcomplaint")
     hrtype = Column(Integer, nullable=True)
     status = Column(Integer, default=1)
+    deny_reason = Column(String, nullable=True)
     created_at = Column(DateTime(timezone=True), default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 

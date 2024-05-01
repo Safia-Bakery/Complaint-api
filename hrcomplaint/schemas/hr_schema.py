@@ -65,6 +65,8 @@ class UpdateComplaint(BaseModel):
     tel_id: Optional[str]=None
     complaint: Optional[str]=None
     status: Optional[int]=None
+    deny_reason: Optional[str]=None
+    category_id: Optional[int]=None 
     class Config:
         orm_mode = True
 
