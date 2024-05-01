@@ -218,6 +218,7 @@ async def get_complaints(
     branch_id: Optional[int] = None,
     status: Optional[int] = None,
     otk_status: Optional[int] = None,
+    is_client:Optional[bool]=None,
     db: Session = Depends(get_db),
     current_user: user_sch.User = Depends(get_current_user)):
     return paginate(crud.get_complaints(db=db,
@@ -232,7 +233,9 @@ async def get_complaints(
                                         phone_number=phone_number,
                                         date_return=date_return,
                                         expense=expense,
-                                        updated_by=updated_by))
+                                        updated_by=updated_by,
+                                        is_client=is_client
+                                        ))
 
 
 
