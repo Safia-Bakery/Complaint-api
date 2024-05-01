@@ -89,3 +89,12 @@ def create_file(db:Session,complaint_id,file_name):
     db.commit()
     db.refresh(query)
     return query
+
+
+
+def get_categories(db:Session,id: Optional[int] = None):
+    query = db.query(model.Categories).filter(model.Categories.status==1)
+    if id is not None:
+        query = query.filter(model.Categories.id == id)
+    
+    return query.all()
