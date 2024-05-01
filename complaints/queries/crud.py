@@ -274,7 +274,8 @@ def get_complaints(db:Session,
                     client_name:Optional[str]=None,
                     category_id:Optional[int]=None,
                     country_id:Optional[int]=None,
-                    is_client:Optional[bool]=None
+                    is_client:Optional[bool]=None,
+                    otk:Optional[bool]=False
                    ):
     query = db.query(request_model.Complaints)
     if is_client is not None:
@@ -303,11 +304,14 @@ def get_complaints(db:Session,
 
     if status is not None:
         query = query.filter(request_model.Complaints.status == status)
-    if otk_status is not None:
-        query = query.filter(request_model.Complaints.otk_status == otk_status)
-
+    
+    if otk:
+        query = query.filter(request_model.Complaints.otk_status != 0)
+    elif otk_status is not None:
+        query =  query.filter(request_model.Complaints.otk_status==otk_status)
     if category is not None:
         query = query.join(request_model.Subcategories).join(request_model.Categories).filter(request_model.Categories.id == category)
+
     return query.order_by(request_model.Complaints.id.desc()).all()
 
 

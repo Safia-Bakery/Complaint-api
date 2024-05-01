@@ -218,6 +218,7 @@ async def get_complaints(
     branch_id: Optional[int] = None,
     status: Optional[int] = None,
     otk_status: Optional[int] = None,
+    otk :Optional[bool]=False,
     is_client:Optional[bool]=None,
     db: Session = Depends(get_db),
     current_user: user_sch.User = Depends(get_current_user)):
@@ -234,7 +235,8 @@ async def get_complaints(
                                         date_return=date_return,
                                         expense=expense,
                                         updated_by=updated_by,
-                                        is_client=is_client
+                                        is_client=is_client,
+                                        otk=otk
                                         ))
 
 
