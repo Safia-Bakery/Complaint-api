@@ -207,14 +207,33 @@ async def update_complaint(
 @complain_router.get("/complaints", summary="Get complaint",tags=["Complaint"],response_model=Page[schema.Complaints])
 async def get_complaints(
     id: Optional[int] = None,
+    country_id: Optional[int] = None,
+    category_id: Optional[int] = None,
+    client_name: Optional[str] = None,
+    phone_number: Optional[str] = None,
+    date_return: Optional[datetime] = None,
+    expense: Optional[float] = None,
+    updated_by: Optional[str] = None,
     subcategory_id: Optional[int] = None,
     branch_id: Optional[int] = None,
     status: Optional[int] = None,
     otk_status: Optional[int] = None,
-    category:Optional[int]=None,
     db: Session = Depends(get_db),
     current_user: user_sch.User = Depends(get_current_user)):
-    return paginate(crud.get_complaints(db=db,id=id,subcategory_id=subcategory_id,branch_id=branch_id,otk_status=otk_status,status=status,category=category))
+    return paginate(crud.get_complaints(db=db,
+                                        id=id,
+                                        subcategory_id=subcategory_id,
+                                        branch_id=branch_id,
+                                        otk_status=otk_status,
+                                        status=status,
+                                        category=category_id,
+                                        country_id=country_id,
+                                        client_name=client_name,
+                                        phone_number=phone_number,
+                                        date_return=date_return,
+                                        expense=expense,
+                                        updated_by=updated_by))
+
 
 
 @complain_router.post("/communications", summary="Create communication",tags=["Complaint"],response_model=schema.Communications)

@@ -4,7 +4,7 @@ import bcrypt
 
 import pytz
 from sqlalchemy.sql import func
-from datetime import datetime,timedelta
+from datetime import datetime,timedelta,date
 from sqlalchemy import or_, and_, Date, cast
 from uuid import UUID
 from complaints.models import request_model
@@ -260,8 +260,37 @@ def update_statuses(db:Session,status,id,okk_status):
     db.refresh(query)
     return query
 
-def get_complaints(db:Session,id:Optional[int]=None,branch_id:Optional[int]=None,subcategory_id:Optional[int]=None,status:Optional[int]=None,otk_status:Optional[int]=None,category:Optional[int]=None):
-    query = db.query(request_model.Complaints)
+def get_complaints(db:Session,
+                   id:Optional[int]=None,
+                   branch_id:Optional[int]=None,
+                   subcategory_id:Optional[int]=None,
+                   status:Optional[int]=None,
+                   otk_status:Optional[int]=None,
+                   category:Optional[int]=None,
+                   updated_by:Optional[str]=None,
+                   expense:Optional[float]=None,
+                   date_return:Optional[date]=None,
+                    phone_number:Optional[str]=None,
+                    client_name:Optional[str]=None,
+                    category_id:Optional[int]=None,
+                    country_id:Optional[int]=None,
+                   ):
+    query = db.query(request_model.Complaints).join(request_model.Clients).join(request_model.Subcategories)
+    if country_id is not None:
+        query = query.filter(request_model.Subcategories.country_id == country_id)
+    if category_id is not None:
+        query = query.filter(request_model.Subcategories.category_id == category_id)
+    if client_name is not None:
+        query = query.filter(request_model.Complaints.client_name.ilike(f"%{client_name}%"))
+    if date_return is not None:
+        query = query.filter(cast(request_model.Complaints.date_return,Date) == date_return)
+    if phone_number is not None:
+        query = query.filter(request_model.Complaints.client_number.ilike(f"%{phone_number}%"))
+    if expense is not None:
+        query = query.filter(request_model.Complaints.expense == expense)
+    if updated_by is not None:
+        query = query.filter(request_model.Complaints.updated_by == updated_by)
+    
     if id is not None:
         query = query.filter(request_model.Complaints.id == id)
     if branch_id is not None:
