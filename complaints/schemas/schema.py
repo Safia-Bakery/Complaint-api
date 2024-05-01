@@ -161,6 +161,7 @@ class Complaints(BaseModel):
     is_client: Optional[bool]=None
     corrections: Optional[str]=None
     autonumber: Optional[str]=None
+    deny_reason:Optional[str]=None
     subcategory_id: Optional[int]=None
     branch_id: Optional[int]=None
     subcategory: Optional[SubCategory]=None
@@ -188,6 +189,7 @@ class UpdateComplaint(BaseModel):
     date_return: Optional[datetime]=None
     comment: Optional[str]=None
     otk_status: Optional[int]=None
+    deny_reason:Optional[str]=None
     status: Optional[int]=None
     corrections: Optional[str]=None
     autonumber: Optional[str]=None

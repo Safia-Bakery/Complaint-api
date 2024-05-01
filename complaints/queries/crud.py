@@ -239,7 +239,10 @@ def update_complaints(db:Session,form_data:schema.UpdateComplaint,updated_by):
         query.branch_id = form_data.branch_id
     if form_data.expense is not None:
         query.expense = form_data.expense
+    if form_data.deny_reason is not None:
+        query.deny_reason = form_data.deny_reason
     query.updated_by = updated_by   
+    
         
     db.commit()
     db.refresh(query)
