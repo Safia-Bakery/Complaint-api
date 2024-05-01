@@ -145,3 +145,25 @@ async def create_communication(
     return query
 
 
+@hr_router.post('/hr/category',summary="Create category",tags=["HR"],response_model=hr_schema.HrCategory)
+async def create_category(
+    form_data: hr_schema.HrCategoryCreate,
+    db: Session = Depends(get_db),
+    current_user: user_sch.User = Depends(get_current_user)):
+    return hr_crud.create_hrcategory(db, form_data)
+
+
+@hr_router.get('/hr/category',summary="Get category",tags=["HR"],response_model=Page[hr_schema.HrCategory])
+async def get_category(
+    id: Optional[int] = None,
+    db: Session = Depends(get_db),
+    current_user: user_sch.User = Depends(get_current_user)):
+    return paginate(hr_crud.get_hrcategory(db, id))
+
+
+@hr_router.put('/hr/category',summary="Update category",tags=["HR"],response_model=hr_schema.HrCategory)
+async def update_category(
+    form_data: hr_schema.HrCategoryUpdate,
+    db: Session = Depends(get_db),
+    current_user: user_sch.User = Depends(get_current_user)):
+    return hr_crud.update_hrcategory(db, form_data)

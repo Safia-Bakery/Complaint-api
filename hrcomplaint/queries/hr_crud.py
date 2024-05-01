@@ -120,3 +120,30 @@ def get_complaints(db:Session,id: Optional[int] = None,hrtype: Optional[int] = N
     if sphere_id is not None:
         query = query.filter(hr_model.Hrcomplaints.sphere_id == sphere_id)
     return query.order_by(hr_model.Hrcomplaints.created_at.desc()).all()
+
+def create_hrcategory(db: Session, form_data: hr_schema.HrCategoryCreate):
+    query = hr_model.HrCategories(
+        name=form_data.name,
+        status=form_data.status
+    )
+    db.add(query)
+    db.commit()
+    db.refresh(query)
+    return query
+
+
+def get_hrcategory(db:Session,id: Optional[int] = None):
+    query = db.query(hr_model.HrCategories)
+    if id is not None:
+        query = query.filter(hr_model.HrCategories.id == id)
+    return query.all()
+
+def update_hrcategory(db: Session, form_data: hr_schema.HrCategoryUpdate):
+    db_category = db.query(hr_model.HrCategories).filter(hr_model.HrCategories.id == form_data.id).first()
+    if form_data.name is not None:
+        db_category.name = form_data.name
+    if form_data.status is not None:
+        db_category.status = form_data.status
+    db.commit()
+    db.refresh(db_category)
+    return db_category

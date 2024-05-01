@@ -37,10 +37,21 @@ class Hrspheras(Base):
     hrquestion = relationship("Hrquestions",back_populates="hrsphere")
 
 
+class HrCategories(Base):
+    __tablename__ = "hrcategories"
+    id = Column(BIGINT, primary_key=True, index=True)
+    name = Column(String, nullable=True)
+    status = Column(Integer, default=1)
+    hrcomplaint = relationship("Hrcomplaints",back_populates="hrcategory")
+    created_at = Column(DateTime(timezone=True), default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+
 class Hrcomplaints(Base):
     __tablename__ = "hrcomplaints"
     id = Column(BIGINT, primary_key=True, index=True)
     complaint = Column(String, nullable=True)
+    category_id = Column(BIGINT, ForeignKey("hrcategories.id"),nullable=True)
+    hrcategory = relationship("HrCategories",back_populates="hrcomplaint")
     sphere_id = Column(BIGINT, ForeignKey("hrspheras.id"))
     hrsphere = relationship("Hrspheras",back_populates="hrcomplaint")
     hrcommunication = relationship("Hrcommunications",back_populates="hrcomplaint")

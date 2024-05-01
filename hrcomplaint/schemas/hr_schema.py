@@ -91,6 +91,29 @@ class GetHrcommunication(BaseModel):
         orm_mode = True
 
 
+class HrCategoryCreate(BaseModel):
+    name: Optional[str]=None
+    status: Optional[int]=1
+    class Config:
+        orm_mode = True
+
+
+class HrCategory(BaseModel):
+    id:int
+    name: Optional[str]=None
+    status: Optional[int]=None
+    created_at: Optional[datetime]=None
+    updated_at: Optional[datetime]=None
+    class Config:
+        orm_mode = True
+
+
+class HrCategoryUpdate(BaseModel):   
+    id:int
+    name: Optional[str]=None
+    status:Optional[int]=None
+
+
 
 class HrClients(BaseModel):
     id:int
@@ -109,6 +132,7 @@ class Hrcomplaints(BaseModel):
     sphere_id: Optional[int]=None
     hrclient_id: Optional[int]=None
     hrclient: Optional[HrClients]=None
+    hrcategory: Optional[HrCategory]=None
     hrtype: Optional[int]=None
     status: Optional[int]=None
     created_at: Optional[datetime]=None
