@@ -266,7 +266,6 @@ def get_complaints(db:Session,
                    subcategory_id,
                    status,
                    otk_status,
-                   category,
                    updated_by,
                    expense,
                    date_return,
@@ -309,9 +308,7 @@ def get_complaints(db:Session,
         query = query.filter(request_model.Complaints.otk_status != 0)
     elif otk_status is not None:
         query =  query.filter(request_model.Complaints.otk_status==otk_status)
-    if category is not None:
-        query = query.join(request_model.Subcategories).join(request_model.Categories).filter(request_model.Categories.id == category)
-
+   
     return query.order_by(request_model.Complaints.id.desc()).all()
 
 
