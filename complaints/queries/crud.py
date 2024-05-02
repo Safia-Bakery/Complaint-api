@@ -261,21 +261,21 @@ def update_statuses(db:Session,status,id,okk_status):
     return query
 
 def get_complaints(db:Session,
-                   id:Optional[int]=None,
-                   branch_id:Optional[int]=None,
-                   subcategory_id:Optional[int]=None,
-                   status:Optional[int]=None,
-                   otk_status:Optional[int]=None,
-                   category:Optional[int]=None,
-                   updated_by:Optional[str]=None,
-                   expense:Optional[float]=None,
-                   date_return:Optional[date]=None,
-                    phone_number:Optional[str]=None,
-                    client_name:Optional[str]=None,
-                    category_id:Optional[int]=None,
-                    country_id:Optional[int]=None,
-                    is_client:Optional[bool]=None,
-                    otk:Optional[bool]=False
+                   id,
+                   branch_id,
+                   subcategory_id,
+                   status,
+                   otk_status,
+                   category,
+                   updated_by,
+                   expense,
+                   date_return,
+                    phone_number,
+                    client_name,
+                    category_id,
+                    country_id,
+                    is_client,
+                    otk
                    ):
     query = db.query(request_model.Complaints)
     if is_client is not None:

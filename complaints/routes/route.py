@@ -219,7 +219,7 @@ async def get_complaints(
     status: Optional[int] = None,
     otk_status: Optional[int] = None,
     otk :Optional[bool]=False,
-    is_client:Optional[bool]=None,
+    is_client:Optional[bool]=False,
     db: Session = Depends(get_db),
     current_user: user_sch.User = Depends(get_current_user)):
     return paginate(crud.get_complaints(db=db,
