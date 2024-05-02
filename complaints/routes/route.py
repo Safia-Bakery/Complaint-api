@@ -228,7 +228,7 @@ async def get_complaints(
                                         branch_id=branch_id,
                                         otk_status=otk_status,
                                         status=status,
-                                        category=category_id,
+                                        category_id=category_id,
                                         country_id=country_id,
                                         client_name=client_name,
                                         phone_number=phone_number,
