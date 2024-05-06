@@ -59,6 +59,9 @@ def user_update(db:Session,id:int,status:Optional[int]=None,password:Optional[st
     db.refresh(db_user)
     return db_user
 
+
+
+
 def get_users(db: Session,name,id,phone_number,status,role_id):
     query = db.query(Users)
     if name is not None:
@@ -72,6 +75,7 @@ def get_users(db: Session,name,id,phone_number,status,role_id):
     if role_id is not None:
         query = query.filter(Users.role_id == role_id)
     return query.all()
+
 
 
 #create role 
