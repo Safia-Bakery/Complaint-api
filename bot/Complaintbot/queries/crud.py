@@ -56,7 +56,7 @@ def get_category(db:Session,name: Optional[str] = None):
 
 
 def get_subcategory(db:Session,name: Optional[str] = None,category_id: Optional[int] = None):
-    query = db.query(model.Subcategories).filter(model.Subcategories.category_id==category_id)
+    query = db.query(model.Subcategories).filter(model.Subcategories.category_id==int(category_id))
     if name is not None:
         query = query.filter(model.Subcategories.name.ilike(f"%{name}%"))
     return query.all()

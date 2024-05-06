@@ -188,7 +188,7 @@ async def subcategory(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db):
         buttons = transform_list(categories,2,'name')
         reply_markup = ReplyKeyboardMarkup(buttons,resize_keyboard=True)
         await update.message.reply_text(
-        'Выбрать тип',
+        'Выберите категорию жалобы',
         reply_markup=reply_markup)
         return CATEGORY
     if subcategory:
@@ -204,7 +204,7 @@ async def subcategory(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db):
         buttons = transform_list(subcategories,2,'name')
         reply_markup = ReplyKeyboardMarkup(buttons,resize_keyboard=True)
         await update.message.reply_text(
-            'Выберите категорию',
+            'Выбрать тип',
             reply_markup=reply_markup
         )
         return SUBCATEGORY
@@ -217,7 +217,7 @@ async def name(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db):
         buttons = transform_list(subcategories,2,'name')
         reply_markup = ReplyKeyboardMarkup(buttons,resize_keyboard=True)
         await update.message.reply_text(
-            'Выберите категорию',
+            'Выбрать тип',
             reply_markup=reply_markup
         )
         return SUBCATEGORY
