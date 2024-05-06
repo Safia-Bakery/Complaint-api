@@ -28,4 +28,5 @@ volumes:
   postgres_data:
   complaint_data:
   hr_data:
+  complaint_file:
   
