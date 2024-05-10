@@ -61,13 +61,14 @@ def get_spheres(db:Session,name: Optional[str] = None):
     return query.all()
 
 
-def create_complaint(db:Session,tel_id,complaint,sphere_id,hrtype):
+def create_complaint(db:Session,tel_id,complaint,sphere_id,hrtype,category):
     query = hr_model.Hrcomplaints(
         complaint=complaint,
         sphere_id=sphere_id,
         hrclient_id=tel_id, 
         status=0,
         hrtype=hrtype,
+        category_id=category
 
     )
     db.add(query)

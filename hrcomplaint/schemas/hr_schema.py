@@ -16,6 +16,7 @@ class Sphere(BaseModel):
         orm_mode = True
 
 
+
 class SphereCreate(BaseModel):
     name: Optional[str]=None
     status: Optional[int]=1

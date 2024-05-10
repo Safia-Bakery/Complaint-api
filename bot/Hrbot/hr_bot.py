@@ -27,6 +27,7 @@ from bot.Hrbot.bot_services import transform_list
 import database
 from fastapi import Depends
 languagees = {'1':'uz','2':'ru'}
+
 load_dotenv()
 manu_button = [['Задать вопрос❔','Отправить возражение📝'],['Часто задаваемые вопосы❓','Отправить предложение🧠'],['Настройки⚙️','О ботеℹ️'],['Chat']]
 
@@ -38,7 +39,7 @@ backend_location = 'app/'
 #Base.metadata.create_all(bind=engine)
 BOTTOKEN = os.environ.get('BOT_TOKEN_HR')
 url = f"https://api.telegram.org/bot{BOTTOKEN}/sendMessage"
-LANGUAGE,MANU,SPHERE,COMMENTS,QUESTIONS,LANGUPDATE,SETTINGS,SPHEREUPDATE,CHAT= range(9)
+LANGUAGE,MANU,SPHERE,COMMENTS,QUESTIONS,LANGUPDATE,SETTINGS,SPHEREUPDATE,CHAT,CATEGORY= range(10)
 persistence = PicklePersistence(filepath='hello.pickle')
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db) -> int:
@@ -55,8 +56,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db) -> int
 
 
 
-
-
 async def language(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db) -> int:
     if update.message.text == '🇺🇿O`zbekcha':
         context.user_data['lang'] = '1'
@@ -68,7 +67,7 @@ async def language(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db) -> 
 
 
 async def sphere(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db) -> int:
-    update.message.text
+
     sphere = crud.get_spheres(db,update.message.text)
     context.user_data['sphere'] = sphere[0].id
     crud.create_user(db,id=update.message.from_user.id,lang=context.user_data['lang'],sphere=context.user_data['sphere'],name=update.message.from_user.first_name)
@@ -76,17 +75,24 @@ async def sphere(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db) -> in
                                     reply_markup=ReplyKeyboardMarkup(manu_button,resize_keyboard=True))
     return MANU
 
+
+
 async def manu(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db) -> int:
     if update.message.text == 'Задать вопрос❔':
         context.user_data['commentsphere'] = 1
+        context.user_data['category'] = None
         await update.message.reply_text('Задайте вопрос',reply_markup=ReplyKeyboardMarkup([[text[languagees[context.user_data['lang']]]['back']]],resize_keyboard=True))
         return COMMENTS
 
     elif update.message.text == 'Отправить возражение📝':
         context.user_data['commentsphere'] = 2
         data = crud.get_categories(db=db)
-        await update.message.reply_text('Отправьте возражение',reply_markup=ReplyKeyboardMarkup([[text[languagees[context.user_data['lang']]]['back']]],resize_keyboard=True))
-        return COMMENTS
+        buttons = transform_list(data,2,'name')
+        reply_markup = ReplyKeyboardMarkup(buttons,resize_keyboard=True)
+        reply_markup.append([text[languagees[context.user_data['lang']]]])
+
+        await update.message.reply_text('Category',reply_markup=ReplyKeyboardMarkup(reply_markup, resize_keyboard=True))
+        return CATEGORY
 
     elif update.message.text == 'Часто задаваемые вопосы❓':
         qeuestions = crud.get_questions(db=db,name=None,sphere=context.user_data['sphere']) 
@@ -106,7 +112,7 @@ async def manu(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db) -> int:
             return MANU
     elif update.message.text == 'Отправить предложение🧠':
         context.user_data['commentsphere'] = 3
-        
+        context.user_data['category'] =None
         await update.message.reply_text('Отправить предложение',reply_markup=ReplyKeyboardMarkup([[text[languagees[context.user_data['lang']]]['back']]],resize_keyboard=True))
         return COMMENTS
     elif update.message.text == 'Настройки⚙️':
@@ -122,6 +128,24 @@ async def manu(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db) -> int:
         return CHAT
 
 
+
+
+async def category(update: Update, context: ContextTypes.DEFAULT_TYPE, db=db) -> int:
+    if update.message.text == text[languagees[context.user_data['lang']]]['back']:
+        await update.message.reply_text('Главная страница',
+                                    reply_markup=ReplyKeyboardMarkup(manu_button,resize_keyboard=True))
+        return MANU
+
+    category_data = crud.get_categories(db=db,name=update.message.text)
+    if category_data:
+        context.user_data['category'] = category_data[0].id
+        await update.message.reply_text('Введите текст',reply_markup=ReplyKeyboardMarkup([[text[languagees[context.user_data['lang']]]['back']]],resize_keyboard=True))
+        return COMMENTS
+    else:
+        data = crud.get_categories(db=db)
+        reply_keyboard = transform_list(data,3,'name').append([text[languagees[context.user_data['lang']]]['back']])
+        await update.message.reply_text('Категория не найдена',reply_markup=ReplyKeyboardMarkup(reply_keyboard,resize_keyboard=True))
+        return CATEGORY
 
 
 
@@ -150,13 +174,12 @@ async def sphereupdate(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db)
     return MANU
 
 
-
 async def comments(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db) -> int:
     if update.message.text == text[languagees[context.user_data['lang']]]['back']:
         await update.message.reply_text("Главная страница",
                                     reply_markup=ReplyKeyboardMarkup(manu_button,resize_keyboard=True))
         return MANU
-    crud.create_complaint(db=db,tel_id=update.message.from_user.id,complaint=update.message.text,sphere_id=context.user_data['sphere'],hrtype=context.user_data['commentsphere'])
+    crud.create_complaint(db=db,tel_id=update.message.from_user.id,complaint=update.message.text,sphere_id=context.user_data['sphere'],hrtype=context.user_data['commentsphere'],category=context.user_data['category'])
     # crud.create_request(database.session,int(context.user_data['commentsphere']),update.message.from_user.id)
     back = [[text[languagees[context.user_data['lang']]]['back']]]
     if context.user_data['commentsphere'] == 1:
@@ -165,7 +188,7 @@ async def comments(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db) -> 
     elif context.user_data['commentsphere'] == 2:
         await update.message.reply_text(text[languagees[context.user_data['lang']]]['feedback_created'],
                                         reply_markup=ReplyKeyboardMarkup(back,resize_keyboard=True))
-        
+
     elif context.user_data['commentsphere'] == 3:
         await update.message.reply_text(text[languagees[context.user_data['lang']]]['suggest_created'],
                                         reply_markup=ReplyKeyboardMarkup(back,resize_keyboard=True))
@@ -282,7 +305,7 @@ def main() -> None:
             SPHEREUPDATE:[MessageHandler(filters.TEXT,sphereupdate)],
             SETTINGS:[MessageHandler(filters.TEXT,settings)],
             CHAT:[MessageHandler(filters.PHOTO | filters.Document.DOCX|filters.Document.IMAGE|filters.Document.PDF|filters.TEXT|filters.Document.MimeType('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'),chat)],
-
+            CATEGORY:[MessageHandler(filters.TEXT,category)]
         },
         fallbacks=[CommandHandler('start',start)],
         allow_reentry=True,

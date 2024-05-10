@@ -1,6 +1,6 @@
 version: '3.8' 
 
-services:
+xservices:
   app:
     build: . # Path to the directory with your app's Dockerfile
     ports:
@@ -29,4 +29,3 @@ volumes:
   complaint_data:
   hr_data:
   complaint_file:
-  
