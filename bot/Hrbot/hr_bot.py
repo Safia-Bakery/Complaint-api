@@ -88,10 +88,10 @@ async def manu(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db) -> int:
         context.user_data['commentsphere'] = 2
         data = crud.get_categories(db=db)
         buttons = transform_list(data,2,'name')
-        reply_markup = ReplyKeyboardMarkup(buttons,resize_keyboard=True)
-        reply_markup.append([text[languagees[context.user_data['lang']]]])
 
-        await update.message.reply_text('Category',reply_markup=ReplyKeyboardMarkup(reply_markup, resize_keyboard=True))
+        buttons.append([text[languagees[context.user_data['lang']]]])
+
+        await update.message.reply_text('Category',reply_markup=ReplyKeyboardMarkup(buttons, resize_keyboard=True))
         return CATEGORY
 
     elif update.message.text == 'Часто задаваемые вопосы❓':
