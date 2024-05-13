@@ -31,7 +31,6 @@ languagees = {'1':'uz','2':'ru'}
 load_dotenv()
 manu_button = [['Задать вопрос❔','Отправить возражение📝'],['Часто задаваемые вопосы❓','Отправить предложение🧠'],['Настройки⚙️','О ботеℹ️'],['Chat']]
 
-
 db = SessionLocal()
 backend_location = 'app/'
 
@@ -39,7 +38,7 @@ backend_location = 'app/'
 #Base.metadata.create_all(bind=engine)
 BOTTOKEN = os.environ.get('BOT_TOKEN_HR')
 url = f"https://api.telegram.org/bot{BOTTOKEN}/sendMessage"
-LANGUAGE,MANU,SPHERE,COMMENTS,QUESTIONS,LANGUPDATE,SETTINGS,SPHEREUPDATE,CHAT,CATEGORY= range(10)
+LANGUAGE,MANU,SPHERE,COMMENTS,QUESTIONS,LANGUPDATE,SETTINGS, SPHEREUPDATE,CHAT,CATEGORY= range(10)
 persistence = PicklePersistence(filepath='hello.pickle')
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db) -> int:
@@ -78,23 +77,24 @@ async def sphere(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db) -> in
 
 
 async def manu(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db) -> int:
-    if update.message.text == 'Задать вопрос❔':
+
+    input_text = update.message.text
+    if input_text == 'Задать вопрос❔':
         context.user_data['commentsphere'] = 1
         context.user_data['category'] = None
         await update.message.reply_text('Задайте вопрос',reply_markup=ReplyKeyboardMarkup([[text[languagees[context.user_data['lang']]]['back']]],resize_keyboard=True))
         return COMMENTS
 
-    elif update.message.text == 'Отправить возражение📝':
+    elif input_text == 'Отправить возражение📝':
         context.user_data['commentsphere'] = 2
         data = crud.get_categories(db=db)
         buttons = transform_list(data,2,'name')
 
-        buttons.append([text[languagees[context.user_data['lang']]]])
-
+        buttons.append([text[languagees[context.user_data['lang']]]['back']])
         await update.message.reply_text('Category',reply_markup=ReplyKeyboardMarkup(buttons, resize_keyboard=True))
         return CATEGORY
 
-    elif update.message.text == 'Часто задаваемые вопосы❓':
+    elif input_text == 'Часто задаваемые вопосы❓':
         qeuestions = crud.get_questions(db=db,name=None,sphere=context.user_data['sphere']) 
         if questions:
             question_list = []
@@ -110,22 +110,26 @@ async def manu(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db) -> int:
             await update.message.reply_text("Главная страница",
                                     reply_markup=ReplyKeyboardMarkup(manu_button,resize_keyboard=True))
             return MANU
-    elif update.message.text == 'Отправить предложение🧠':
+    elif input_text == 'Отправить предложение🧠':
         context.user_data['commentsphere'] = 3
         context.user_data['category'] =None
         await update.message.reply_text('Отправить предложение',reply_markup=ReplyKeyboardMarkup([[text[languagees[context.user_data['lang']]]['back']]],resize_keyboard=True))
         return COMMENTS
-    elif update.message.text == 'Настройки⚙️':
+    elif input_text == 'Настройки⚙️':
         #await update.message.reply_text('Настройки',reply_markup=ReplyKeyboardMarkup([['🇺🇿O`zbekcha','🇷🇺Русский']],resize_keyboard=True))
         await update.message.reply_text('Настройки',reply_markup=ReplyKeyboardMarkup([["Поменять сферу",'Изменить язык'],[text[languagees[context.user_data['lang']]]['back']]],resize_keyboard=True))
         return SETTINGS
-    elif update.message.text == 'О ботеℹ️':
+    elif input_text == 'О ботеℹ️':
         await update.message.reply_text(text[languagees[context.user_data['lang']]]['about'],
                                     reply_markup=ReplyKeyboardMarkup(manu_button,resize_keyboard=True))
         return MANU
-    elif update.message.text == 'Chat':
+    elif input_text == 'Chat':
         await update.message.reply_text('Чат',reply_markup=ReplyKeyboardMarkup([[text[languagees[context.user_data['lang']]]['back']]],resize_keyboard=True))
         return CHAT
+    else:
+        await update.message.reply_text('Главная страница',
+                                    reply_markup=ReplyKeyboardMarkup(manu_button, resize_keyboard=True))
+        return MANU
 
 
 
@@ -290,7 +294,7 @@ async def handle_messages(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
 def main() -> None:
     """Run the bot."""
     # Create the Application and pass it your bot's token.
-    persistence = PicklePersistence(filepath="/app/bot/Hrbot/hrbot")
+    persistence = PicklePersistence(filepath="/app/bot/Hrbot/botpickle/hrbot")
     application = Application.builder().token(BOTTOKEN).persistence(persistence).build()
     #add states phone fullname category desction and others 
     conv_handler = ConversationHandler(

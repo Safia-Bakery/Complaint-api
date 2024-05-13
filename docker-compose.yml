@@ -10,8 +10,8 @@ services:
     environment:
       - DATABASE_URL=postgresql://postgres:1234@postgres_db:5432/complaint
     volumes:
-      - complaint_data:/app/bot/Complaintbot
-      - hr_data:/app/bot/Hrbot
+      - complaint_data:/app/bot/Complaintbot/botpickle
+      - hr_data:/app/bot/Hrbot/botpickle
       - complaint_file:/app/files
     
   postgres_db:
