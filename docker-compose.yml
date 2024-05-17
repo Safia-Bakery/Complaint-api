@@ -13,7 +13,7 @@ services:
       - complaint_data:/app/bot/Complaintbot/botpickle
       - hr_data:/app/bot/Hrbot/botpickle
       - complaint_file:/app/files
-    
+
   postgres_db:
     image: postgres:latest
     volumes:
