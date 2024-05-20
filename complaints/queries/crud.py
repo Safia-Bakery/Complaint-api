@@ -86,7 +86,8 @@ def create_subcategory(db: Session, form_data: schema.CreateSubCategory):
     query = request_model.Subcategories(
         name=form_data.name,
         category_id=form_data.category_id,
-        country_id=form_data.country_id
+        country_id=form_data.country_id,
+        status=form_data.status
     )
     db.add(query)
     db.commit()
@@ -101,6 +102,8 @@ def update_subcategory(db:Session,form_data:schema.UpdateSubCategory):
         query.category_id = form_data.category_id
     if form_data.country_id is not None:
         query.country_id = form_data.country_id
+    if form_data.status is not None:
+        query.status = form_data.status
     db.commit()
     db.refresh(query)
     return query
