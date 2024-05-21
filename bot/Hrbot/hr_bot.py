@@ -296,7 +296,7 @@ async def handle_messages(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
 def main() -> None:
     """Run the bot."""
     # Create the Application and pass it your bot's token.
-    persistence = PicklePersistence(filepath="/var/www/Complaint-api/bot/Hrbot/botpickle/hrbot")
+    persistence = PicklePersistence(filepath="hrbotcommunication")
     application = Application.builder().token(BOTTOKEN).persistence(persistence).build()
     #add states phone fullname category desction and others 
     conv_handler = ConversationHandler(
@@ -315,7 +315,7 @@ def main() -> None:
         },
         fallbacks=[CommandHandler('start',start)],
         allow_reentry=True,
-        name="/var/www/Complaint-api/bot/Hrbot/botpickle/my_conversation",
+        name="my_conversation",
         persistent=True,
         
 
