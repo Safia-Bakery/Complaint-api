@@ -5,7 +5,7 @@ sys.path.append('.')
 
 from telegram.constants import ParseMode
 import os
-from telegram import ReplyKeyboardMarkup,Update,WebAppInfo,KeyboardButton,InlineKeyboardMarkup,InlineKeyboardButton,ReplyKeyboardRemove
+from telegram import ReplyKeyboardMarkup,Update,WebAppInfo,KeyboardButton,InlineKeyboardMarkup,InlineKeyboardButton,ReplyKeyboardRemove,Bot
 from telegram.ext import (
     Application,
     CommandHandler,
@@ -39,7 +39,7 @@ backend_location = 'app/'
 BOTTOKEN = os.environ.get('BOT_TOKEN_HR')
 url = f"https://api.telegram.org/bot{BOTTOKEN}/sendMessage"
 LANGUAGE,MANU,SPHERE,COMMENTS,QUESTIONS,LANGUPDATE,SETTINGS, SPHEREUPDATE,CHAT,CATEGORY= range(10)
-persistence = PicklePersistence(filepath='/var/www/Complaint-api/bot/Hrbot/botpickle/hrbot/hello.pickle')
+#persistence = PicklePersistence(filepath='/var/www/Complaint-api/bot/Hrbot/botpickle/hrbot/hello.pickle')
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db) -> int:
     """Starts the conversation and asks the user about their gender."""
@@ -295,6 +295,7 @@ async def handle_messages(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
 
 def main() -> None:
     """Run the bot."""
+
     # Create the Application and pass it your bot's token.
     persistence = PicklePersistence(filepath="hrbotcommunication")
     application = Application.builder().token(BOTTOKEN).persistence(persistence).build()
