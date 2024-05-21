@@ -183,7 +183,9 @@ async def comments(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db) -> 
         await update.message.reply_text("Главная страница",
                                     reply_markup=ReplyKeyboardMarkup(manu_button,resize_keyboard=True))
         return MANU
-    crud.create_complaint(db=db,tel_id=update.message.from_user.id,complaint=update.message.text,sphere_id=context.user_data['sphere'],hrtype=context.user_data['commentsphere'],category=context.user_data['category'])
+    query = crud.create_complaint(db=db,tel_id=update.message.from_user.id,complaint=update.message.text,sphere_id=context.user_data['sphere'],hrtype=context.user_data['commentsphere'],category=context.user_data['category'])
+    crud.create_message(db=db, text=update.message.text, hrcomplaint_id=query.id, url=None)
+
     # crud.create_request(database.session,int(context.user_data['commentsphere']),update.message.from_user.id)
     back = [[text[languagees[context.user_data['lang']]]['back']]]
     if context.user_data['commentsphere'] == 1:
@@ -217,7 +219,6 @@ async def questions(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db) ->
                                     reply_markup=ReplyKeyboardMarkup(manu_button,resize_keyboard=True))
         return MANU
     question = crud.get_questions(db,name=update.message.text,sphere=context.user_data['sphere'])
-    crud.create_message(db=db, text=update.message.text, hrcomplaint_id=question.id, url=None)
     if question:
         await update.message.reply_text(question[0].answer_ru if context.user_data['lang'] == '2' else question[0].answer_uz,
                                     reply_markup=ReplyKeyboardMarkup(manu_button,resize_keyboard=True))
