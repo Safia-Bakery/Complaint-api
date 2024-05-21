@@ -217,6 +217,7 @@ async def questions(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db) ->
                                     reply_markup=ReplyKeyboardMarkup(manu_button,resize_keyboard=True))
         return MANU
     question = crud.get_questions(db,name=update.message.text,sphere=context.user_data['sphere'])
+    crud.create_message(db=db, text=update.message.text, hrcomplaint_id=question.id, url=None)
     if question:
         await update.message.reply_text(question[0].answer_ru if context.user_data['lang'] == '2' else question[0].answer_uz,
                                     reply_markup=ReplyKeyboardMarkup(manu_button,resize_keyboard=True))
