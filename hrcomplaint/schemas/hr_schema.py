@@ -97,6 +97,7 @@ class GetHrcommunication(BaseModel):
 class HrCategoryCreate(BaseModel):
     name: Optional[str]=None
     status: Optional[int]=1
+    hrsphere_id: Optional[int]=None
     class Config:
         orm_mode = True
 
@@ -105,6 +106,8 @@ class HrCategory(BaseModel):
     id:int
     name: Optional[str]=None
     status: Optional[int]=None
+    hrsphere_id: Optional[int]=None
+    hrsphere: Optional[Sphere]=None
     created_at: Optional[datetime]=None
     updated_at: Optional[datetime]=None
     class Config:

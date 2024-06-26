@@ -157,9 +157,10 @@ async def create_category(
 @hr_router.get('/hr/category', summary="Get category", tags=["HR"], response_model=Page[hr_schema.HrCategory])
 async def get_category(
         id: Optional[int] = None,
+        hrsphere_id: Optional[int] = None,
         db: Session = Depends(get_db),
         current_user: user_sch.User = Depends(get_current_user)):
-    return paginate(hr_crud.get_hrcategory(db, id))
+    return paginate(hr_crud.get_hrcategory(db, id, hrsphere_id))
 
 
 @hr_router.put('/hr/category', summary="Update category", tags=["HR"], response_model=hr_schema.HrCategory)

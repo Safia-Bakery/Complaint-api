@@ -1,3 +1,4 @@
+import pytz
 from sqlalchemy import (
     Column,
     Integer,
@@ -7,22 +8,12 @@ from sqlalchemy import (
     DateTime,
     Boolean,
     BIGINT,
-    Table,
-    Time,
-    JSON,
-    VARCHAR,
-    Date,
 )
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
-from sqlalchemy.dialects.postgresql import UUID, ARRAY, JSONB
-from datetime import datetime
-import pytz
-import uuid
 
 from hrcomplaint.models.hr_model import Base
-
 
 timezonetash = pytz.timezone("Asia/Tashkent")
 
@@ -36,7 +27,7 @@ class Countries(Base):
     quality_id = Column(String,nullable= True)
     status = Column(Integer, default=1)
     callcenter_id = Column(String,nullable= True)
-    subcategory = relationship("Subcategories",back_populates="country")
+    subcategory = relationship("Subcategories", back_populates="country")
     branch = relationship("Branchs",back_populates="country")
     created_at = Column(DateTime(timezone=True), default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
@@ -127,6 +118,7 @@ class Complaints(Base):
     autonumber = Column(String, nullable=True)
     expense = Column(Float, nullable=True)
     deny_reason = Column(String,nullable=True)
+    is_telegram = Column(Integer, default=1)
     subcategory_id = Column(BIGINT, ForeignKey("subcategories.id"))
     subcategory = relationship("Subcategories",back_populates="complaint")
     branch_id = Column(BIGINT, ForeignKey("branchs.id"))

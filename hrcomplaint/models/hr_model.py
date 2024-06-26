@@ -33,6 +33,7 @@ class Hrspheras(Base):
     status = Column(Integer, default=1)
     created_at = Column(DateTime(timezone=True), default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    hrcategory = relationship("HrCategories",back_populates="hrsphere")
     hrcomplaint = relationship("Hrcomplaints",back_populates="hrsphere")
     hrquestion = relationship("Hrquestions",back_populates="hrsphere")
 
@@ -42,6 +43,8 @@ class HrCategories(Base):
     id = Column(BIGINT, primary_key=True, index=True)
     name = Column(String, nullable=True)
     status = Column(Integer, default=1)
+    hrsphere_id = Column(BIGINT, ForeignKey("hrspheras.id"),nullable=True)
+    hrsphere = relationship("Hrspheras",back_populates="hrcategory")
     hrcomplaint = relationship("Hrcomplaints",back_populates="hrcategory")
     created_at = Column(DateTime(timezone=True), default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())

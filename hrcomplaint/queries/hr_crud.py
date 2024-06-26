@@ -118,7 +118,7 @@ def get_hrclients(db:Session,id: Optional[int] = None):
 def get_complaints(db:Session,id: Optional[int] = None,hrtype: Optional[int] = None,sphere_id: Optional[int] = None):
     query = db.query(hr_model.Hrcomplaints)
     if id is not None:
-        query = query.filter(hr_model.Hrcomplaints.id == id)   
+        query = query.filter(hr_model.Hrcomplaints.id == id)
     if hrtype is not None:
         query = query.filter(hr_model.Hrcomplaints.hrtype == hrtype)
     if sphere_id is not None:
@@ -128,7 +128,8 @@ def get_complaints(db:Session,id: Optional[int] = None,hrtype: Optional[int] = N
 def create_hrcategory(db: Session, form_data: hr_schema.HrCategoryCreate):
     query = hr_model.HrCategories(
         name=form_data.name,
-        status=form_data.status
+        status=form_data.status,
+        hrsphere_id=form_data.hrsphere_id
     )
     db.add(query)
     db.commit()
@@ -136,11 +137,14 @@ def create_hrcategory(db: Session, form_data: hr_schema.HrCategoryCreate):
     return query
 
 
-def get_hrcategory(db:Session,id: Optional[int] = None):
+def get_hrcategory(db: Session,id: Optional[int] = None, hrsphere_id: Optional[int] = None):
     query = db.query(hr_model.HrCategories)
     if id is not None:
         query = query.filter(hr_model.HrCategories.id == id)
+    if hrsphere_id is not None:
+        query = query.filter(hr_model.HrCategories.hrsphere_id == hrsphere_id)
     return query.all()
+
 
 def update_hrcategory(db: Session, form_data: hr_schema.HrCategoryUpdate):
     db_category = db.query(hr_model.HrCategories).filter(hr_model.HrCategories.id == form_data.id).first()
