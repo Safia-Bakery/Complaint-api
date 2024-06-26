@@ -11,6 +11,7 @@ __pycache__/
 build/sudo apt install python3.10-distutils
 
 files/
+alembic/
 develop-eggs/
 dist/
 downloads/
