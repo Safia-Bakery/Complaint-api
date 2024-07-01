@@ -200,7 +200,7 @@ async def update_complaint(
     #        send_textmessage_telegram()
     query =crud.update_complaints(db, form_data,updated_by=current_user.name)
     if form_data.status == 1 and query.subcategory.category_id == 3:
-        crud.update_statuses(db=db,di=query.id,okk_status=1)
+        crud.update_statuses(db=db,id=query.id,okk_status=1)
     return query
 
 
@@ -220,7 +220,7 @@ async def get_complaints(
     otk_status: Optional[int] = None,
     otk :Optional[bool]=False,
     is_client:Optional[bool]=False,
-    is_telegram:Optional[int]=None,
+    is_internal:Optional[int]=None,
     db: Session = Depends(get_db),
     current_user: user_sch.User = Depends(get_current_user)):
     return paginate(crud.get_complaints(db=db,
@@ -238,7 +238,7 @@ async def get_complaints(
                                         updated_by=updated_by,
                                         is_client=is_client,
                                         otk=otk,
-                                        is_telegram=is_telegram
+                                        is_internal=is_internal
                                         ))
 
 

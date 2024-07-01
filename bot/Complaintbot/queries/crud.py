@@ -73,7 +73,7 @@ def create_complaint(db:Session,branch_id,subcategory_id,name, phone_number,comm
         date_purchase=date_purchase,
         date_return=datereturn,
         is_client=False,
-        is_telegram=1
+        is_internal=0
     )
     db.add(query)
     db.commit()

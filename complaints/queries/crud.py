@@ -195,7 +195,7 @@ def create_complaint(db:Session,product_name:Optional[str]=None,
                                         expense=expense,
                                         is_client=False,
                                         status=0,
-                                        is_telegram=0
+                                        is_internal=1
                                      )
     db.add(query)
     db.commit()
@@ -279,7 +279,7 @@ def get_complaints(db:Session,
                     country_id,
                     is_client,
                     otk,
-                    is_telegram
+                    is_internal
                    ):
     query = db.query(request_model.Complaints)
     if is_client is not None:
@@ -308,8 +308,8 @@ def get_complaints(db:Session,
 
     if status is not None:
         query = query.filter(request_model.Complaints.status == status)
-    if is_telegram is not None:
-        query = query.filter(request_model.Complaints.is_telegram == is_telegram)
+    if is_internal is not None:
+        query = query.filter(request_model.Complaints.is_internal == is_internal)
     
     if otk:
         query = query.filter(request_model.Complaints.otk_status != 0)
