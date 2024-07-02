@@ -281,7 +281,8 @@ def get_complaints(db:Session,
                     otk,
                     is_internal
                    ):
-    query = db.query(request_model.Complaints)
+    query = db.query(request_model.Complaints).join(request_model.Subcategories)
+
     if is_client is not None:
         query = query.filter(request_model.Complaints.is_client == is_client)
     if country_id is not None:
