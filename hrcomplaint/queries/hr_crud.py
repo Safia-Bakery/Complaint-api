@@ -152,6 +152,9 @@ def update_hrcategory(db: Session, form_data: hr_schema.HrCategoryUpdate):
         db_category.name = form_data.name
     if form_data.status is not None:
         db_category.status = form_data.status
+    if form_data.hrsphere_id is not None:
+        db_category.hrsphere_id = form_data.hrsphere_id
+
     db.commit()
     db.refresh(db_category)
     return db_category

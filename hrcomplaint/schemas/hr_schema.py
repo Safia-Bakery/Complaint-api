@@ -118,6 +118,7 @@ class HrCategoryUpdate(BaseModel):
     id:int
     name: Optional[str]=None
     status:Optional[int]=None
+    hrsphere_id: Optional[int]=None
 
 
 
