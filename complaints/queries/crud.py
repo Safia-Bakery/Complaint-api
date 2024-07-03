@@ -253,13 +253,14 @@ def update_complaints(db:Session,form_data:schema.UpdateComplaint,updated_by):
     return query
 
 
-def update_statuses(db:Session,id,status:Optional[int]=None,okk_status:Optional[int]=None):
+def update_statuses(db:Session,id,status:Optional[int]=None,otk_status:Optional[int]=None):
     query = db.query(request_model.Complaints).filter(request_model.Complaints.id==id).first()
     if status is not None:
 
         query.status = status
-    if okk_status is not None:
-        query.otk_status = okk_status
+    if otk_status is not None:
+        query.otk_status = otk_status
+
     db.commit()
     db.refresh(query)
     return query
