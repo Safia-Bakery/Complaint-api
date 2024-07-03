@@ -95,11 +95,13 @@ def get_complaints(db:Session,id: Optional[int] = None):
     return query.order_by(hr_model.Hrcomplaints.created_at.desc()).all()
 
 
-def get_categories(db:Session,id: Optional[int] = None,name: Optional[str] = None):
+def get_categories(db:Session,id: Optional[int] = None,name: Optional[str] = None,hrsphere_id: Optional[int] = None):
     query = db.query(hr_model.HrCategories).filter(hr_model.HrCategories.status==1)
     if id is not None:
         query = query.filter(hr_model.HrCategories.id == id)
     if name is not None:
         query = query.filter(hr_model.HrCategories.name.ilike(f"%{name}%"))
+    if hrsphere_id is not None:
+        query = query.filter(hr_model.HrCategories.hrsphere_id==hrsphere_id)
     
     return query.all()

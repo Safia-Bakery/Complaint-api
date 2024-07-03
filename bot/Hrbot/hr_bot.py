@@ -87,7 +87,7 @@ async def manu(update: Update, context: ContextTypes.DEFAULT_TYPE, db=db) -> int
 
     elif input_text == 'Отправить возражение📝':
         context.user_data['commentsphere'] = 2
-        data = crud.get_categories(db=db)
+        data = crud.get_categories(db=db,hrsphere_id=context.user_data['sphere'])
         buttons = transform_list(data, 2, 'name')
 
         buttons.append([text[languagees[context.user_data['lang']]]['back']])
@@ -150,7 +150,7 @@ async def category(update: Update, context: ContextTypes.DEFAULT_TYPE, db=db) ->
             [[text[languagees[context.user_data['lang']]]['back']]], resize_keyboard=True))
         return COMMENTS
     else:
-        data = crud.get_categories(db=db)
+        data = crud.get_categories(db=db, hrsphere_id=context.user_data['sphere'])
         reply_keyboard = transform_list(data, 3, 'name').append([text[languagees[context.user_data['lang']]]['back']])
         await update.message.reply_text('Категория не найдена',
                                         reply_markup=ReplyKeyboardMarkup(reply_keyboard, resize_keyboard=True))
