@@ -253,7 +253,7 @@ def update_complaints(db:Session,form_data:schema.UpdateComplaint,updated_by):
     return query
 
 
-def update_statuses(db:Session,status,id,okk_status):
+def update_statuses(db:Session,id,status:Optional[int]=None,okk_status:Optional[int]=None):
     query = db.query(request_model.Complaints).filter(request_model.Complaints.id==id).first()
     if status is not None:
 
