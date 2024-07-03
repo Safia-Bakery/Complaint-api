@@ -199,7 +199,7 @@ async def update_complaint(
     #    if complaint.status == 0:
     #        send_textmessage_telegram()
     query =crud.update_complaints(db, form_data,updated_by=current_user.name)
-    if form_data.status == 1 and query.subcategory.category_id == 3:
+    if form_data.status == 1 and query.subcategory.category_id == 1:
         crud.update_statuses(db=db,id=query.id,okk_status=1)
     return query
 

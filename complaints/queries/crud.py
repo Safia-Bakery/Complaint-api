@@ -315,7 +315,7 @@ def get_complaints(db:Session,
     if otk:
         query = query.filter(request_model.Complaints.otk_status != 0)
     elif otk_status is not None:
-        query =  query.filter(request_model.Complaints.otk_status==otk_status)
+        query =  query.filter(request_model.Complaints.otk_status == otk_status)
 
    
     return query.order_by(request_model.Complaints.id.desc()).all()
