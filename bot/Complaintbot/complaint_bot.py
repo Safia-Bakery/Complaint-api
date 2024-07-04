@@ -6,6 +6,7 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append('.')
 from service import transform_list,validate_date,validate_only_date
 
+
 from telegram.constants import ParseMode
 import os
 from telegram import ReplyKeyboardMarkup,Update,WebAppInfo,KeyboardButton,InlineKeyboardMarkup,InlineKeyboardButton,ReplyKeyboardRemove
@@ -28,7 +29,7 @@ from queries import crud
 load_dotenv()
 
 db = SessionLocal()
-backend_location = 'app/'
+backend_location = '/var/www/Complaint-api'
 
 BOTTOKEN = os.environ.get('BOT_TOKEN_COMPLAINT')
 persistence = PicklePersistence(filepath='complaint.pickle')
@@ -280,7 +281,7 @@ async def photo(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db):
             getFile = await context.bot.getFile(update.message.photo[-1].file_id)
             file_content = await getFile.download_as_bytearray()
             #files_open = {'files':file_content}
-        with open(f"files/{file_name}",'wb') as f:
+        with open(f"{backend_location}/files/{file_name}",'wb') as f:
             f.write(file_content)
             f.close()
         context.user_data['file_url'] = f"files/{file_name}"
@@ -291,9 +292,9 @@ async def photo(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db):
         return DATEPURCHASE
     else:
         if update.message.text == '⬅️Назад':
-            update.message.reply_text(
+            await update.message.reply_text(
                 'Введите комментарий',
-                reply_markup=ReplyKeyboardMarkup([['⬅️Назад']],resize_keyboard=True)
+                reply_markup=ReplyKeyboardMarkup([['⬅️Назад']], resize_keyboard=True)
             )
             return COMMENT
         await update.message.reply_text(
