@@ -23,7 +23,7 @@ from database import SessionLocal
 from dotenv import load_dotenv
 from sqlalchemy.orm import Session
 import requests
-from bot.Complaintbot.queries import crud
+from queries import crud
 load_dotenv()
 
 db = SessionLocal()
