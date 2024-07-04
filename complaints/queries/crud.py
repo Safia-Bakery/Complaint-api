@@ -195,7 +195,7 @@ def create_complaint(db:Session,product_name:Optional[str]=None,
                                         expense=expense,
                                         is_client=False,
                                         status=0,
-                                        is_internal=1
+                                        is_internal=0
                                      )
     db.add(query)
     db.commit()
