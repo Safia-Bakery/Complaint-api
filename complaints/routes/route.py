@@ -34,6 +34,9 @@ from complaints.models import request_model
 from users.schemas import user_sch
 from complaints.schemas import schema
 
+BOT_TOKEN_HR = os.getenv("BOT_TOKEN_HR")
+BOT_TOKEN_COMPLAINT = os.getenv("BOT_TOKEN_COMPLAINT")
+
 
 complain_router = APIRouter()
 
@@ -187,6 +190,12 @@ async def create_complaint(
                     buffer.write(chunk)
 
             crud.create_file(db=db,complaint_id=create_complaint.id,file_path=file_path)
+
+
+
+    # call_center_id = create_complaint.subcategory.country.callcenter_id
+    # send_textmessage_telegram(bot_token=BOT_TOKEN_COMPLAINT,chat_id=call_center_id,message_text=create_complaint)
+
     return create_complaint
 
 @complain_router.put("/complaints", summary="Update complaint",tags=["Complaint"],response_model=schema.Complaints)
@@ -201,6 +210,19 @@ async def update_complaint(
     query =crud.update_complaints(db, form_data,updated_by=current_user.name)
     if form_data.status == 2 and query.subcategory.category_id == 1:
         crud.update_statuses(db=db,id=query.id,otk_status=1)
+
+    # if status is one send message to channel
+    # if complaint category_id is equal to one thend send message to quality group
+    # if complaint category_id is equal to 2 then send message to service group
+    service_id = query.subcategory.country.service_id
+    quality_id = query.subcategory.country.quality_id
+    # if form_data.status == 1:
+    #
+    #     if query.subcategory.category_id == 1:
+    #         send_textmessage_telegram(bot_token=BOT_TOKEN_COMPLAINT,chat_id=quality_id,message_text=query)
+    #     if query.subcategory.category_id == 2:
+    #         send_textmessage_telegram(bot_token=BOT_TOKEN_COMPLAINT,chat_id=service_id,message_text=query)
+
 
     return query
 

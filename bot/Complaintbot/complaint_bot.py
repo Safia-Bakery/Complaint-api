@@ -4,7 +4,7 @@ from datetime import datetime
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append('.')
-from bot.Complaintbot.service import transform_list,validate_date,validate_only_date
+from service import transform_list,validate_date,validate_only_date
 
 from telegram.constants import ParseMode
 import os
@@ -23,8 +23,6 @@ from database import SessionLocal
 from dotenv import load_dotenv
 from sqlalchemy.orm import Session
 import requests
-import database
-from fastapi import Depends
 from bot.Complaintbot.queries import crud
 load_dotenv()
 
@@ -421,7 +419,6 @@ def main() -> None:
             PHOTO:[MessageHandler(filters.PHOTO | filters.Document.DOCX|filters.Document.IMAGE|filters.Document.PDF|filters.TEXT|filters.Document.MimeType('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'),photo)],
             DATEPURCHASE:[MessageHandler(filters.TEXT,datepurchase)],
             DATERETURN:[MessageHandler(filters.TEXT,datereturn)],
-            DATEPURCHASE:[MessageHandler(filters.TEXT,datepurchase)],
             VERIFY:[MessageHandler(filters.TEXT,verify)],
             BRANCHUPDATE:[MessageHandler(filters.TEXT,branch_update)]
 
