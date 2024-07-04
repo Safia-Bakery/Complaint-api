@@ -5,7 +5,7 @@ import bcrypt
 import pytz
 
 from sqlalchemy.sql import func
-from datetime import datetime,timedelta
+from datetime import datetime, timedelta
 from sqlalchemy import or_, and_, Date, cast
 from uuid import UUID
 from complaints.models import request_model as model
