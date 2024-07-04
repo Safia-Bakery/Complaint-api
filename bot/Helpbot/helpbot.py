@@ -83,14 +83,13 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 async def handle_messages(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     message = update.message
 
-    if message.reply_to_message and message.reply_to_message.forward_from:
-        chat_id = message.reply_to_message.forward_from.id
+    if message.reply_to_message and message.reply_to_message.forward_origin:
+        chat_id = message.reply_to_message.forward_origin.sender_user.id
         text_message = update.message.text
         # Someone replied to a forwarded message
         # Perform your reaction here
         bot = context.bot
-        await bot.send_message(chat_id=chat_id, text=text_message)
-
+        await bot.send_message(chat_id=chat_id,text=text_message)
 
 def main() -> None:
     """Run the bot."""
