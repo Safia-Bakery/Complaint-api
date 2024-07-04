@@ -369,7 +369,7 @@ async def verify(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db):
         
         date_purchase_date = datetime.strptime(context.user_data['datepurchase'], "%d.%m.%Y %H:%M")
         date_return_date = datetime.strptime(context.user_data['datereturn']+" 10:00", "%d.%m.%Y %H:%M")
-        crud.create_complaint(db=db,
+        created_order = crud.create_complaint(db=db,
                               branch_id=context.user_data['branch_id'],
                               subcategory_id=context.user_data['subcategory_id'],
                               name=context.user_data['name'],
@@ -378,7 +378,7 @@ async def verify(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db):
                               date_purchase=date_purchase_date,
                               datereturn=date_return_date)
         await update.message.reply_text(
-            "Ваша заявка принята",
+            "Ваша заявка принята. Id заявки: "+str(created_order.id),
             reply_markup=ReplyKeyboardMarkup([["Оформить жалобу", "Настройки"]],resize_keyboard=True)
         )
         return MANU
