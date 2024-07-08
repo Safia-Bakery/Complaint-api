@@ -194,7 +194,7 @@ async def create_complaint(
     text_to_send = f"""
                         📁{create_complaint.subcategory.category.name}\n
                         🔘Категория: {create_complaint.subcategory.name}\n
-                        🧑‍💼Имя: {create_complaint.user.name}\n
+                        🧑‍💼Имя: {create_complaint.client_name}\n
                         📍Филиал: {create_complaint.branch.name}\n
                         🕘Дата покупки: {create_complaint.date_purchase}\n
                         🚛Дата отправки: {create_complaint.date_return}\n\n
@@ -227,7 +227,7 @@ async def update_complaint(
         text_to_send = f"""
                     📁{query.subcategory.category.name}\n
                     🔘Категория: {query.subcategory.name}\n
-                    🧑‍💼Имя: {query.user.name}\n
+                    🧑‍💼Имя: {query.client_name}\n
                     📍Филиал: {query.branch.name}\n
                     🕘Дата покупки: {query.date_purchase}\n
                     🚛Дата отправки: {query.date_return}\n\n
