@@ -192,12 +192,12 @@ async def create_complaint(
             crud.create_file(db=db,complaint_id=create_complaint.id,file_path=file_path)
 
     text_to_send = f"""
-📁{create_complaint.subcategory.category.name}\n
-🔘Категория: {create_complaint.subcategory.name}\n
-🧑‍💼Имя: {create_complaint.client_name}\n
-📍Филиал: {create_complaint.branch.name}\n
-🕘Дата покупки: {create_complaint.date_purchase}\n
-🚛Дата отправки: {create_complaint.date_return}\n\n
+📁{create_complaint.subcategory.category.name}
+🔘Категория: {create_complaint.subcategory.name}
+🧑‍💼Имя: {create_complaint.client_name}
+📍Филиал: {create_complaint.branch.name}
+🕘Дата покупки: {create_complaint.date_purchase}
+🚛Дата отправки: {create_complaint.date_return}\n
 💬Комментарии: {create_complaint.comment}
             """
     call_center_id = create_complaint.subcategory.country.callcenter_id
