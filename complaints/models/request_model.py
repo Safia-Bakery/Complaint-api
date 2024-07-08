@@ -13,7 +13,6 @@ from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
-
 from hrcomplaint.models.hr_model import Base
 
 timezonetash = pytz.timezone("Asia/Tashkent")

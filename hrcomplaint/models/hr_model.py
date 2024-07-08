@@ -21,8 +21,10 @@ from datetime import datetime
 import pytz
 import uuid
 
-from users.models.user_model import Base
 
+
+#from users.models.user_model import Base
+from database import  Base
 
 timezonetash = pytz.timezone("Asia/Tashkent")
 
