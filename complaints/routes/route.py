@@ -216,12 +216,21 @@ async def update_complaint(
     # if complaint category_id is equal to 2 then send message to service group
     service_id = query.subcategory.country.service_id
     quality_id = query.subcategory.country.quality_id
-    # if form_data.status == 1:
-    #
-    #     if query.subcategory.category_id == 1:
-    #         send_textmessage_telegram(bot_token=BOT_TOKEN_COMPLAINT,chat_id=quality_id,message_text=query)
-    #     if query.subcategory.category_id == 2:
-    #         send_textmessage_telegram(bot_token=BOT_TOKEN_COMPLAINT,chat_id=service_id,message_text=query)
+    if form_data.status == 1:
+        text_to_send = f"""
+                    📁{query.subcategory.category.name}\n
+                    🔘Категория: {query.subcategory.name}\n
+                    🧑‍💼Имя: {query.user.name}\n
+                    📍Филиал: {query.branch.name}\n
+                    🕘Дата покупки: {query.date_purchase}\n
+                    🚛Дата отправки: {query.date_return}\n\n
+                    💬Комментарии: {query.comment}
+        """
+
+        if query.subcategory.category_id == 1:
+            send_textmessage_telegram(bot_token=BOT_TOKEN_COMPLAINT,chat_id=quality_id,message_text=text_to_send)
+        if query.subcategory.category_id == 2:
+            send_textmessage_telegram(bot_token=BOT_TOKEN_COMPLAINT,chat_id=service_id,message_text=text_to_send)
 
 
     return query
