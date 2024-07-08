@@ -215,29 +215,31 @@ async def update_complaint(
     #    if complaint.status == 0:
     #        send_textmessage_telegram()
     query =crud.update_complaints(db, form_data,updated_by=current_user.name)
+
+    service_id = query.subcategory.country.service_id
+    quality_id = query.subcategory.country.quality_id
+    if form_data.status == 1:
+        text_to_send = f"""
+    📁{query.subcategory.category.name}
+    🔘Категория: {query.subcategory.name}
+    🧑‍💼Имя: {query.client_name}
+    📍Филиал: {query.branch.name}
+    🕘Дата покупки: {query.date_purchase}
+    🚛Дата отправки: {query.date_return}\n
+    💬Комментарии: {query.comment}
+            """
+
+        if query.subcategory.category_id == 1:
+            send_textmessage_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=quality_id, message_text=text_to_send)
+        if query.subcategory.category_id == 2:
+            send_textmessage_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=service_id, message_text=text_to_send)
+
     if form_data.status == 2 and query.subcategory.category_id == 1:
         crud.update_statuses(db=db,id=query.id,otk_status=1)
 
     # if status is one send message to channel
     # if complaint category_id is equal to one thend send message to quality group
     # if complaint category_id is equal to 2 then send message to service group
-    service_id = query.subcategory.country.service_id
-    quality_id = query.subcategory.country.quality_id
-    if form_data.status == 1:
-        text_to_send = f"""
-📁{query.subcategory.category.name}
-🔘Категория: {query.subcategory.name}
-🧑‍💼Имя: {query.client_name}
-📍Филиал: {query.branch.name}
-🕘Дата покупки: {query.date_purchase}
-🚛Дата отправки: {query.date_return}\n
-💬Комментарии: {query.comment}
-        """
-
-        if query.subcategory.category_id == 1:
-            send_textmessage_telegram(bot_token=BOT_TOKEN_COMPLAINT,chat_id=quality_id,message_text=text_to_send)
-        if query.subcategory.category_id == 2:
-            send_textmessage_telegram(bot_token=BOT_TOKEN_COMPLAINT,chat_id=service_id,message_text=text_to_send)
 
 
     return query
