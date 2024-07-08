@@ -225,13 +225,13 @@ async def update_complaint(
     quality_id = query.subcategory.country.quality_id
     if form_data.status == 1:
         text_to_send = f"""
-                    📁{query.subcategory.category.name}\n
-                    🔘Категория: {query.subcategory.name}\n
-                    🧑‍💼Имя: {query.client_name}\n
-                    📍Филиал: {query.branch.name}\n
-                    🕘Дата покупки: {query.date_purchase}\n
-                    🚛Дата отправки: {query.date_return}\n\n
-                    💬Комментарии: {query.comment}
+        📁{query.subcategory.category.name}\n
+        🔘Категория: {query.subcategory.name}\n
+        🧑‍💼Имя: {query.client_name}\n
+        📍Филиал: {query.branch.name}\n
+        🕘Дата покупки: {query.date_purchase}\n
+        🚛Дата отправки: {query.date_return}\n\n
+        💬Комментарии: {query.comment}
         """
 
         if query.subcategory.category_id == 1:
