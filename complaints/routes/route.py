@@ -205,8 +205,7 @@ async def create_complaint(
         send_textmessage_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=call_center_id, message_text=text_to_send)
 
     else:
-        for file in create_complaint.file:
-            send_file_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=call_center_id, file_path=file.url,
+        send_file_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=call_center_id, file_path=create_complaint.file[0].url,
                                caption=text_to_send)
 
 
@@ -242,9 +241,8 @@ async def update_complaint(
             if query.subcategory.category_id == 2:
                 send_textmessage_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=service_id, message_text=text_to_send)
         else:
-            for file in query.file:
-                send_file_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=quality_id, file_path=file.url, caption=text_to_send)
-                send_file_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=service_id, file_path=file.url, caption=text_to_send)
+
+            send_file_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=quality_id, file_path=query.file[0].url, caption=text_to_send)
 
     if form_data.status == 2 and query.subcategory.category_id == 1:
         crud.update_statuses(db=db,id=query.id,otk_status=1)
