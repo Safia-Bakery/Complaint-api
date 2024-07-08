@@ -59,7 +59,7 @@ async def messages(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 
 
 async def forwarder(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    """Stores the selected gender and asks for a photo."""
+    """Stores tmhe selected gender and asks for a photo."""
     text_use = str(update.message.text)
     if '/start' != text_use:
         await context.bot.forward_message(chat_id=forwarding_chat_id, from_chat_id=update.message.from_user.id,

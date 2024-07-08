@@ -114,6 +114,8 @@ class Complaints(Base):
     comment = Column(String, nullable=True)
     otk_status = Column(Integer,default=0)
     status = Column(Integer, default=0)
+    is_returned = Column(Boolean, nullable=True)
+    producer_guilty = Column(Boolean, nullable=True)
     is_client = Column(Boolean, default=False)
     corrections = Column(String, nullable=True)
     autonumber = Column(String, nullable=True)

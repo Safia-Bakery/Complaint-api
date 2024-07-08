@@ -245,6 +245,10 @@ def update_complaints(db:Session,form_data:schema.UpdateComplaint,updated_by):
         query.expense = form_data.expense
     if form_data.deny_reason is not None:
         query.deny_reason = form_data.deny_reason
+    if form_data.is_returned is not None:
+        query.is_returned = form_data.is_returned
+    if form_data.producer_guilty is not None:
+        query.producer_guilty = form_data.producer_guilty
     query.updated_by = updated_by   
     
         

@@ -158,6 +158,8 @@ class Complaints(BaseModel):
     comment: Optional[str]=None
     otk_status: Optional[int]=None
     status: Optional[int]=None
+    is_returned: Optional[bool]=None
+    producer_guilty: Optional[bool]=None
     is_client: Optional[bool]=None
     corrections: Optional[str]=None
     autonumber: Optional[str]=None
@@ -172,6 +174,7 @@ class Complaints(BaseModel):
     client: Optional[Clients]=None
     expense: Optional[float]=None
     updated_by:Optional[str]=None
+
     created_at: Optional[datetime]=None
     updated_at: Optional[datetime]=None
     class Config:
@@ -188,6 +191,8 @@ class UpdateComplaint(BaseModel):
     client_gender: Optional[str]=None
     date_purchase: Optional[datetime]=None
     date_return: Optional[datetime]=None
+    is_returned: Optional[bool]=None
+    producer_guilty: Optional[bool]=None
     comment: Optional[str]=None
     otk_status: Optional[int]=None
     deny_reason:Optional[str]=None
