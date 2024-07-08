@@ -21,7 +21,7 @@ from datetime import datetime
 import pytz
 import uuid
 
-from complaints.models.request_model import Base
+from database import Base
 
 
 timezonetash = pytz.timezone("Asia/Tashkent")
