@@ -247,7 +247,7 @@ async def questions(update: Update, context: ContextTypes.DEFAULT_TYPE, db=db) -
 
 async def chat(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     """Stores the selected gender and asks for a photo."""
-    get_comlaint = crud.get_complaints(db=db, id=update.message.from_user.id)
+    get_comlaint = crud.get_complaints(id=update.message.from_user.id)
 
     if update.message.text:
         input_text = update.message.text
