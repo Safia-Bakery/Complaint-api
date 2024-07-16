@@ -28,7 +28,7 @@ import requests
 from queries import crud
 load_dotenv()
 
-db = SessionLocal()
+
 backend_location = '/var/www/Complaint-api'
 
 BOTTOKEN = os.environ.get('BOT_TOKEN_COMPLAINT')
@@ -37,15 +37,15 @@ MANU, BRANCH,SETTINGS,CATEGORY,SUBCATEGORY,NAME,PHONENUMBER,COMMENT,PHOTO,DATEPU
 
 
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db) -> int:
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     user = update.message.from_user
-    client = crud.get_client(db=db,id=user.id)
+    client = crud.get_client(id=user.id)
     if client and client.branch_id:
         context.user_data['branch_id'] = client.branch_id
         await update.message.reply_text(
             f"Manu",reply_markup=ReplyKeyboardMarkup([["Оформить жалобу", "Настройки"]],resize_keyboard=True)
         )
-        current_branch = crud.get_branchs(db=db,id=client.branch_id)
+        current_branch = crud.get_branchs(id=client.branch_id)
         context.user_data['branch_name'] = current_branch.name
         return MANU
     elif not client:
@@ -62,11 +62,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db) -> int
     
     
 
-async def branch(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db) -> int:
+async def branch(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     input_data = update.message.text    
-    branch_name = crud.get_branchs(db=db,password=input_data)
+    branch_name = crud.get_branchs(password=input_data)
     if branch_name:
-        crud.create_client(db=db,name=update.message.from_user.first_name,id = update.message.from_user.id,branch_id=branch_name.id)
+        crud.create_client(name=update.message.from_user.first_name,id = update.message.from_user.id,branch_id=branch_name.id)
         context.user_data['branch_name'] = branch_name.name
         context.user_data['branch_id'] = branch_name.id
         await update.message.reply_text(
@@ -82,11 +82,11 @@ async def branch(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db) -> in
 
 
 
-async def branch_update(update:Update,context:ContextTypes.DEFAULT_TYPE,db=db) -> int:
+async def branch_update(update:Update,context:ContextTypes.DEFAULT_TYPE) -> int:
     input_text = update.message.text
-    branch_name = crud.get_branchs(db=db,password=input_text)
+    branch_name = crud.get_branchs(password=input_text)
     if branch_name: 
-        crud.update_client(db=db,id=update.message.from_user.id,branch_id=branch_name.id)
+        crud.update_client(id=update.message.from_user.id,branch_id=branch_name.id)
         await update.message.reply_text(
             f"Пожалуйста введите пароль который вы получили от системного администратора",
             reply_markup=ReplyKeyboardMarkup([['Branch','⬅️Назад']],resize_keyboard=True)
@@ -101,10 +101,10 @@ async def branch_update(update:Update,context:ContextTypes.DEFAULT_TYPE,db=db) -
 
 
 
-async def manu(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db) -> int:
+async def manu(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     input_data = update.message.text
     if input_data == "Оформить жалобу":
-        categories = crud.get_category(db=db)
+        categories = crud.get_category()
         buttons = transform_list(categories,2,'name')
         reply_markup = ReplyKeyboardMarkup(buttons,resize_keyboard=True)
         await update.message.reply_text(
@@ -126,7 +126,7 @@ async def manu(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db) -> int:
         return MANU
 
 
-async def settings(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db):
+async def settings(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text
     if text == '⬅️Назад':
         await update.message.reply_text(
@@ -150,9 +150,9 @@ async def settings(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db):
     
 
 
-async def category(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db):
+async def category(update: Update, context: ContextTypes.DEFAULT_TYPE):
     input_text = update.message.text
-    category = crud.get_category(db=db,name=input_text)
+    category = crud.get_category(name=input_text)
     if input_text == '⬅️Назад':
         await update.message.reply_text(
             f"Manu",
@@ -172,7 +172,7 @@ async def category(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db):
         return SUBCATEGORY
     else:
 
-        categories = crud.get_category(db=db)
+        categories = crud.get_category()
         buttons = transform_list(categories,2,'name')
         reply_markup = ReplyKeyboardMarkup(buttons,resize_keyboard=True)
         await update.message.reply_text(
@@ -181,12 +181,12 @@ async def category(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db):
         return CATEGORY
     
 
-async def subcategory(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db):
+async def subcategory(update: Update, context: ContextTypes.DEFAULT_TYPE):
     data = update.message.text
-    subcategory = crud.get_subcategory(db=db,name=data,category_id=context.user_data['category_id'])
+    subcategory = crud.get_subcategory(name=data,category_id=context.user_data['category_id'])
     
     if data == '⬅️Назад':
-        categories = crud.get_category(db=db)
+        categories = crud.get_category()
         buttons = transform_list(categories,2,'name')
         reply_markup = ReplyKeyboardMarkup(buttons,resize_keyboard=True)
         await update.message.reply_text(
@@ -202,7 +202,7 @@ async def subcategory(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db):
         )
         return NAME
     else:
-        subcategories = crud.get_subcategory(db=db,category_id=context.user_data['category_id'])
+        subcategories = crud.get_subcategory(category_id=context.user_data['category_id'])
         buttons = transform_list(subcategories,2,'name')
         reply_markup = ReplyKeyboardMarkup(buttons,resize_keyboard=True)
         await update.message.reply_text(
@@ -212,10 +212,10 @@ async def subcategory(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db):
         return SUBCATEGORY
 
 
-async def name(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db):
+async def name(update: Update, context: ContextTypes.DEFAULT_TYPE):
     input_text = update.message.text
     if input_text == '⬅️Назад':
-        subcategories = crud.get_subcategory(db=db,category_id=context.user_data['category_id'])
+        subcategories = crud.get_subcategory(category_id=context.user_data['category_id'])
         buttons = transform_list(subcategories,2,'name')
         reply_markup = ReplyKeyboardMarkup(buttons,resize_keyboard=True)
         await update.message.reply_text(
@@ -233,7 +233,7 @@ async def name(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db):
     
 
 
-async def phonenumber(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db):
+async def phonenumber(update: Update, context: ContextTypes.DEFAULT_TYPE):
     input_text = update.message.text
     if input_text == '⬅️Назад':
         await update.message.reply_text(
@@ -250,7 +250,7 @@ async def phonenumber(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db):
         return COMMENT
     
 
-async def comment(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db):
+async def comment(update: Update, context: ContextTypes.DEFAULT_TYPE):
     input_text = update.message.text
     if input_text == '⬅️Назад':
         await update.message.reply_text(
@@ -267,7 +267,7 @@ async def comment(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db):
         return PHOTO
     
 
-async def photo(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db):
+async def photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.message.photo or update.message.document:
         if update.message.document:
         #context.user_data['file_url']=f"files/{update.message.document.file_name}"
@@ -304,7 +304,7 @@ async def photo(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db):
         return PHOTO
     
 
-async def datepurchase(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db):
+async def datepurchase(update: Update, context: ContextTypes.DEFAULT_TYPE):
     input_text = update.message.text
     if input_text == '⬅️Назад':
         await update.message.reply_text(
@@ -331,7 +331,7 @@ async def datepurchase(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db)
     
 
 
-async def datereturn(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db):
+async def datereturn(update: Update, context: ContextTypes.DEFAULT_TYPE):
     input_text = update.message.text
     if input_text == '⬅️Назад':
         await update.message.reply_text(
@@ -357,7 +357,7 @@ async def datereturn(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db):
             return DATERETURN
     
 
-async def verify(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db):
+async def verify(update: Update, context: ContextTypes.DEFAULT_TYPE):
     input_text = update.message.text
     if input_text == '⬅️Назад':
         await update.message.reply_text(
@@ -369,7 +369,7 @@ async def verify(update: Update, context: ContextTypes.DEFAULT_TYPE,db=db):
         
         date_purchase_date = datetime.strptime(context.user_data['datepurchase'], "%d.%m.%Y %H:%M")
         date_return_date = datetime.strptime(context.user_data['datereturn']+" 10:00", "%d.%m.%Y %H:%M")
-        created_order = crud.create_complaint(db=db,
+        created_order = crud.create_complaint(
                               branch_id=context.user_data['branch_id'],
                               subcategory_id=context.user_data['subcategory_id'],
                               name=context.user_data['name'],
