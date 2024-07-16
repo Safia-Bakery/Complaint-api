@@ -106,7 +106,7 @@ def get_complaints(id: Optional[int] = None):
         return query.order_by(hr_model.Hrcomplaints.created_at.desc()).all()
 
 
-def get_categories(db:Session,id: Optional[int] = None,name: Optional[str] = None,hrsphere_id: Optional[int] = None):
+def get_categories(id: Optional[int] = None,name: Optional[str] = None,hrsphere_id: Optional[int] = None):
     with SessionLocal() as db:
         query = db.query(hr_model.HrCategories).filter(hr_model.HrCategories.status==1)
         if id is not None:
