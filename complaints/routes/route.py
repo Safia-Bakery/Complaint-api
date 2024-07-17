@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+from typing import TypeVar
 from sqlalchemy.orm import Session
 from fastapi import Depends, HTTPException, status,Form,UploadFile
 from fastapi_pagination import paginate, Page, add_pagination
@@ -20,6 +21,7 @@ from services import (
     send_textmessage_telegram
 
 )
+from fastapi_pagination.customization import CustomizedPage,UseParamsFields
 from typing import Optional
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Union, Any
@@ -33,9 +35,16 @@ from complaints.queries import crud
 from complaints.models import request_model
 from users.schemas import user_sch
 from complaints.schemas import schema
+T = TypeVar("T")
 
 BOT_TOKEN_HR = os.getenv("BOT_TOKEN_HR")
 BOT_TOKEN_COMPLAINT = os.getenv("BOT_TOKEN_COMPLAINT")
+
+custompage = CustomizedPage[
+    Page[T],
+    UseParamsFields(size=1000)
+]
+
 
 
 complain_router = APIRouter()
@@ -140,7 +149,7 @@ async def update_branch(
 
 
 
-@complain_router.get("/branches", summary="Get branches",tags=["Complaint"],response_model=Page[schema.Branchs])
+@complain_router.get("/branches", summary="Get branches",tags=["Complaint"],response_model=custompage[schema.Branchs])
 async def get_branch(
     id: Optional[int] = None,
     name: Optional[str] = None,
