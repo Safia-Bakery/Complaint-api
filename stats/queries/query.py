@@ -65,7 +65,7 @@ def get_complaint_service_stats(db:Session):
     ).count()
     change= last_30_days - last_60_and_30_days
     if last_60_and_30_days == 0:
-        percentage_change = float('inf') if last_30_days > 0 else 0
+        percentage_change = 0
 
     else:
         percentage_change = (change/last_60_and_30_days)*100
@@ -95,7 +95,7 @@ def get_complaint_quality_stats(db:Session):
                            )
     change= last_30_days - last_60_and_30_days
     if last_60_and_30_days == 0:
-        percentage_change = float('inf') if last_30_days > 0 else 0
+        percentage_change = 0
 
     else:
         percentage_change = (change/last_60_and_30_days)*100
