@@ -199,4 +199,50 @@ def last_6_monthly_complaint_stats(db: Session):
 
 
 
+def get_hr_complaint_categories_stats(db: Session, from_date, to_date,sphere_id):
+    results = (db.query(hr_model.HrCategories.name, func.count(hr_model.Hrcomplaints.id))
+               .join(hr_model.HrCategories, hr_model.Hrcomplaints.category_id == hr_model.HrCategories.id)
+               .filter(hr_model.Hrcomplaints.created_at >= from_date)
+               .filter(hr_model.Hrcomplaints.created_at <= to_date)
+                .filter(hr_model.Hrcomplaints.hrtype==2)
+                .filter(hr_model.Hrcomplaints.sphere_id==sphere_id)
+               .group_by(hr_model.Hrcomplaints.category_id, hr_model.HrCategories.name)
+               .all())
+
+    stats = {category_name: count for category_name, count in results}
+    return stats
+
+
+def get_hr_complaint_total_number_stats(db:Session,from_date,to_date,sphere_id):
+    results = (db.query(func.count(hr_model.Hrcomplaints.id))
+               .filter(hr_model.Hrcomplaints.created_at >= from_date)
+               .filter(hr_model.Hrcomplaints.created_at <= to_date)
+               .filter(hr_model.Hrcomplaints.hrtype==2)
+                .filter(hr_model.Hrcomplaints.sphere_id==sphere_id)
+               .all())
+
+    return results[0][0]
+
+
+def get_hr_question_total_number_stats(db:Session,from_date,to_date,sphere_id):
+    results = (db.query(func.count(hr_model.Hrcomplaints.id))
+               .filter(hr_model.Hrcomplaints.created_at >= from_date)
+               .filter(hr_model.Hrcomplaints.created_at <= to_date)
+               .filter(hr_model.Hrcomplaints.hrtype == 1)
+                .filter(hr_model.Hrcomplaints.sphere_id==sphere_id)
+               .all())
+
+    return results[0][0]
+
+
+def get_hr_advice_total_number_stats(db:Session,from_date,to_date,sphere_id):
+    results = (db.query(func.count(hr_model.Hrcomplaints.id))
+               .filter(hr_model.Hrcomplaints.created_at >= from_date)
+               .filter(hr_model.Hrcomplaints.created_at <= to_date)
+               .filter(hr_model.Hrcomplaints.hrtype == 3)
+                .filter(hr_model.Hrcomplaints.sphere_id==sphere_id)
+               .all())
+
+    return results[0][0]
+
 

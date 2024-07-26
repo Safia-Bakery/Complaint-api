@@ -72,10 +72,18 @@ async def create_stats(
 async def create_stats(
         from_date:date,
         to_date:date,
+        sphere_id:int,
         db: Session = Depends(get_db),
         current_user: user_sch.User = Depends(get_current_user)):
 
     general_stats = {}
+    general_stats["with_categories"] = query.get_hr_complaint_categories_stats(db,from_date,to_date,sphere_id)
+    general_stats["complaint_count"] = query.get_hr_complaint_total_number_stats(db,from_date,to_date,sphere_id)
+    general_stats["question_count"] = query.get_hr_question_total_number_stats(db,from_date,to_date,sphere_id)
+    general_stats["advice_count"] = query.get_hr_advice_total_number_stats(db,from_date,to_date,sphere_id)
+
+
+
 
     return general_stats
 
