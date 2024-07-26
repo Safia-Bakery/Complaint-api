@@ -110,8 +110,35 @@ def get_complaint_quality_stats(db:Session):
     }
 
 
+def get_qr_client_stats(db:Session):
+    last_30_days = (db.query(request_model.Complaints).
+                    join(request_model.Subcategories).
+                    filter(request_model.Complaints.is_client==True).
+                    filter(request_model.Complaints.created_at >=
+                           datetime.now(tz=timezone_tash) - timedelta(days=30)).count()
+                    )
 
+    last_60_and_30_days = (db.query(request_model.Complaints).
+                           join(request_model.Subcategories).
+                           filter(request_model.Complaints.is_client==True).
+                           filter(and_(
+        request_model.Complaints.created_at >= datetime.now(tz=timezone_tash) - timedelta(days=60),
+        request_model.Complaints.created_at < datetime.now(tz=timezone_tash) - timedelta(days=30)
+    )).count()
+                           )
+    change = last_30_days - last_60_and_30_days
+    if last_60_and_30_days == 0:
+        percentage_change = 0
 
+    else:
+        percentage_change = (change / last_60_and_30_days) * 100
+
+    return {
+        "last_30_days": last_30_days,
+        "last_60_and_30_days": last_60_and_30_days,
+        "change": change,
+        "percentage_change": percentage_change
+    }
 
 
 def get_subcategories_stats(db: Session, from_date, to_date):
@@ -123,4 +150,13 @@ def get_subcategories_stats(db: Session, from_date, to_date):
                  .all())
 
     stats = {subcategory_name: count for subcategory_name, count in results}
+    return stats
+
+
+def last_6_monthly_complaint_stats(db:Session):
+    results = (db.query(func.extract('month',request_model.Complaints.created_at),func.count(request_model.Complaints.id))
+               .filter(request_model.Complaints.created_at >= datetime.now(tz=timezone_tash) - timedelta(days=180))
+               .group_by(func.extract('month',request_model.Complaints.created_at))
+               .all())
+    stats = {month: count for month, count in results}
     return stats

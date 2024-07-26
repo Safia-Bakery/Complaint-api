@@ -61,7 +61,9 @@ async def create_stats(
     general_stats["workers_comparison"] = query.get_workers_comparison_stats(db)
     general_stats["complaint_service"] = query.get_complaint_service_stats(db)
     general_stats["complaint_quality"] = query.get_complaint_quality_stats(db)
+    general_stats['qrcode_stats'] = query.get_qr_client_stats(db)
     general_stats['with_categories'] = query.get_subcategories_stats(db,from_date,to_date)
+    general_stats['monthly_stats'] = query.last_6_monthly_complaint_stats(db)
     return general_stats
 
 
