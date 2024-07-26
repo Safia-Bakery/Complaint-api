@@ -155,24 +155,40 @@ def get_subcategories_stats(db: Session, from_date, to_date):
 
 
 def last_6_monthly_complaint_stats(db: Session):
+    now = datetime.now(tz=timezone_tash)
+    six_months_ago = now - timedelta(days=180)
+
+    # Initialize a dictionary with the last 6 months' names set to 0
+    stats_service = {month_name[(now.month - i - 1) % 12 + 1]: 0 for i in range(6)}
+    stats_quality = {month_name[(now.month - i - 1) % 12 + 1]: 0 for i in range(6)}
+
+
+
+
+    # Query the database for the last 6 months of complaints
+    # Query the database for the last 6 months of complaints
     results = (db.query(func.extract('month', request_model.Complaints.created_at).label('month'),
                         func.count(request_model.Complaints.id))
-               .filter(request_model.Complaints.created_at >= datetime.now(tz=timezone_tash) - timedelta(days=180))
+               .filter(request_model.Complaints.created_at >= six_months_ago)
                .join(request_model.Subcategories)
-                .filter(request_model.Subcategories.category_id == 3)
+               .filter(request_model.Subcategories.category_id == 3)
                .group_by('month')
                .all())
-    stats_service = {month_name[int(month)]: count for month, count in results}
+
+    # Update the dictionary with the actual counts
+    for month, count in results:
+        stats_service[month_name[int(month)]] = count
 
     results = (db.query(func.extract('month', request_model.Complaints.created_at).label('month'),
                         func.count(request_model.Complaints.id))
-               .filter(request_model.Complaints.created_at >= datetime.now(tz=timezone_tash) - timedelta(days=180))
-                  .join(request_model.Subcategories)
-                 .filter(request_model.Subcategories.category_id == 1)
+               .filter(request_model.Complaints.created_at >= six_months_ago)
+               .join(request_model.Subcategories)
+               .filter(request_model.Subcategories.category_id == 1)
                .group_by('month')
                .all())
 
-    stats_quality = {month_name[int(month)]: count for month, count in results}
+    for month, count in results:
+        stats_quality[month_name[int(month)]] = count
 
 
     stats = {
