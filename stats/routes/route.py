@@ -51,7 +51,7 @@ stats_router = APIRouter()
 
 
 
-@stats_router.post("/stats", summary="Create stats", )
+@stats_router.get("/stats", summary="Create stats", )
 async def create_stats(
         from_date:date,
         to_date:date,
