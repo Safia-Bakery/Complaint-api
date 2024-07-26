@@ -67,3 +67,16 @@ async def create_stats(
     return general_stats
 
 
+
+@stats_router.get("/stats/hr", summary="Create stats", )
+async def create_stats(
+        from_date:date,
+        to_date:date,
+        db: Session = Depends(get_db),
+        current_user: user_sch.User = Depends(get_current_user)):
+
+    general_stats = {}
+
+    return general_stats
+
+

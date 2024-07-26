@@ -158,8 +158,29 @@ def last_6_monthly_complaint_stats(db: Session):
     results = (db.query(func.extract('month', request_model.Complaints.created_at).label('month'),
                         func.count(request_model.Complaints.id))
                .filter(request_model.Complaints.created_at >= datetime.now(tz=timezone_tash) - timedelta(days=180))
+               .join(request_model.Subcategories)
+                .filter(request_model.Subcategories.category_id == 3)
+               .group_by('month')
+               .all())
+    stats_service = {month_name[int(month)]: count for month, count in results}
+
+    results = (db.query(func.extract('month', request_model.Complaints.created_at).label('month'),
+                        func.count(request_model.Complaints.id))
+               .filter(request_model.Complaints.created_at >= datetime.now(tz=timezone_tash) - timedelta(days=180))
+                  .join(request_model.Subcategories)
+                 .filter(request_model.Subcategories.category_id == 1)
                .group_by('month')
                .all())
 
-    stats = {month_name[int(month)]: count for month, count in results}
+    stats_quality = {month_name[int(month)]: count for month, count in results}
+
+
+    stats = {
+        "service": stats_service,
+        "quality": stats_quality
+    }
     return stats
+
+
+
+
