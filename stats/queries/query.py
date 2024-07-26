@@ -74,7 +74,7 @@ def get_complaint_service_stats(db:Session):
         "last_30_days": last_30_days,
         "last_60_and_30_days": last_60_and_30_days,
         "change": change,
-        "percentage_change": percentage_change
+        "percentage_change": str(percentage_change)
     }
 
 
