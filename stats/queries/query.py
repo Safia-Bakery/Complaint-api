@@ -74,19 +74,21 @@ def get_complaint_service_stats(db:Session):
         "last_30_days": last_30_days,
         "last_60_and_30_days": last_60_and_30_days,
         "change": change,
-        "percentage_change": str(percentage_change)
+        "percentage_change": percentage_change
     }
 
 
 def get_complaint_quality_stats(db:Session):
 
     last_30_days =(db.query(request_model.Complaints).
-                    filter(request_model.Subcategories.category_id==1).
+                   join(request_model.Subcategories).
+                   filter(request_model.Subcategories.category_id==1).
                     filter(request_model.Complaints.created_at >=
                            datetime.now(tz=timezone_tash) - timedelta(days=30)).count()
                    )
 
     last_60_and_30_days = (db.query(request_model.Complaints).
+                    join(request_model.Subcategories).
                     filter(request_model.Subcategories.category_id==1).
                     filter(and_(
         request_model.Complaints.created_at >= datetime.now(tz=timezone_tash) - timedelta(days=60),
