@@ -49,12 +49,14 @@ def get_workers_comparison_stats(db:Session):
 def get_complaint_service_stats(db:Session):
 
     last_30_days =(db.query(request_model.Complaints).
+                    join(request_model.Subcategories).
                     filter(request_model.Subcategories.category_id==3).
                     filter(request_model.Complaints.created_at >=
                            datetime.now(tz=timezone_tash) - timedelta(days=30))
                    ).count()
 
     last_60_and_30_days = (db.query(request_model.Complaints).
+                    join(request_model.Subcategories).
                     filter(request_model.Subcategories.category_id==3).
                     filter(and_(
         request_model.Complaints.created_at >= datetime.now(tz=timezone_tash) - timedelta(days=60),
