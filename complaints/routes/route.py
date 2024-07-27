@@ -204,7 +204,7 @@ async def create_complaint(
 📁{create_complaint.subcategory.category.name}
 🔘Категория: {create_complaint.subcategory.name}
 🧑‍💼Имя: {create_complaint.client_name}
-📞Номер: {create_complaint.client_number}
+📞Номер: +{create_complaint.client_number}
 📍Филиал: {create_complaint.branch.name}
 🕘Дата покупки: {create_complaint.date_purchase}
 🚛Дата отправки: {create_complaint.date_return}\n
