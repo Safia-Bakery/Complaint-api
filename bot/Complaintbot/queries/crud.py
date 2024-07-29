@@ -91,15 +91,20 @@ def create_complaint(branch_id,subcategory_id,name, phone_number,comment,date_pu
 
 
 def create_file(complaint_id,file_name):
-    with SessionLocal() as db:
-        query = model.Files(
-            complaint_id=complaint_id,
-            url=file_name
-        )
-        db.add(query)
-        db.commit()
-        db.refresh(query)
-        return query
+    db = SessionLocal()
+    query = model.Files(
+        complaint_id=complaint_id,
+        url=file_name
+    )
+    db.add(query)
+    db.commit()
+    db.refresh(query)
+    return query
+
+
+
+
+
 
 
 

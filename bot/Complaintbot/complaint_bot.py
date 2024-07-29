@@ -4,7 +4,7 @@ from datetime import datetime
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append('.')
-from service import transform_list,validate_date,validate_only_date
+from service import transform_list,validate_date,validate_only_date,send_file_telegram
 
 
 from telegram.constants import ParseMode
@@ -369,7 +369,7 @@ async def verify(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         date_purchase_date = datetime.strptime(context.user_data['datepurchase'], "%d.%m.%Y %H:%M")
         date_return_date = datetime.strptime(context.user_data['datereturn']+" 10:00", "%d.%m.%Y %H:%M")
-        created_order = crud.create_complaint(
+        create_complaint = crud.create_complaint(
                               branch_id=context.user_data['branch_id'],
                               subcategory_id=context.user_data['subcategory_id'],
                               name=context.user_data['name'],
@@ -378,9 +378,24 @@ async def verify(update: Update, context: ContextTypes.DEFAULT_TYPE):
                               date_purchase=date_purchase_date,
                               datereturn=date_return_date)
 
-        create_file = crud.create_file(complaint_id=created_order.id,file_name=context.user_data['file_url'])
+        text_to_send = f"""
+        📁{create_complaint.subcategory.category.name}
+        🔘Категория: {create_complaint.subcategory.name}
+        🧑‍💼Имя: {create_complaint.client_name}
+        📞Номер: +{create_complaint.client_number}
+        📍Филиал: {create_complaint.branch.name}
+        🕘Дата покупки: {create_complaint.date_purchase}
+        🚛Дата отправки: {create_complaint.date_return}\n
+        💬Комментарии: {create_complaint.comment}
+                    """
+        call_center_id = create_complaint.subcategory.country.callcenter_id
+
+        #send to call center group
+        send_file_telegram(BOTTOKEN,call_center_id,text_to_send,backend_location+"/"+context.user_data['file_url'])
+
+        create_file = crud.create_file(complaint_id=create_complaint.id,file_name=context.user_data['file_url'])
         await update.message.reply_text(
-            "Ваша заявка принята. Id заявки: "+str(created_order.id),
+            "Ваша заявка принята. Id заявки: "+str(create_complaint.id),
             reply_markup=ReplyKeyboardMarkup([["Оформить жалобу", "Настройки"]],resize_keyboard=True)
         )
         return MANU
