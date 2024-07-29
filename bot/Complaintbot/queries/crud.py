@@ -71,35 +71,35 @@ def get_subcategory(name: Optional[str] = None,category_id: Optional[int] = None
 
 
 def create_complaint(branch_id,subcategory_id,name, phone_number,comment,date_purchase,datereturn):
-    with SessionLocal() as db:
-
-        query = model.Complaints(
-            branch_id=branch_id,
-            subcategory_id=subcategory_id,
-            client_name=name,
-            client_number=phone_number,
-            comment=comment,
-            date_purchase=date_purchase,
-            date_return=datereturn,
-            is_client=False,
-            is_internal=1
-        )
-        db.add(query)
-        db.commit()
-        db.refresh(query)
-        return query
-
-
-def create_file(complaint_id,file_name):
     db = SessionLocal()
-    query = model.Files(
-        complaint_id=complaint_id,
-        url=file_name
+
+    query = model.Complaints(
+        branch_id=branch_id,
+        subcategory_id=subcategory_id,
+        client_name=name,
+        client_number=phone_number,
+        comment=comment,
+        date_purchase=date_purchase,
+        date_return=datereturn,
+        is_client=False,
+        is_internal=1
     )
     db.add(query)
     db.commit()
     db.refresh(query)
     return query
+
+
+def create_file(complaint_id,file_name):
+    with SessionLocal() as db:
+        query = model.Files(
+            complaint_id=complaint_id,
+            url=file_name
+        )
+        db.add(query)
+        db.commit()
+        db.refresh(query)
+        return query
 
 
 
