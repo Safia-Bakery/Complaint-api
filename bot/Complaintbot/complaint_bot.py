@@ -389,9 +389,9 @@ async def verify(update: Update, context: ContextTypes.DEFAULT_TYPE):
         💬Комментарии: {create_complaint.comment}
                     """
         call_center_id = create_complaint.subcategory.country.callcenter_id
-
+        file_url = backend_location + "/" + context.user_data['file_url']
         #send to call center group
-        send_file_telegram(BOTTOKEN,call_center_id,text_to_send,backend_location+"/"+context.user_data['file_url'])
+        send_file_telegram(BOTTOKEN,call_center_id,text_to_send,backend_location)
 
         create_file = crud.create_file(complaint_id=create_complaint.id,file_name=context.user_data['file_url'])
         await update.message.reply_text(
