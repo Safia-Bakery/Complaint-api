@@ -377,6 +377,8 @@ async def verify(update: Update, context: ContextTypes.DEFAULT_TYPE):
                               comment=context.user_data['comment'],
                               date_purchase=date_purchase_date,
                               datereturn=date_return_date)
+
+        create_file = crud.create_file(complaint_id=created_order.id,file_name=context.user_data['file_url'])
         await update.message.reply_text(
             "Ваша заявка принята. Id заявки: "+str(created_order.id),
             reply_markup=ReplyKeyboardMarkup([["Оформить жалобу", "Настройки"]],resize_keyboard=True)
