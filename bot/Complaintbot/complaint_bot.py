@@ -379,15 +379,15 @@ async def verify(update: Update, context: ContextTypes.DEFAULT_TYPE):
                               datereturn=date_return_date)
 
         text_to_send = f"""
-        📁{create_complaint.subcategory.category.name}
-        🔘Категория: {create_complaint.subcategory.name}
-        🧑‍💼Имя: {create_complaint.client_name}
-        📞Номер: +{create_complaint.client_number}
-        📍Филиал: {create_complaint.branch.name}
-        🕘Дата покупки: {create_complaint.date_purchase}
-        🚛Дата отправки: {create_complaint.date_return}\n
-        💬Комментарии: {create_complaint.comment}
-                    """
+📁{create_complaint.subcategory.category.name}
+🔘Категория: {create_complaint.subcategory.name}
+🧑‍💼Имя: {create_complaint.client_name}
+📞Номер: +{create_complaint.client_number}
+📍Филиал: {create_complaint.branch.name}
+🕘Дата покупки: {create_complaint.date_purchase}
+🚛Дата отправки: {create_complaint.date_return}\n
+💬Комментарии: {create_complaint.comment}
+"""
         call_center_id = create_complaint.subcategory.country.callcenter_id
         file_url = backend_location + "/" + context.user_data['file_url']
         #send to call center group
