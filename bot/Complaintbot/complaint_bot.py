@@ -391,7 +391,7 @@ async def verify(update: Update, context: ContextTypes.DEFAULT_TYPE):
         call_center_id = create_complaint.subcategory.country.callcenter_id
         file_url = backend_location + "/" + context.user_data['file_url']
         #send to call center group
-        send_file_telegram(BOTTOKEN,call_center_id,text_to_send,backend_location)
+        send_file_telegram(bot_token=BOTTOKEN,chat_id=call_center_id,file_path=file_url,caption=text_to_send)
 
         create_file = crud.create_file(complaint_id=create_complaint.id,file_name=context.user_data['file_url'])
         await update.message.reply_text(
