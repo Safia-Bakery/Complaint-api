@@ -255,7 +255,7 @@ async def update_complaint(
 
                 send_file_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=quality_id, file_path=query.file[0].url, caption=text_to_send)
             if query.subcategory.category_id == 2:
-                send_file_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=service_id, file_path=query.file[0].url, caption
+                send_file_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=service_id, file_path=query.file[0].url, caption=text_to_send)
 
     if form_data.status == 2 and query.subcategory.category_id == 1:
         crud.update_statuses(db=db,id=query.id,otk_status=1)
