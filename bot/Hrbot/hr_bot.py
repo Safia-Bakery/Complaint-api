@@ -26,7 +26,7 @@ from bot.Hrbot.bot_services import transform_list
 languagees = {'1': 'uz', '2': 'ru'}
 
 load_dotenv()
-manu_button = [['Задать вопрос❔', 'Отправить возражение📝'], ['Часто задаваемые вопосы❓', 'Отправить предложение🧠'],
+manu_button = [['Задать вопрос❔', 'Отправить жалобу'], ['Часто задаваемые вопосы❓', 'Отправить предложение🧠'],
                ['Настройки⚙️', 'О ботеℹ️'], ['Chat']]
 
 backend_location = 'app/'
@@ -84,7 +84,7 @@ async def manu(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
             [[text[languagees[context.user_data['lang']]]['back']]], resize_keyboard=True))
         return COMMENTS
 
-    elif input_text == 'Отправить возражение📝':
+    elif input_text == 'Отправить жалобу':
         context.user_data['commentsphere'] = 2
         data = crud.get_categories(hrsphere_id=context.user_data['sphere'])
         buttons = transform_list(data, 2, 'name')
