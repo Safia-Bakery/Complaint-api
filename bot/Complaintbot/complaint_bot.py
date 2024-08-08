@@ -416,18 +416,6 @@ async def verify(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return MANU
     
 
-    
-
-async def handle_messages(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    message = update.message
-
-    if message.reply_to_message and message.reply_to_message.forward_from:
-        chat_id = message.reply_to_message.forward_from.id
-        text_message = update.message.text
-        # Someone replied to a forwarded message
-        # Perform your reaction here
-        bot = context.bot
-
 
 
 
@@ -464,9 +452,7 @@ def main() -> None:
         
 
     )
-    messagehandle = MessageHandler(filters.ALL,handle_messages)
     application.add_handler(conv_handler)
-    application.add_handler(messagehandle)
 
 
 
