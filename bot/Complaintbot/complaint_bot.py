@@ -450,7 +450,7 @@ def main() -> None:
             NAME:[MessageHandler(filters.TEXT,name)],
             PHONENUMBER:[MessageHandler(filters.TEXT,phonenumber)],
             COMMENT:[MessageHandler(filters.TEXT,comment)],
-            PHOTO:[MessageHandler(filters.PHOTO | filters.Document.DOCX|filters.Document.IMAGE|filters.Document.PDF|filters.TEXT|filters.Document.MimeType('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'),photo)],
+            PHOTO:[MessageHandler(filters.ALL,photo)],
             DATEPURCHASE:[MessageHandler(filters.TEXT,datepurchase)],
             DATERETURN:[MessageHandler(filters.TEXT,datereturn)],
             VERIFY:[MessageHandler(filters.TEXT,verify)],
