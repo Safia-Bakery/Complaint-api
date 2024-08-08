@@ -402,7 +402,7 @@ async def verify(update: Update, context: ContextTypes.DEFAULT_TYPE):
 💬Комментарии: {create_complaint.comment}
 """
         call_center_id = create_complaint.subcategory.country.callcenter_id
-        file_url = backend_location + "/" + context.user_data['file_url']
+        file_url = backend_location + "/" + context.user_data['file_url'][0]
         #send to call center group
         send_file_telegram(bot_token=BOTTOKEN,chat_id=call_center_id,file_path=file_url,caption=text_to_send)
         for i in context.user_data['file_url']:
