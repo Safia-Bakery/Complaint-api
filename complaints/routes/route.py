@@ -258,7 +258,9 @@ async def update_complaint(
                 message_sended = send_file_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=quality_id,
                                                     file_path=None, caption=text_to_send)
                 print(message_sended)
+
                 for i in query.file:
+                    print(i)
                     file_sended = send_file_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=quality_id, file_path=i["url"], caption=None, reply_to_message_id=message_sended['result']['message_id'])
                     print(file_sended)
             else:
@@ -266,6 +268,7 @@ async def update_complaint(
                                                     file_path=None, caption=text_to_send)
                 print(message_sended)
                 for i in query.file:
+                    print(i)
                     file_sended = send_file_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=service_id, file_path=i["url"], caption=None,reply_to_message_id=message_sended['result']['message_id'])
                     print(file_sended)
 
