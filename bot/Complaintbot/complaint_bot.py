@@ -270,6 +270,7 @@ async def comment(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.message.photo or update.message.document:
+
         if update.message.document:
         #context.user_data['file_url']=f"files/{update.message.document.file_name}"
             file_id = update.message.document.file_id
@@ -298,12 +299,9 @@ async def photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
             # getFile = await context.bot.getFile(update.message.photo[-1].file_id)
             # file_content = await getFile.download_as_bytearray()
             # files_open = {'files':file_content}
-            return PHOTO
 
-        await update.message.reply_text(
-            'Дата покупки\nФормат: 23.04.2024 15:00',
-            reply_markup=ReplyKeyboardMarkup([['⬅️Назад']],resize_keyboard=True)
-        )
+
+
         return DATEPURCHASE
     else:
         if update.message.text == '⬅️Назад':
@@ -320,6 +318,10 @@ async def photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
 
 async def datepurchase(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text(
+        'Дата покупки\nФормат: 23.04.2024 15:00',
+        reply_markup=ReplyKeyboardMarkup([['⬅️Назад']], resize_keyboard=True)
+    )
     input_text = update.message.text
     if input_text == '⬅️Назад':
         await update.message.reply_text(
