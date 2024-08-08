@@ -304,7 +304,6 @@ async def handle_messages(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
         # Someone replied to a forwarded message
         # Perform your reaction here
         bot = context.bot
-        print(text_message + "from hadle messages function")
 
 
 def main() -> None:
