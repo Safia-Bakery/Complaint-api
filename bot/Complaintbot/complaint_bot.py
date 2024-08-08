@@ -289,6 +289,7 @@ async def photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
             # Get the highest resolution photo
             photo_file = await photos[-1].get_file()
             photo_path = os.path.join(f"{backend_location}/files", f'{chat_id}_{photo_file.file_id}.jpg')
+            print(photo_path)
             await photo_file.download_to_drive(photo_path)
             context.user_data['file_url'].append('files/'+f'{chat_id}_{photo_file.file_id}.jpg')
 
@@ -296,7 +297,7 @@ async def photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
             # getFile = await context.bot.getFile(update.message.photo[-1].file_id)
             # file_content = await getFile.download_as_bytearray()
             # files_open = {'files':file_content}
-        print(context.user_data['file_url'])
+
         await update.message.reply_text(
             'Дата покупки\nФормат: 23.04.2024 15:00',
             reply_markup=ReplyKeyboardMarkup([['⬅️Назад']],resize_keyboard=True)
