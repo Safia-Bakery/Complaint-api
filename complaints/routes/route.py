@@ -251,11 +251,19 @@ async def update_complaint(
             if query.subcategory.category_id == 2:
                 send_textmessage_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=service_id, message_text=text_to_send)
         else:
-            if query.subcategory.category_id == 1:
 
-                send_file_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=quality_id, file_path=query.file[0].url, caption=text_to_send)
-            if query.subcategory.category_id == 2:
-                send_file_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=service_id, file_path=query.file[0].url, caption=text_to_send)
+
+
+            if query.subcategory.category_id == 1:
+                message_sended = send_file_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=quality_id,
+                                                    file_path=None, caption=text_to_send)
+                for i in query.file[0].url:
+                    send_file_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=quality_id, file_path=i, caption=text_to_send, reply_to_message_id=message_sended['result']['message_id'])
+            else:
+                message_sended = send_file_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=service_id,
+                                                    file_path=None, caption=text_to_send)
+                for i in query.file[0].url:
+                    send_file_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=service_id, file_path=i, caption=text_to_send,reply_to_message_id=message_sended['result']['message_id'])
 
     if form_data.status == 2 and query.subcategory.category_id == 1:
         crud.update_statuses(db=db,id=query.id,otk_status=1)

@@ -414,7 +414,6 @@ async def verify(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         context.user_data['file_url'] = None
 
-
         await update.message.reply_text(
             "Ваша заявка принята. Id заявки: "+str(create_complaint.id),
             reply_markup=ReplyKeyboardMarkup([["Оформить жалобу", "Настройки"]],resize_keyboard=True)
