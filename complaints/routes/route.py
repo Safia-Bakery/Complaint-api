@@ -218,6 +218,13 @@ async def create_complaint(
         send_file_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=call_center_id, file_path=create_complaint.file[0].url,
                                caption=text_to_send)
 
+        message_sended = send_file_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=call_center_id,
+                                            file_path=None, caption=text_to_send)
+
+        for i in create_complaint.file:
+            file_sended = send_file_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=call_center_id, file_path=i.url,
+                                             caption=None, reply_to_message_id=message_sended['result']['message_id'])
+
 
     return create_complaint
 
