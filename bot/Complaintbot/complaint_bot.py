@@ -264,11 +264,11 @@ async def comment(update: Update, context: ContextTypes.DEFAULT_TYPE):
             'Прикрепите фото',
             reply_markup=ReplyKeyboardMarkup([['⬅️Назад']],resize_keyboard=True)
         )
+        context.user_data['file_url'] = []
         return PHOTO
     
 
 async def photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    context.user_data['file_url'] = []
     if update.message.photo or update.message.document:
         if update.message.document:
         #context.user_data['file_url']=f"files/{update.message.document.file_name}"
@@ -279,7 +279,6 @@ async def photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
             with open(f"{backend_location}/files/{file_name}",'wb') as f:
                 f.write(file_content)
                 f.close()
-
             context.user_data['file_url'].append('files/'+file_name)
 
 
@@ -297,7 +296,7 @@ async def photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
             # getFile = await context.bot.getFile(update.message.photo[-1].file_id)
             # file_content = await getFile.download_as_bytearray()
             # files_open = {'files':file_content}
-
+        print(context.user_data['file_url'])
         await update.message.reply_text(
             'Дата покупки\nФормат: 23.04.2024 15:00',
             reply_markup=ReplyKeyboardMarkup([['⬅️Назад']],resize_keyboard=True)
