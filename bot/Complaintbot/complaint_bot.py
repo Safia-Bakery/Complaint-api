@@ -262,7 +262,7 @@ async def comment(update: Update, context: ContextTypes.DEFAULT_TYPE):
         context.user_data['comment'] = input_text
         await update.message.reply_text(
             'Прикрепите фото',
-            reply_markup=ReplyKeyboardMarkup([['⬅️Назад']],resize_keyboard=True)
+            reply_markup=ReplyKeyboardMarkup([['⬅️Назад', "➡️Далее"]],resize_keyboard=True)
         )
         context.user_data['file_url'] = []
         return PHOTO
@@ -270,58 +270,57 @@ async def comment(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.message.photo or update.message.document:
-
         if update.message.document:
         #context.user_data['file_url']=f"files/{update.message.document.file_name}"
             file_id = update.message.document.file_id
             file_name = update.message.document.file_name
             new_file = await context.bot.get_file(file_id=file_id)
             file_content = await new_file.download_as_bytearray()
-            with open(f"{backend_location}/files/{file_name}",'wb') as f:
-                f.write(file_content)
-                f.close()
-            context.user_data['file_url'].append('files/'+file_name)
 
 
             #files_open = {'files':file_content}
         if update.message.photo:
-            chat_id = update.message.chat_id
-            photos = update.message.photo
-            # Get the highest resolution photo
-            photo_file = await photos[-1].get_file()
-            photo_path = os.path.join(f"{backend_location}/files", f'{chat_id}_{photo_file.file_id}.jpg')
-            await photo_file.download_to_drive(photo_path)
+
+            file_name = f"{update.message.photo[-1].file_id}.jpg"
+            getFile = await context.bot.getFile(update.message.photo[-1].file_id)
+            file_content = await getFile.download_as_bytearray()
 
 
-            context.user_data['file_url'].append('files/'+f'{chat_id}_{photo_file.file_id}.jpg')
+        with open(f"{backend_location}/files/{file_name}", 'wb') as f:
+            f.write(file_content)
+            f.close()
 
-            # file_name = f"{update.message.photo[-1].file_id}.jpg"
-            # getFile = await context.bot.getFile(update.message.photo[-1].file_id)
-            # file_content = await getFile.download_as_bytearray()
-            # files_open = {'files':file_content}
+        context.user_data['file_url'].append('files/'+file_name)
+        await update.message.reply_text(
+            "Фото добавлено",
+            reply_markup=ReplyKeyboardMarkup([['⬅️Назад', '➡️Далее']], resize_keyboard=True)
+        )
+        return PHOTO
 
 
-
-        return DATEPURCHASE
     else:
         if update.message.text == '⬅️Назад':
             await update.message.reply_text(
                 'Введите комментарий',
-                reply_markup=ReplyKeyboardMarkup([['⬅️Назад']], resize_keyboard=True)
+                reply_markup=ReplyKeyboardMarkup([['⬅️Назад',]], resize_keyboard=True)
             )
             return COMMENT
-        await update.message.reply_text(
-            'Прикрепите фото',
-            reply_markup=ReplyKeyboardMarkup([['⬅️Назад']],resize_keyboard=True)
-        )
-        return PHOTO
+        if update.message.text == '➡️Далее':
+            await update.message.reply_text(
+                'Дата покупки\nФормат: 23.04.2024 15:00',
+                reply_markup=ReplyKeyboardMarkup([['⬅️Назад']], resize_keyboard=True)
+            )
+            return DATEPURCHASE
+        else:
+            await update.message.reply_text(
+                "Прикрепите фото",
+                reply_markup=ReplyKeyboardMarkup([['⬅️Назад', '➡️Далее']], resize_keyboard=True)
+            )
+            return PHOTO
+
     
 
 async def datepurchase(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text(
-        'Дата покупки\nФормат: 23.04.2024 15:00',
-        reply_markup=ReplyKeyboardMarkup([['⬅️Назад']], resize_keyboard=True)
-    )
     input_text = update.message.text
     if input_text == '⬅️Назад':
         await update.message.reply_text(
@@ -406,19 +405,25 @@ async def verify(update: Update, context: ContextTypes.DEFAULT_TYPE):
 💬Комментарии: {create_complaint.comment}
 """
         call_center_id = create_complaint.subcategory.country.callcenter_id
-        file_url = backend_location + "/" + context.user_data['file_url'][0]
+        if context.user_data['file_url']:
+            file_url = backend_location + "/" + context.user_data['file_url'][0]
+        else:
+            file_url = None
         #send to call center group
         send_file_telegram(bot_token=BOTTOKEN,chat_id=call_center_id,file_path=file_url,caption=text_to_send)
         for i in context.user_data['file_url']:
             crud.create_file(complaint_id=create_complaint.id,file_name=i)
-        # create_file = crud.create_file(complaint_id=create_complaint.id,file_name=context.user_data['file_url'])
-        context.user_data['file_url'] = None
+
+
         await update.message.reply_text(
             "Ваша заявка принята. Id заявки: "+str(create_complaint.id),
             reply_markup=ReplyKeyboardMarkup([["Оформить жалобу", "Настройки"]],resize_keyboard=True)
         )
         return MANU
     
+
+
+
 
 
 

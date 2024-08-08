@@ -32,13 +32,17 @@ def send_file_telegram(bot_token, chat_id, file_path, caption=None):
     url = f"https://api.telegram.org/bot{bot_token}/sendDocument"
 
     # 'files' for sending documents is a dictionary with a tuple (optional filename, file data)
+    if file_path is None:
+        requests.post(f"https://api.telegram.org/bot{bot_token}/sendMessage", data={"chat_id": chat_id, "text": caption})
+        return True
+    else:
 
-    with open(file_path, 'rb') as file:
-        files = {'document': (file_path, file)}
-        data = {'chat_id': chat_id, 'caption': caption}
+        with open(file_path, 'rb') as file:
+            files = {'document': (file_path, file)}
+            data = {'chat_id': chat_id, 'caption': caption}
 
-        # Make a POST request to the Telegram API
-        response = requests.post(url, data=data, files=files)
+            # Make a POST request to the Telegram API
+            response = requests.post(url, data=data, files=files)
 
     # Check the response status
     if response.status_code == 200:
