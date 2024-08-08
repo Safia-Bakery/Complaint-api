@@ -234,7 +234,7 @@ async def update_complaint(
 
     service_id = query.subcategory.country.service_id
     quality_id = query.subcategory.country.quality_id
-    if form_data.status == 1:
+    if form_data.status == 2:
         text_to_send = f"""
 📁{query.subcategory.category.name}
 🔘Категория: {query.subcategory.name}
