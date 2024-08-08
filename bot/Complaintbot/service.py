@@ -42,6 +42,8 @@ def send_file_telegram(bot_token, chat_id, file_path, caption=None, reply_to_mes
 
             # Make a POST request to the Telegram API
             response = requests.post(url, data=data, files=files)
+            print(response.json())
+            print(reply_to_message_id)
 
     # Check the response status
     if response.status_code == 200:
