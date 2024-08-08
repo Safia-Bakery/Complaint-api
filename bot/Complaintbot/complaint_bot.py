@@ -411,7 +411,7 @@ async def verify(update: Update, context: ContextTypes.DEFAULT_TYPE):
         print(message_sended)
         for i in context.user_data['file_url']:
             crud.create_file(complaint_id=create_complaint.id,file_name=i)
-            send_file_telegram(bot_token=BOTTOKEN,chat_id=call_center_id,file_path=i,caption=None,reply_to_message_id=message_sended['result']['message_id'])
+            send_file_telegram(bot_token=BOTTOKEN,chat_id=call_center_id,file_path= backend_location+'/'+i,caption=None)
 
         context.user_data['file_url'] = None
 
