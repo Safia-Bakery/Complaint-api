@@ -200,7 +200,8 @@ async def comments(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     crud.create_message( text=update.message.text, hrcomplaint_id=query.id, url=None)
 
     if context.user_data['commentsphere'] == 1:
-        await update.message.reply_text('Главная страница',
+        await update.message.reply_text("""Благодарим за обратную связь, в скором времени мы ответим вам😊\n
+Rahmat savolingiz uchun, tez orada sizga javob beramiz😊""",
                                         reply_markup=ReplyKeyboardMarkup(manu_button, resize_keyboard=True))
     elif context.user_data['commentsphere'] == 2:
         await update.message.reply_text('Главная страница',
