@@ -7,6 +7,7 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from typing import Optional,Annotated
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from datetime import datetime
+from fastapi.encoders import jsonable_encoder
 from uuid import UUID
 import random
 from services import (
@@ -65,7 +66,8 @@ async def create_stats(
     general_stats['with_categories'] = query.get_subcategories_stats(db,from_date,to_date)
     general_stats['monthly_stats'] = query.last_6_monthly_complaint_stats(db)
     general_stats['country_stats'] = query.get_complaint_according_country_expenditure_stats(db, from_date, to_date)
-    return general_stats
+
+    return jsonable_encoder(general_stats)
 
 
 
