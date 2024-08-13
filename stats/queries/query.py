@@ -154,6 +154,45 @@ def get_subcategories_stats(db: Session, from_date, to_date):
     return stats
 
 
+def get_complaint_according_country_expenditure_stats(db: Session, from_date, to_date):
+    service_stats = (db.query(request_model.Countries.name, func.sum(request_model.Complaints.expense))
+               .join(request_model.Subcategories,
+                     request_model.Complaints.subcategory_id == request_model.Subcategories.id)
+               .join(request_model.Countries, request_model.Subcategories.country_id == request_model.Countries.id)
+               .filter(request_model.Complaints.created_at >= from_date)
+               .filter(request_model.Complaints.created_at <= to_date)
+                .filter(request_model.Subcategories.category_id==3)
+               .group_by(request_model.Countries.name)
+
+               .all())
+
+    stats = {country_name: total_expense for country_name, total_expense in service_stats}
+
+    service_stats = (db.query(request_model.Countries.name, func.sum(request_model.Complaints.expense))
+                     .join(request_model.Subcategories,
+                           request_model.Complaints.subcategory_id == request_model.Subcategories.id)
+                     .join(request_model.Countries,
+                           request_model.Subcategories.country_id == request_model.Countries.id)
+                     .filter(request_model.Complaints.created_at >= from_date)
+                     .filter(request_model.Complaints.created_at <= to_date)
+                     .filter(request_model.Subcategories.category_id == 1)
+                     .group_by(request_model.Countries.name)
+
+                     .all())
+
+    quality_stats = {country_name: total_expense for country_name, total_expense in service_stats}
+    stats = {
+        "service": service_stats,
+        "quality": quality_stats
+    }
+
+    return stats
+
+
+
+
+
+
 def last_6_monthly_complaint_stats(db: Session):
     now = datetime.now(tz=timezone_tash)
     six_months_ago = now - timedelta(days=180)
@@ -211,6 +250,8 @@ def get_hr_complaint_categories_stats(db: Session, from_date, to_date,sphere_id)
 
     stats = {category_name: count for category_name, count in results}
     return stats
+
+
 
 
 def get_hr_complaint_total_number_stats(db:Session,from_date,to_date,sphere_id):

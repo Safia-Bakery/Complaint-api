@@ -64,6 +64,8 @@ async def create_stats(
     general_stats['qrcode_stats'] = query.get_qr_client_stats(db)
     general_stats['with_categories'] = query.get_subcategories_stats(db,from_date,to_date)
     general_stats['monthly_stats'] = query.last_6_monthly_complaint_stats(db)
+    statudata = query.get_complaint_according_country_expenditure_stats(db, from_date, to_date)
+    print(statudata)
     return general_stats
 
 
@@ -81,6 +83,7 @@ async def create_stats(
     general_stats["complaint_count"] = query.get_hr_complaint_total_number_stats(db,from_date,to_date,sphere_id)
     general_stats["question_count"] = query.get_hr_question_total_number_stats(db,from_date,to_date,sphere_id)
     general_stats["advice_count"] = query.get_hr_advice_total_number_stats(db,from_date,to_date,sphere_id)
+
 
 
 

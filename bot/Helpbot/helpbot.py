@@ -67,7 +67,9 @@ async def forwarder(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         return ConversationHandler.END
 
 
+
     if '/start' != text_use:
+
         await context.bot.forward_message(chat_id=forwarding_chat_id, from_chat_id=update.message.from_user.id,
                                           message_id=update.message.id)
 
