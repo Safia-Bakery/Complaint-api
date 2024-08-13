@@ -43,7 +43,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     if client and client.branch_id:
         context.user_data['branch_id'] = client.branch_id
         await update.message.reply_text(
-            f"Manu",reply_markup=ReplyKeyboardMarkup([["Оформить жалобу", "Настройки"]],resize_keyboard=True)
+            f"Главная страница",reply_markup=ReplyKeyboardMarkup([["Оформить жалобу", "Настройки"]],resize_keyboard=True)
         )
         current_branch = crud.get_branchs(id=client.branch_id)
         context.user_data['branch_name'] = current_branch.name
@@ -120,7 +120,7 @@ async def manu(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         return  SETTINGS
     else:
         await update.message.reply_text(
-            f"Manu",
+            f"Главная страница",
             reply_markup=ReplyKeyboardMarkup([["Оформить жалобу", "Настройки"]],resize_keyboard=True)
         )
         return MANU
@@ -130,7 +130,7 @@ async def settings(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text
     if text == '⬅️Назад':
         await update.message.reply_text(
-            'Manu',
+            'Главная страница',
             reply_markup=ReplyKeyboardMarkup([["Оформить жалобу", "Настройки"]],resize_keyboard=True)
         )
         return MANU
@@ -143,7 +143,7 @@ async def settings(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return BRANCHUPDATE
     else:
         await update.message.reply_text(
-            'Manu',
+            'Главная страница',
             reply_markup=ReplyKeyboardMarkup([["Оформить жалобу", "Настройки"]],resize_keyboard=True)
         )
         return MANU
@@ -155,7 +155,7 @@ async def category(update: Update, context: ContextTypes.DEFAULT_TYPE):
     category = crud.get_category(name=input_text)
     if input_text == '⬅️Назад':
         await update.message.reply_text(
-            f"Manu",
+            f"Главная страница",
             reply_markup=ReplyKeyboardMarkup([["Оформить жалобу", "Настройки"]],resize_keyboard=True)
         )
         return MANU
