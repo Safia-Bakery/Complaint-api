@@ -155,30 +155,29 @@ def get_subcategories_stats(db: Session, from_date, to_date):
 
 
 def get_complaint_according_country_expenditure_stats(db: Session, from_date, to_date):
-    service_stats = (db.query(request_model.Countries.name, func.sum(request_model.Complaints.expense))
-               .join(request_model.Subcategories,
-                     request_model.Complaints.subcategory_id == request_model.Subcategories.id)
-               .join(request_model.Countries, request_model.Subcategories.country_id == request_model.Countries.id)
+    # Query for service category (category_id == 3)
+    service_stats = (db.query(request_model.Countries.name, func.coalesce(func.sum(request_model.Complaints.expense), 0))
+               .outerjoin(request_model.Subcategories, request_model.Complaints.subcategory_id == request_model.Subcategories.id)
+               .outerjoin(request_model.Countries, request_model.Subcategories.country_id == request_model.Countries.id)
                .filter(request_model.Complaints.created_at >= from_date)
                .filter(request_model.Complaints.created_at <= to_date)
                .filter(request_model.Subcategories.category_id == 3)
                .group_by(request_model.Countries.name)
                .all())
 
-    service_stats = {country_name: total_expense if total_expense is not None else 0 for country_name, total_expense in service_stats}
+    service_stats = {country_name: total_expense for country_name, total_expense in service_stats}
 
-    quality_stats = (db.query(request_model.Countries.name, func.sum(request_model.Complaints.expense))
-                     .join(request_model.Subcategories,
-                           request_model.Complaints.subcategory_id == request_model.Subcategories.id)
-                     .join(request_model.Countries,
-                           request_model.Subcategories.country_id == request_model.Countries.id)
+    # Query for quality category (category_id == 1)
+    quality_stats = (db.query(request_model.Countries.name, func.coalesce(func.sum(request_model.Complaints.expense), 0))
+                     .outerjoin(request_model.Subcategories, request_model.Complaints.subcategory_id == request_model.Subcategories.id)
+                     .outerjoin(request_model.Countries, request_model.Subcategories.country_id == request_model.Countries.id)
                      .filter(request_model.Complaints.created_at >= from_date)
                      .filter(request_model.Complaints.created_at <= to_date)
                      .filter(request_model.Subcategories.category_id == 1)
                      .group_by(request_model.Countries.name)
                      .all())
 
-    quality_stats = {country_name: total_expense if total_expense is not None else 0 for country_name, total_expense in quality_stats}
+    quality_stats = {country_name: total_expense for country_name, total_expense in quality_stats}
 
     stats = {
         "service": service_stats,
@@ -186,7 +185,6 @@ def get_complaint_according_country_expenditure_stats(db: Session, from_date, to
     }
 
     return stats
-
 
 
 
