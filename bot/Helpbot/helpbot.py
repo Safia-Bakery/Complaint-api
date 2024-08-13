@@ -57,13 +57,21 @@ async def messages(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
                                       message_id=update.message.id)
     return FORWARDER
 
-
 async def forwarder(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     """Stores tmhe selected gender and asks for a photo."""
     text_use = str(update.message.text)
+    if '/cancel' != text_use:
+        user = update.message.from_user
+        await update.message.reply_text("Ko'rishguncha", reply_markup=ReplyKeyboardRemove()
+                                        )
+
+        return ConversationHandler.END
+
+
     if '/start' != text_use:
         await context.bot.forward_message(chat_id=forwarding_chat_id, from_chat_id=update.message.from_user.id,
                                           message_id=update.message.id)
+
     else:
         await update.message.reply_text(
             """Здравствуйте! 🍰\nНапишите ваш вопрос и мы ответим Вам в ближайшее время.\n\n------------------------------------------------------\n\nSalom! 🍰\nSavolingizni yozing va biz sizga yaqin orada javob beramiz."""
