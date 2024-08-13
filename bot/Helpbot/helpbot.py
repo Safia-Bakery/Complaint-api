@@ -60,11 +60,10 @@ async def messages(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 async def forwarder(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     """Stores tmhe selected gender and asks for a photo."""
     text_use = str(update.message.text)
-    if '/cancel' != text_use:
+    if '/cancel' == text_use:
         user = update.message.from_user
         await update.message.reply_text("Ko'rishguncha", reply_markup=ReplyKeyboardRemove()
                                         )
-
         return ConversationHandler.END
 
 
