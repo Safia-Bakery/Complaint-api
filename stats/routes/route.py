@@ -67,7 +67,7 @@ async def create_stats(
     general_stats['monthly_stats'] = query.last_6_monthly_complaint_stats(db)
     general_stats['country_stats'] = query.get_complaint_according_country_expenditure_stats(db, from_date, to_date)
 
-    return jsonable_encoder(general_stats)
+    return general_stats
 
 
 

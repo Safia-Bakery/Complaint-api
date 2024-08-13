@@ -166,7 +166,7 @@ def get_complaint_according_country_expenditure_stats(db: Session, from_date, to
 
                .all())
 
-    stats = {country_name: total_expense for country_name, total_expense in service_stats}
+    stats = {country_name:  str(total_expense)  for country_name, total_expense in service_stats}
 
     service_stats = (db.query(request_model.Countries.name, func.sum(request_model.Complaints.expense))
                      .join(request_model.Subcategories,
@@ -180,7 +180,7 @@ def get_complaint_according_country_expenditure_stats(db: Session, from_date, to
 
                      .all())
 
-    quality_stats = {country_name: total_expense for country_name, total_expense in service_stats}
+    quality_stats = {country_name: str(total_expense) for country_name, total_expense in service_stats}
     stats = {
         "service": service_stats,
         "quality": quality_stats
