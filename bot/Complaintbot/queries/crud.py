@@ -82,7 +82,8 @@ def create_complaint(branch_id,subcategory_id,name, phone_number,comment,date_pu
         date_purchase=date_purchase,
         date_return=datereturn,
         is_client=False,
-        is_internal=1
+        is_internal=1,
+        status=0
     )
     db.add(query)
     db.commit()
