@@ -241,7 +241,7 @@ async def update_complaint(
 
     service_id = query.subcategory.country.service_id
     quality_id = query.subcategory.country.quality_id
-    if form_data.status == 2:
+    if form_data.status == 1:
         text_to_send = f"""
 📁{query.subcategory.category.name}
 🔘Категория: {query.subcategory.name}
@@ -273,7 +273,7 @@ async def update_complaint(
                 for i in query.file:
                     file_sended = send_file_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=service_id, file_path=i.url, caption=None,reply_to_message_id=message_sended['result']['message_id'])
 
-    if form_data.status == 2 and query.subcategory.category_id == 1:
+    if form_data.status == 1 and query.subcategory.category_id == 1:
         crud.update_statuses(db=db,id=query.id,otk_status=1)
 
     # if status is one send message to channel
