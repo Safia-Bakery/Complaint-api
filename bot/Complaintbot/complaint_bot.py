@@ -33,7 +33,7 @@ backend_location = '/var/www/Complaint-api'
 
 BOTTOKEN = os.environ.get('BOT_TOKEN_COMPLAINT')
 persistence = PicklePersistence(filepath='complaint.pickle')
-MANU, BRANCH,SETTINGS,CATEGORY,SUBCATEGORY,NAME,PHONENUMBER,COMMENT,PHOTO,DATEPURCHASE,DATERETURN,VERIFY,BRANCHUPDATE,PRODUCTNAME= range(13)
+MANU, BRANCH,SETTINGS,CATEGORY,SUBCATEGORY,NAME,PHONENUMBER,COMMENT,PHOTO,DATEPURCHASE,DATERETURN,VERIFY,BRANCHUPDATE,PRODUCTNAME= range(14)
 
 
 
@@ -468,7 +468,8 @@ def main() -> None:
             DATEPURCHASE:[MessageHandler(filters.TEXT,datepurchase)],
             DATERETURN:[MessageHandler(filters.TEXT,datereturn)],
             VERIFY:[MessageHandler(filters.TEXT,verify)],
-            BRANCHUPDATE:[MessageHandler(filters.TEXT,branch_update)]
+            BRANCHUPDATE:[MessageHandler(filters.TEXT,branch_update)],
+            PRODUCTNAME:[MessageHandler(filters.TEXT,productname)]
 
         },
         fallbacks=[CommandHandler('start',start)],
