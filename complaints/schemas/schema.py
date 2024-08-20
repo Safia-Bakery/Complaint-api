@@ -69,7 +69,6 @@ class Category(BaseModel):
         orm_mode = True
 
 class CategoryName(BaseModel):
-    id:int
     name: Optional[str]=None
     class Config:
         orm_mode = True
