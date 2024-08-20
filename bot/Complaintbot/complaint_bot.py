@@ -375,7 +375,7 @@ async def datereturn(update: Update, context: ContextTypes.DEFAULT_TYPE):
         date_return = validate_only_date(input_text)
         if date_return:
             context.user_data['datereturn'] = input_text
-            verify_text = f"Ваша заявка\nФилиал: {context.user_data['branch_name']}\nТип: : {context.user_data['category_name']}\nКатегория: {context.user_data['subcategory_name']}\nИмя: {context.user_data['name']}\nНомер: {context.user_data['phonenumber']}\nДата покупки: {context.user_data['datepurchase']}\nДата возврата: {context.user_data['datereturn']}\nКомментарий: {context.user_data['comment']}"
+            verify_text = f"Ваша заявка\nФилиал: {context.user_data['branch_name']}\nТип: : {context.user_data['category_name']}\nКатегория: {context.user_data['subcategory_name']}\nИмя: {context.user_data['name']}\nНомер: {context.user_data['phonenumber']}\nДата покупки: {context.user_data['datepurchase']}\nДата возврата: {context.user_data['datereturn']}\nКомментарий: {context.user_data['comment']}\nПродукт: {context.user_data['productname']}"
             await update.message.reply_text(
                 verify_text,
                 reply_markup=ReplyKeyboardMarkup([['Подтвердить','⬅️Назад']],resize_keyboard=True)
