@@ -260,7 +260,7 @@ async def productname(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         context.user_data['productname'] = input_text
         await update.message.reply_text(
-            'Введите комментарий',
+            'описание заявки/жалобы',
             reply_markup=ReplyKeyboardMarkup([['⬅️Назад']],resize_keyboard=True)
         )
         return COMMENT
@@ -317,7 +317,7 @@ async def photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         if update.message.text == '⬅️Назад':
             await update.message.reply_text(
-                'Введите комментарий',
+                'описание заявки/жалобы',
                 reply_markup=ReplyKeyboardMarkup([['⬅️Назад',]], resize_keyboard=True)
             )
             return COMMENT
@@ -340,7 +340,7 @@ async def datepurchase(update: Update, context: ContextTypes.DEFAULT_TYPE):
     input_text = update.message.text
     if input_text == '⬅️Назад':
         await update.message.reply_text(
-            'Введите комментарий',
+            'описание заявки/жалобы',
             reply_markup=ReplyKeyboardMarkup([['⬅️Назад']],resize_keyboard=True)
         )
         return COMMENT
