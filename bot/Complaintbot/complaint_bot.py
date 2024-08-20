@@ -33,7 +33,7 @@ backend_location = '/var/www/Complaint-api'
 
 BOTTOKEN = os.environ.get('BOT_TOKEN_COMPLAINT')
 persistence = PicklePersistence(filepath='complaint.pickle')
-MANU, BRANCH,SETTINGS,CATEGORY,SUBCATEGORY,NAME,PHONENUMBER,COMMENT,PHOTO,DATEPURCHASE,DATERETURN,VERIFY,BRANCHUPDATE= range(13)
+MANU, BRANCH,SETTINGS,CATEGORY,SUBCATEGORY,NAME,PHONENUMBER,COMMENT,PHOTO,DATEPURCHASE,DATERETURN,VERIFY,BRANCHUPDATE,PRODUCTNAME= range(13)
 
 
 
@@ -244,6 +244,22 @@ async def phonenumber(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         context.user_data['phonenumber'] = input_text
         await update.message.reply_text(
+            'Введите название продукта',
+            reply_markup=ReplyKeyboardMarkup([['⬅️Назад']],resize_keyboard=True)
+        )
+        return PRODUCTNAME
+
+async def productname(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    input_text = update.message.text
+    if input_text == '⬅️Назад':
+        await update.message.reply_text(
+            'Введите номер клиента',
+            reply_markup=ReplyKeyboardMarkup([['⬅️Назад']],resize_keyboard=True)
+        )
+        return PHONENUMBER
+    else:
+        context.user_data['productname'] = input_text
+        await update.message.reply_text(
             'Введите комментарий',
             reply_markup=ReplyKeyboardMarkup([['⬅️Назад']],resize_keyboard=True)
         )
@@ -254,10 +270,10 @@ async def comment(update: Update, context: ContextTypes.DEFAULT_TYPE):
     input_text = update.message.text
     if input_text == '⬅️Назад':
         await update.message.reply_text(
-            'Введите номер клиента',
+            'Введите название продукта',
             reply_markup=ReplyKeyboardMarkup([['⬅️Назад']],resize_keyboard=True)
         )
-        return PHONENUMBER
+        return PRODUCTNAME
     else:
         context.user_data['comment'] = input_text
         await update.message.reply_text(
@@ -392,7 +408,9 @@ async def verify(update: Update, context: ContextTypes.DEFAULT_TYPE):
                               phone_number=context.user_data['phonenumber'],
                               comment=context.user_data['comment'],
                               date_purchase=date_purchase_date,
-                              datereturn=date_return_date)
+                              datereturn=date_return_date,
+                              product_name=context.user_data['productname']
+                              )
 
         text_to_send = f"""
 📁{create_complaint.subcategory.category.name}

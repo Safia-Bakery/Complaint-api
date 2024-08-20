@@ -70,7 +70,7 @@ def get_subcategory(name: Optional[str] = None,category_id: Optional[int] = None
 
 
 
-def create_complaint(branch_id,subcategory_id,name, phone_number,comment,date_purchase,datereturn):
+def create_complaint(branch_id,subcategory_id,name, phone_number,comment,date_purchase,datereturn,product_name):
     db = SessionLocal()
 
     query = model.Complaints(
@@ -83,7 +83,8 @@ def create_complaint(branch_id,subcategory_id,name, phone_number,comment,date_pu
         date_return=datereturn,
         is_client=False,
         is_internal=1,
-        status=0
+        status=0,
+        product_name=product_name
     )
     db.add(query)
     db.commit()
