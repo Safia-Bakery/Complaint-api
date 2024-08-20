@@ -420,7 +420,8 @@ async def verify(update: Update, context: ContextTypes.DEFAULT_TYPE):
 📍Филиал: {create_complaint.branch.name}
 🕘Дата покупки: {create_complaint.date_purchase}
 🚛Дата отправки: {create_complaint.date_return}\n
-💬Комментарии: {create_complaint.comment}
+💬Комментарии: {create_complaint.comment}\n
+🍰Продукт: {create_complaint.product_name}
 """
         call_center_id = create_complaint.subcategory.country.callcenter_id
 
