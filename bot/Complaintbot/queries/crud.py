@@ -55,7 +55,7 @@ def get_branchs(password:Optional[int]=None,id:Optional[int]=None):
 
 def get_category(name: Optional[str] = None):
     db = SessionLocal()
-    query = db.query(model.Categories)
+    query = db.query(model.Categories).filter(model.Categories.status==1)
     if name is not None:
         query = query.filter(model.Categories.name.ilike(f"%{name}%"))
     return query.all()
