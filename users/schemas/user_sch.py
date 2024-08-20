@@ -85,7 +85,8 @@ class UserCreate(BaseModel):
     password:str
     name: Optional[str]=None
     role_id:Optional[int]=None
-    phone_number: Optional[str]=None
+    phone_number: Optional[str]=None,
+    status:Optional[int]=1
     
 
 class UserUpdate(BaseModel):
