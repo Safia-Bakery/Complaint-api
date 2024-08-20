@@ -80,7 +80,7 @@ class Users(Base):
     hashed_password = Column(String)
     name = Column(String,nullable=True)
     phone_number = Column(String,nullable=True)
-    status = Column(Integer,default=0)
+    status = Column(Integer,default=1)
     role_id = Column(BIGINT, ForeignKey("roles.id"))
     role = relationship("Roles",back_populates="user")
     hrcommunication = relationship("Hrcommunications",back_populates="user")

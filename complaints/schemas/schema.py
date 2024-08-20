@@ -68,6 +68,12 @@ class Category(BaseModel):
     class Config:
         orm_mode = True
 
+class CategoryName(BaseModel):
+    id:int
+    name: Optional[str]=None
+    class Config:
+        orm_mode = True
+
 
 class CreateSubCategory(BaseModel):
     name: Optional[str]=None
@@ -92,8 +98,7 @@ class SubCategory(BaseModel):
     category_id: Optional[int]=None
     country_id: Optional[int]=None
     status: Optional[int]=None
-    created_at: Optional[datetime]=None
-    updated_at: Optional[datetime]=None
+    category: Optional[CategoryName]=None
     class Config:
         orm_mode = True
 
@@ -104,8 +109,6 @@ class CreateBranch(BaseModel):
     status: Optional[int]=None
     class Config:
         orm_mode = True
-
-
 
 class UpdateBranch(BaseModel):
     id:int
