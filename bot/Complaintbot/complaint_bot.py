@@ -324,7 +324,7 @@ async def photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if update.message.text == '➡️Далее':
             await update.message.reply_text(
                 'Дата покупки\nФормат: 23.04.2024 15:00',
-                reply_markup=ReplyKeyboardMarkup([['⬅️Назад']], resize_keyboard=True)
+                reply_markup=ReplyKeyboardMarkup([['⬅️Назад',"➡️Пропустить"]], resize_keyboard=True)
             )
             return DATEPURCHASE
         else:
@@ -344,6 +344,14 @@ async def datepurchase(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=ReplyKeyboardMarkup([['⬅️Назад']],resize_keyboard=True)
         )
         return COMMENT
+    elif input_text == '➡️Пропустить':
+        context.user_data['datepurchase'] = None
+        await update.message.reply_text(
+            "Примерная дата отправки образцов (если есть)\nФормат: 23.04.2024",
+            reply_markup=ReplyKeyboardMarkup([['⬅️Назад', "➡️Пропустить"]],resize_keyboard=True)
+        )
+        return DATERETURN
+
     else:
         is_valid = validate_date(input_text)
         if is_valid:
@@ -351,13 +359,13 @@ async def datepurchase(update: Update, context: ContextTypes.DEFAULT_TYPE):
             context.user_data['datepurchase'] = input_text
             await update.message.reply_text(
                 "Примерная дата отправки образцов (если есть)\nФормат: 23.04.2024",
-                reply_markup=ReplyKeyboardMarkup([['⬅️Назад']],resize_keyboard=True)
+                reply_markup=ReplyKeyboardMarkup([['⬅️Назад',"➡️Пропустить"]],resize_keyboard=True)
             )
             return DATERETURN
         else:
             await update.message.reply_text(
             'Дата покупки\nФормат: 23.04.2024 15:00',
-            reply_markup=ReplyKeyboardMarkup([['⬅️Назад']],resize_keyboard=True)
+            reply_markup=ReplyKeyboardMarkup([['⬅️Назад',"➡️Пропустить"]],resize_keyboard=True)
             )
             return DATEPURCHASE
     
@@ -368,9 +376,18 @@ async def datereturn(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if input_text == '⬅️Назад':
         await update.message.reply_text(
             'Дата покупки\nФормат: 23.04.2024 15:00',
-            reply_markup=ReplyKeyboardMarkup([['⬅️Назад']],resize_keyboard=True)
+            reply_markup=ReplyKeyboardMarkup([['⬅️Назад',"➡️Пропустить"]],resize_keyboard=True)
         )
         return DATEPURCHASE
+    elif input_text == '➡️Пропустить':
+        context.user_data['datereturn'] = None
+        verify_text = f"Ваша заявка\nФилиал: {context.user_data['branch_name']}\nТип: : {context.user_data['category_name']}\nКатегория: {context.user_data['subcategory_name']}\nИмя: {context.user_data['name']}\nНомер: {context.user_data['phonenumber']}\nДата покупки: {context.user_data['datepurchase']}\nДата возврата: {context.user_data['datereturn']}\nКомментарий: {context.user_data['comment']}\nПродукт: {context.user_data['productname']}"
+        await update.message.reply_text(
+            verify_text,
+            reply_markup=ReplyKeyboardMarkup([['Подтвердить','⬅️Назад']],resize_keyboard=True)
+        )
+        return VERIFY
+
     else:
         date_return = validate_only_date(input_text)
         if date_return:
@@ -384,7 +401,7 @@ async def datereturn(update: Update, context: ContextTypes.DEFAULT_TYPE):
         else:
             await update.message.reply_text(
                 "Примерная дата отправки образцов (если есть)\nФормат: 23.04.2024",
-                reply_markup=ReplyKeyboardMarkup([['⬅️Назад']],resize_keyboard=True)
+                reply_markup=ReplyKeyboardMarkup([['⬅️Назад',"➡️Пропустить"]],resize_keyboard=True)
             )
             return DATERETURN
     
@@ -398,9 +415,14 @@ async def verify(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         return DATERETURN
     else:
-        
-        date_purchase_date = datetime.strptime(context.user_data['datepurchase'], "%d.%m.%Y %H:%M")
-        date_return_date = datetime.strptime(context.user_data['datereturn']+" 10:00", "%d.%m.%Y %H:%M")
+        if context.user_data['datepurchase'] == None:
+            date_purchase_date = None
+        else:
+            date_purchase_date = datetime.strptime(context.user_data['datepurchase'], "%d.%m.%Y %H:%M")
+        if context.user_data['datereturn'] == None:
+            date_return_date = None
+        else:
+            date_return_date = datetime.strptime(context.user_data['datereturn']+" 10:00", "%d.%m.%Y %H:%M")
         create_complaint = crud.create_complaint(
                               branch_id=context.user_data['branch_id'],
                               subcategory_id=context.user_data['subcategory_id'],
