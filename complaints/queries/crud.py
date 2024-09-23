@@ -144,6 +144,8 @@ def update_branch(db:Session,form_data:schema.UpdateBranch):
         query.status = form_data.status
     if form_data.country_id is not None:
         query.country_id = form_data.country_id
+    if form_data.password is not None:
+        query.password = form_data.password
     db.commit()
     db.refresh(query)
     return query

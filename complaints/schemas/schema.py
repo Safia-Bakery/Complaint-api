@@ -114,7 +114,7 @@ class UpdateBranch(BaseModel):
     name: Optional[str]=None
     country_id: Optional[int]=None
     status: Optional[int]=None
-    password:Optional[bool]=False
+    password:Optional[str]=False
     class Config:
         orm_mode = True
 

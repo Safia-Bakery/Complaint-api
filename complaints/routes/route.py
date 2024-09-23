@@ -141,10 +141,6 @@ async def update_branch(
     db: Session = Depends(get_db),
     current_user: user_sch.User = Depends(get_current_user)):
     query = crud.update_branch(db, form_data)
-    if form_data.password:
-        password = generate_random_filename(length=20)+str(query.id)
-        updated_password = crud.update_branch_pass(db,query.id,password=password)
-        return updated_password
     return query
 
 
