@@ -13,7 +13,7 @@ from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
-from database import SessionLocal, Base
+from database import  Base
 
 
 timezonetash = pytz.timezone("Asia/Tashkent")

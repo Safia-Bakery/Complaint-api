@@ -121,10 +121,15 @@ async def handle_messages(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
     #print(message.reply_to_message)
 
     if message.reply_to_message and message.reply_to_message.forward_origin:
+
         #chat_id = message.reply_to_message.forward_origin.sender_user.id
         text_message = update.message.text
 
         client = get_client(message_id=message.reply_to_message.message_id)
+
+
+
+
 
         # Someone replied to a forwarded message
         # Perform your reaction here
