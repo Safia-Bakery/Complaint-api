@@ -17,7 +17,7 @@ from telegram.ext import (
 
 )
 
-from database import SessionLocal
+
 from variables import text
 from dotenv import load_dotenv
 from bot.Hrbot.bot_crud import crud

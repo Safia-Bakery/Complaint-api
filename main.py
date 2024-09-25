@@ -8,9 +8,7 @@ from typing import Optional
 
 from fastapi_pagination import paginate,Page,add_pagination
 from fastapi.staticfiles import StaticFiles
-from database import Base
-
-from database import engine
+from database import SessionLocal, Base,engine
 from users.routes.user_routes import user_router
 from hrcomplaint.routes.hr_routes import hr_router
 from complaints.routes.route import complain_router

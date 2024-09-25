@@ -21,7 +21,7 @@ from telegram.ext import (
     PicklePersistence
 )
 
-from database import SessionLocal
+
 from dotenv import load_dotenv
 from sqlalchemy.orm import Session
 import requests

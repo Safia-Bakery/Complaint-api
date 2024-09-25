@@ -14,7 +14,7 @@ Press Ctrl-C on the command line or send a signal to the process to stop the
 bot.
 """
 
-import logging
+
 
 from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove, Update
 from telegram.ext import (
@@ -26,6 +26,14 @@ from telegram.ext import (
     filters,
     PicklePersistence
 )
+import os
+import sys
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append('.')
+
+from bot.Helpbot.crud import create_message, get_or_create_client, get_message, get_client, update_messsage
+
 
 from dotenv import load_dotenv
 import os
@@ -53,8 +61,19 @@ async def messages(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     await update.message.reply_text(
         """Благодарим за обратную связь, в скором времени свяжемся с вами😊\n\nRahmat savolingiz uchun, tez orada siz bilan bog'lanamiz😊"""
     )
-    await context.bot.forward_message(chat_id=forwarding_chat_id, from_chat_id=update.message.from_user.id,
+    client = get_or_create_client(telegram_id=user.id,name=user.first_name)
+
+    if update.message.text:
+        created_message_database = create_message(client_id=client.id,message_text=update.message.text)
+    else:
+        created_message_database = create_message(client_id=client.id,message_text='user didnot send message')
+
+    forwarded_message = await context.bot.forward_message(chat_id=forwarding_chat_id, from_chat_id=update.message.from_user.id,
                                       message_id=update.message.id)
+
+    updated_message = update_messsage(message_id=forwarded_message.message_id,id=created_message_database.id)
+
+
     return FORWARDER
 
 async def forwarder(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
@@ -69,9 +88,17 @@ async def forwarder(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 
 
     if '/start' != text_use:
+        client = get_or_create_client(telegram_id=update.message.from_user.id, name=update.message.from_user.first_name)
+        if update.message.text:
+            created_message_database = create_message(client_id=client.id, message_text=update.message.text)
+        else:
+            created_message_database = create_message(client_id=client.id, message_text='user didnot send message')
 
-        await context.bot.forward_message(chat_id=forwarding_chat_id, from_chat_id=update.message.from_user.id,
+
+        message_forwarded  = await context.bot.forward_message(chat_id=forwarding_chat_id, from_chat_id=update.message.from_user.id,
                                           message_id=update.message.id)
+        updated_message = update_messsage(message_id=message_forwarded.message_id, id=created_message_database.id)
+
 
     else:
         await update.message.reply_text(
@@ -91,14 +118,19 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 
 async def handle_messages(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     message = update.message
+    #print(message.reply_to_message)
 
     if message.reply_to_message and message.reply_to_message.forward_origin:
-        chat_id = message.reply_to_message.forward_origin.sender_user.id
+        #chat_id = message.reply_to_message.forward_origin.sender_user.id
         text_message = update.message.text
+
+        client = get_client(message_id=message.reply_to_message.message_id)
+
         # Someone replied to a forwarded message
         # Perform your reaction here
         bot = context.bot
-        await bot.send_message(chat_id=chat_id,text=text_message)
+
+        await bot.send_message(chat_id=client.telegram_id,text=text_message)
 
 def main() -> None:
     """Run the bot."""

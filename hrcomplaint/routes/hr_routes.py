@@ -23,7 +23,7 @@ from typing import Optional
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Union, Any
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from database import engine, SessionLocal
+
 
 from dotenv import load_dotenv
 import os

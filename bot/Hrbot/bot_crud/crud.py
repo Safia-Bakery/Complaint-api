@@ -8,7 +8,7 @@ from sqlalchemy.sql import func
 from datetime import datetime,timedelta
 from sqlalchemy import or_, and_, Date, cast
 from uuid import UUID
-from database import  SessionLocal
+from database import SessionLocal, Base
 from hrcomplaint.models import hr_model
 
 

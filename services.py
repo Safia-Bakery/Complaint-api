@@ -14,7 +14,7 @@ from fastapi import (
     status,
 )
 import smtplib
-from database import engine, SessionLocal
+from database import SessionLocal, Base,engine
 from pydantic import ValidationError
 from fastapi.security import OAuth2PasswordBearer
 import xml.etree.ElementTree as ET
