@@ -539,7 +539,7 @@ def generate_excell( data ):
                     if i < len(value[column]):
                         structured_data[column].append(value[column][i])
                     else:
-                        structured_data[column].append('')  # Fill with an empty string if index exceeds
+                        structured_data[column].append(' ')  # Fill with an empty string if index exceeds
 
             # Create DataFrame
             df = pd.DataFrame(structured_data)
