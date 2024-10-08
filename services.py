@@ -519,7 +519,7 @@ def generate_excell( data ):
             ready_data['от магазина']['столбец18'].append('  ')
 
             if i.corrections is not None:
-                ready_data['от магазина']['столбец19'] = i.corrections
+                ready_data['от магазина']['столбец19'].append(i.corrections)
             else:
                 ready_data['от магазина']['столбец19'].append('  ')
 
