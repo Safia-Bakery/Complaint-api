@@ -522,7 +522,7 @@ def generate_excell( data ):
 
     with pd.ExcelWriter(filename , engine='xlsxwriter') as writer:
         for key,value in ready_data.items():
-            pd.DataFrame(value).to_excel(writer,sheet_name=str(key[:30]))
+            pd.DataFrame(value,index=[0]).to_excel(writer,sheet_name=str(key[:30]))
     return filename
 
 
