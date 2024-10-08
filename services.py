@@ -6,6 +6,8 @@ import bcrypt
 import random
 import string
 import pandas as pd
+import openpyxl
+from openpyxl import Workbook
 
 from sqlalchemy.orm import Session
 from typing import Union, Any
@@ -525,10 +527,30 @@ def generate_excell( data ):
 
     filename = 'files/ТЗ для бота Жалобы ' +  datetime.now().strftime("%Y-%m-%d") + '.xlsx'
 
-    with pd.ExcelWriter(filename , engine='xlsxwriter') as writer:
-        for key, value in ready_data.items():
-            df = pd.DataFrame(value)
-            df.to_excel(writer, sheet_name=key[:30], index=False)
+    wb = Workbook()
+
+    # Iterate through the ready_data dictionary
+    for sheet_name, data in ready_data.items():
+        # Create a new sheet, truncate the name to 30 characters if needed
+        ws = wb.create_sheet(title=sheet_name[:30])
+
+        # Write the headers (column names)
+        headers = list(data.keys())
+        ws.append(headers)
+
+        # Write the data rows
+        max_len = max(len(v) for v in data.values())  # Get max length of columns
+        for i in range(max_len):
+            row = []
+            for key in headers:
+                value_list = data[key]
+                row.append(value_list[i] if i < len(value_list) else '')  # Append value or blank if shorter
+            ws.append(row)
+    if "Sheet" in wb.sheetnames:
+        wb.remove(wb["Sheet"])
+
+    wb.save(filename)
+
     return filename
 
 
