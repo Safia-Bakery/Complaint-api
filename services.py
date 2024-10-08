@@ -527,7 +527,7 @@ def generate_excell( data ):
 
     with pd.ExcelWriter(filename , engine='xlsxwriter') as writer:
         for key, value in ready_data.items():
-            df = pd.DataFrame.from_dict(value, orient='index').T  # Transpose to match columns
+            df = pd.DataFrame(value)
             df.to_excel(writer, sheet_name=key[:30], index=False)
     return filename
 
