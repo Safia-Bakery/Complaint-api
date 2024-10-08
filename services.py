@@ -485,9 +485,9 @@ def generate_excell( data ):
             if i.updated_at is not None:
                 ready_data['от магазина']['столбец10'] = i.updated_at.strftime("%Y-%m-%d %H:%M")
             else:
-                ready_data['от магазина']['столбец10'] = ' '
+                ready_data['от магазина']['столбец10'] = '  '
 
-            ready_data['от магазина']['столбец11'] = ' '
+            ready_data['от магазина']['столбец11'] = '  '
 
             if i.autonumber is not None:
                 ready_data['от магазина']['столбец12'] = i.autonumber
