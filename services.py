@@ -392,7 +392,7 @@ def generate_excell( data ):
                 ready_data['от гостя']['столбец7'] = '  '
 
             if i.comment is not None:
-                ready_data['от гостя']['8'] = i.comment
+                ready_data['от гостя']['столбец8'] = i.comment
             else:
                 ready_data['от гостя']['столбец8'] = '  '
 
