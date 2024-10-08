@@ -6,8 +6,6 @@ import bcrypt
 import random
 import string
 import pandas as pd
-import openpyxl
-from openpyxl import Workbook
 
 from sqlalchemy.orm import Session
 from typing import Union, Any
@@ -527,30 +525,27 @@ def generate_excell( data ):
 
     filename = 'files/ТЗ для бота Жалобы ' +  datetime.now().strftime("%Y-%m-%d") + '.xlsx'
 
-    wb = Workbook()
+    with pd.ExcelWriter(filename , engine='xlsxwriter') as writer:
+        for key, value in ready_data.items():
+            # Prepare a structured format for DataFrame
+            structured_data = {col: [] for col in value.keys()}  # Create empty lists for each column
 
-    # Iterate through the ready_data dictionary
-    for sheet_name, data in ready_data.items():
-        # Create a new sheet, truncate the name to 30 characters if needed
-        ws = wb.create_sheet(title=sheet_name[:30])
+            # Find the maximum length of the columns
+            max_length = max(len(v) for v in value.values())
 
-        # Write the headers (column names)
-        headers = list(data.keys())
-        ws.append(headers)
+            # Populate the structured data
+            for i in range(max_length):
+                for column in value.keys():
+                    if i < len(value[column]):
+                        structured_data[column].append(value[column][i])
+                    else:
+                        structured_data[column].append('')  # Fill with an empty string if index exceeds
 
-        # Write the data rows
-        max_len = max(len(v) for v in data.values())  # Get max length of columns
-        for i in range(max_len):
-            row = []
-            for key in headers:
-                value_list = data[key]
-                row.append(value_list[i] if i < len(value_list) else '')  # Append value or blank if shorter
-            ws.append(row)
-    if "Sheet" in wb.sheetnames:
-        wb.remove(wb["Sheet"])
+            # Create DataFrame
+            df = pd.DataFrame(structured_data)
 
-    wb.save(filename)
-
+            # Write DataFrame to Excel
+            df.to_excel(writer, sheet_name=key[:30], index=False)
     return filename
 
 
