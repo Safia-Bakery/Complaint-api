@@ -362,191 +362,172 @@ def generate_excell( data ):
             },
     }
     for i in data:
-        print(i)
         if i.is_client:
-            ready_data['от гостя']['столбец1'] = str(i.id)
+            ready_data['от гостя']['столбец1'].append(str(i.id))
             if i.created_at is not None:
-                ready_data['от гостя']['столбец2'] =  i.created_at.strftime("%Y-%m-%d %H:%M")
+                ready_data['от гостя']['столбец2'].append( i.created_at.strftime("%Y-%m-%d %H:%M"))
             else:
-                ready_data['от гостя']['столбец2'] = '  '
+                ready_data['от гостя']['столбец2'].append('  ')
             if i.branch_id is not None:
-                ready_data['от гостя']['столбец3'] = i.branch.name
+                ready_data['от гостя']['столбец3'].append(i.branch.name)
             else:
-                ready_data['от гостя']['столбец3'] = '  '
+                ready_data['от гостя']['столбец3'].append('  ')
 
-            ready_data['от гостя']['столбец4'] = 'от гостя'
+            ready_data['от гостя']['столбец4'].append( 'от гостя')
 
             if i.date_purchase is not None:
-                ready_data['от гостя']['столбец5'] = i.date_purchase.strftime("%Y-%m-%d %H:%M")
+                ready_data['от гостя']['столбец5'].append( i.date_purchase.strftime("%Y-%m-%d %H:%M"))
             else:
-                ready_data['от гостя']['столбец5'] = '  '
+                ready_data['от гостя']['столбец5'].append('  ')
 
             if i.client_name is not None:
-                ready_data['от гостя']['столбец6'] = i.client_name + ' \n' + i.client_number
+                ready_data['от гостя']['столбец6'].append( i.client_name + ' \n' + i.client_number)
             else:
-                ready_data['от гостя']['столбец6'] = '  '
+                ready_data['от гостя']['столбец6'].append('  ')
 
             if i.product_name is not None:
-                ready_data['от гостя']['столбец7'] = i.product_name
+                ready_data['от гостя']['столбец7'].append(i.product_name)
             else:
-                ready_data['от гостя']['столбец7'] = '  '
+                ready_data['от гостя']['столбец7'].append('  ')
 
             if i.comment is not None:
-                ready_data['от гостя']['столбец8'] = i.comment
+                ready_data['от гостя']['столбец8'].append(i.comment)
             else:
-                ready_data['от гостя']['столбец8'] = '  '
+                ready_data['от гостя']['столбец8'].append('  ')
 
             if i.date_return is not None:
-                 ready_data['от гостя']['столбец9'] = i.date_return.strftime("%Y-%m-%d %H:%M")
+                 ready_data['от гостя']['столбец9'].append( i.date_return.strftime("%Y-%m-%d %H:%M"))
             else:
-                ready_data['от гостя']['столбец9'] = '  '
+                ready_data['от гостя']['столбец9'].append('  ')
 
             if i.product_name is not None:
-                ready_data['от гостя']['столбец10'] = i.product_name
+                ready_data['от гостя']['столбец10'].append( i.product_name)
             else:
-                ready_data['от гостя']['столбец10'] = '  '
+                ready_data['от гостя']['столбец10'].append( '  ')
 
-            ready_data['от гостя']['столбец11'] = 'не экспортировать в таблицу'
+            ready_data['от гостя']['столбец11'].append( 'не экспортировать в таблицу')
 
             if i.updated_at is not None:
-                ready_data['от гостя']['столбец12'] = i.updated_at.strftime("%Y-%m-%d %H:%M")
+                ready_data['от гостя']['столбец12'].append( i.updated_at.strftime("%Y-%m-%d %H:%M"))
             else:
-                ready_data['от гостя']['столбец12'] = '  '
+                ready_data['от гостя']['столбец12'].append('  ')
 
-            ready_data['от гостя']['столбец13'] = '  '
+            ready_data['от гостя']['столбец13'].append( '  ')
 
             if i.autonumber is not None:
-                ready_data['от гостя']['столбец14'] = i.autonumber
+                ready_data['от гостя']['столбец14'].append(i.autonumber)
             else:
-                ready_data['от гостя']['столбец14'] = '  '
+                ready_data['от гостя']['столбец14'].append('  ')
 
             if i.date_return is not None:
-                ready_data['от гостя']['столбец15'] = i.date_return.strftime("%Y-%m-%d %H:%M")
+                ready_data['от гостя']['столбец15'].append( i.date_return.strftime("%Y-%m-%d %H:%M"))
             else:
-                ready_data['от гостя']['столбец15'] = '  '
+                ready_data['от гостя']['столбец15'].append('  ')
 
             if i.subcategory_id is not None:
-                ready_data['от гостя']['столбец16'] = i.subcategory.name
+                ready_data['от гостя']['столбец16'].append(i.subcategory.name)
             else:
-                ready_data['от гостя']['столбец16'] = '  '
+                ready_data['от гостя']['столбец16'].append('  ')
             if i.producer_guilty is not None:
                 if i.producer_guilty:
-                    ready_data['от гостя']['столбец17'] = 'да'
+                    ready_data['от гостя']['столбец17'].append( 'да')
                 else:
-                    ready_data['от гостя']['столбец17'] = 'нет'
+                    ready_data['от гостя']['столбец17'].append('нет')
             else:
-                ready_data['от гостя']['столбец17'] = '  '
+                ready_data['от гостя']['столбец17'].append('  ')
 
-            ready_data['от гостя']['столбец18'] = '  '
-            ready_data['от гостя']['столбец19'] = '  '
+            ready_data['от гостя']['столбец18'].append('  ')
+            ready_data['от гостя']['столбец19'].append('  ')
 
-            ready_data['от гостя']['столбец20'] = '  '
+            ready_data['от гостя']['столбец20'].append('  ')
 
             if i.corrections is not None:
-                ready_data['от гостя']['столбец21'] = i.corrections
+                ready_data['от гостя']['столбец21'].append(i.corrections)
             else:
-                ready_data['от гостя']['столбец21'] = '  '
+                ready_data['от гостя']['столбец21'].append('  ')
 
-            ready_data['от гостя']['столбец22'] = '  '
+            ready_data['от гостя']['столбец22'].append('  ')
         else:
-            ready_data['от магазина']['столбец1'] = str(i.id)
+            ready_data['от магазина']['столбец1'].append(str(i.id))
             if i.created_at is not None:
-                ready_data['от магазина']['столбец2'] = i.created_at.strftime("%Y-%m-%d %H:%M")
+                ready_data['от магазина']['столбец2'].append(i.created_at.strftime("%Y-%m-%d %H:%M"))
             else:
-                ready_data['от магазина']['столбец2'] = '  '
+                ready_data['от магазина']['столбец2'].append('  ')
             if i.branch_id is not None:
-                ready_data['от магазина']['столбец3'] = i.branch.name
+                ready_data['от магазина']['столбец3'].append( i.branch.name)
             else:
-                ready_data['от магазина']['столбец3'] = '  '
+                ready_data['от магазина']['столбец3'].append('  ')
 
-            ready_data['от магазина']['столбец4'] = 'от магазина'
-
-            if i.product_name is not None:
-                ready_data['от магазина']['столбец5'] = i.product_name
-            else:
-                ready_data['от магазина']['столбец5'] = '  '
+            ready_data['от магазина']['столбец4'].append('от магазина')
 
             if i.product_name is not None:
-                ready_data['от магазина']['столбец6'] = i.product_name
+                ready_data['от магазина']['столбец5'].append(i.product_name)
             else:
-                ready_data['от магазина']['столбец6'] = '  '
+                ready_data['от магазина']['столбец5'].append('  ')
+
+            if i.product_name is not None:
+                ready_data['от магазина']['столбец6'].append(i.product_name)
+            else:
+                ready_data['от магазина']['столбец6'].append('  ')
 
             if i.date_return is not None:
-                ready_data['от магазина']['столбец7'] = i.date_return.strftime("%Y-%m-%d %H:%M")
+                ready_data['от магазина']['столбец7'].append(i.date_return.strftime("%Y-%m-%d %H:%M"))
             else:
-                ready_data['от магазина']['столбец7'] = '  '
+                ready_data['от магазина']['столбец7'].append('  ')
 
             if i.comment is not None:
-                ready_data['от магазина']['столбец8'] = i.comment
+                ready_data['от магазина']['столбец8'].append(i.comment)
             else:
-                ready_data['от магазина']['столбец8'] = '  '
+                ready_data['от магазина']['столбец8'].append('  ')
 
-            ready_data['от магазина']['столбец9'] = 'не экспортировать в таблицу'
+            ready_data['от магазина']['столбец9'].append( 'не экспортировать в таблицу')
 
             if i.updated_at is not None:
-                ready_data['от магазина']['столбец10'] = i.updated_at.strftime("%Y-%m-%d %H:%M")
+                ready_data['от магазина']['столбец10'].append( i.updated_at.strftime("%Y-%m-%d %H:%M"))
             else:
-                ready_data['от магазина']['столбец10'] = '  '
+                ready_data['от магазина']['столбец10'].append('  ')
 
-            ready_data['от магазина']['столбец11'] = '  '
+            ready_data['от магазина']['столбец11'].append('  ')
 
             if i.autonumber is not None:
-                ready_data['от магазина']['столбец12'] = i.autonumber
+                ready_data['от магазина']['столбец12'].append( i.autonumber)
             else:
-                ready_data['от магазина']['столбец12'] = '  '
+                ready_data['от магазина']['столбец12'].append('  ')
 
             if i.date_return is not None:
-                ready_data['от магазина']['столбец13'] = i.date_return.strftime("%Y-%m-%d %H:%M")
+                ready_data['от магазина']['столбец13'].append(i.date_return.strftime("%Y-%m-%d %H:%M"))
             else:
-                ready_data['от магазина']['столбец13'] = '  '
+                ready_data['от магазина']['столбец13'].append('  ')
 
             if i.subcategory_id is not None:
-                ready_data['от магазина']['столбец14'] = i.subcategory.name
+                ready_data['от магазина']['столбец14'].append(i.subcategory.name)
             else:
-                ready_data['от магазина']['столбец14'] = '  '
+                ready_data['от магазина']['столбец14'].append('  ')
 
 
             if i.producer_guilty is not None:
                 if i.producer_guilty:
-                    ready_data['от магазина']['столбец15'] = 'да'
+                    ready_data['от магазина']['столбец15'].append('да')
                 else:
-                    ready_data['от магазина']['столбец15'] = 'нет'
+                    ready_data['от магазина']['столбец15'].append( 'нет')
             else:
-                ready_data['от магазина']['столбец15'] = '  '
+                ready_data['от магазина']['столбец15'].append('  ')
 
-            ready_data['от магазина']['столбец16'] = '  '
-            ready_data['от магазина']['столбец17'] = '  '
+            ready_data['от магазина']['столбец16'].append('  ')
+            ready_data['от магазина']['столбец17'] .append('  ')
 
-            ready_data['от магазина']['столбец18'] = '  '
+            ready_data['от магазина']['столбец18'].append('  ')
 
             if i.corrections is not None:
                 ready_data['от магазина']['столбец19'] = i.corrections
             else:
-                ready_data['от магазина']['столбец19'] = '  '
+                ready_data['от магазина']['столбец19'].append('  ')
 
     filename = 'files/ТЗ для бота Жалобы ' +  datetime.now().strftime("%Y-%m-%d") + '.xlsx'
 
     with pd.ExcelWriter(filename , engine='xlsxwriter') as writer:
         for key, value in ready_data.items():
-            # Prepare a structured format for DataFrame
-            structured_data = {col: [] for col in value.keys()}  # Create empty lists for each column
-
-            # Find the maximum length of the columns
-            max_length = max(len(v) for v in value.values())
-
-            # Populate the structured data
-            for i in range(max_length):
-                for column in value.keys():
-                    if i < len(value[column]):
-                        structured_data[column].append(value[column][i])
-                    else:
-                        structured_data[column].append(' ')  # Fill with an empty string if index exceeds
-
-            # Create DataFrame
-            df = pd.DataFrame(structured_data)
-
-            # Write DataFrame to Excel
-            df.to_excel(writer, sheet_name=key[:30], index=False)
+            pd.DataFrame(value).to_excel(writer, sheet_name=str(key[:30]))
     return filename
 
 
