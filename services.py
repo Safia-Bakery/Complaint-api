@@ -256,8 +256,13 @@ def generate_excell( data ):
             else:
                 ready_data['от гостя']['дата покупки'].append('  ')
 
-            if i.client_name is not None:
+            if i.client_name is not None and i.client_number is not None:
                 ready_data['от гостя']['имя гостя, номер телефона'].append( i.client_name + ' \n' + i.client_number)
+            elif i.client_name is not None:
+                ready_data['от гостя']['имя гостя, номер телефона'].append(i.client_name)
+
+            elif i.client_number is not None:
+                ready_data['от гостя']['имя гостя, номер телефона'].append(i.client_number)
             else:
                 ready_data['от гостя']['имя гостя, номер телефона'].append('  ')
 
