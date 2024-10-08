@@ -404,7 +404,7 @@ def generate_excell( data ):
             else:
                 ready_data['от магазина']['Корректирующие действия'].append('  ')
 
-    filename = 'дкк отчёт ' +  datetime.now().strftime("%d.%m.%Y") + '.xlsx'
+    filename = 'files/дкк отчёт ' +  datetime.now().strftime("%d.%m.%Y") + '.xlsx'
 
     with pd.ExcelWriter(filename , engine='xlsxwriter') as writer:
         for key, value in ready_data.items():
