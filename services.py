@@ -362,6 +362,7 @@ def generate_excell( data ):
             },
     }
     for i in data:
+        print(i)
         if i.is_client:
             ready_data['от гостя']['столбец1'] = str(i.id)
             if i.created_at is not None:
