@@ -410,9 +410,9 @@ def generate_excell( data ):
             if i.updated_at is not None:
                 ready_data['от гостя']['столбец12'] = i.updated_at.strftime("%Y-%m-%d %H:%M")
             else:
-                ready_data['от гостя']['столбец12'] = ' '
+                ready_data['от гостя']['столбец12'] = '  '
 
-            ready_data['от гостя']['столбец13'] = ' '
+            ready_data['от гостя']['столбец13'] = '  '
 
             if i.autonumber is not None:
                 ready_data['от гостя']['столбец14'] = i.autonumber
@@ -496,9 +496,14 @@ def generate_excell( data ):
 
             if i.date_return is not None:
                 ready_data['от магазина']['столбец13'] = i.date_return.strftime("%Y-%m-%d %H:%M")
+            else:
+                ready_data['от магазина']['столбец13'] = '  '
 
             if i.subcategory_id is not None:
                 ready_data['от магазина']['столбец14'] = i.subcategory.name
+            else:
+                ready_data['от магазина']['столбец14'] = '  '
+
 
             if i.producer_guilty is not None:
                 if i.producer_guilty:
