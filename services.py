@@ -526,8 +526,9 @@ def generate_excell( data ):
     filename = 'files/ТЗ для бота Жалобы ' +  datetime.now().strftime("%Y-%m-%d") + '.xlsx'
 
     with pd.ExcelWriter(filename , engine='xlsxwriter') as writer:
-        for key,value in ready_data.items():
-            pd.DataFrame(value,index=[0]).to_excel(writer,sheet_name=str(key[:30]))
+        for key, value in ready_data.items():
+            df = pd.DataFrame(value)
+            df.to_excel(writer, sheet_name=key[:30], index=False)
     return filename
 
 
