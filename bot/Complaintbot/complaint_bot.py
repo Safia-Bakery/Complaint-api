@@ -17,8 +17,7 @@ from telegram.ext import (
     ConversationHandler,
     MessageHandler,
     filters,
-    CallbackQueryHandler,
-    PicklePersistence
+     PicklePersistence
 )
 
 
@@ -32,7 +31,6 @@ load_dotenv()
 backend_location = '/var/www/Complaint-api'
 
 BOTTOKEN = os.environ.get('BOT_TOKEN_COMPLAINT')
-persistence = PicklePersistence(filepath='complaint.pickle')
 MANU, BRANCH,SETTINGS,CATEGORY,SUBCATEGORY,NAME,PHONENUMBER,COMMENT,PHOTO,DATEPURCHASE,DATERETURN,VERIFY,BRANCHUPDATE,PRODUCTNAME= range(14)
 
 
@@ -493,7 +491,6 @@ def main() -> None:
             VERIFY:[MessageHandler(filters.TEXT,verify)],
             BRANCHUPDATE:[MessageHandler(filters.TEXT,branch_update)],
             PRODUCTNAME:[MessageHandler(filters.TEXT,productname)]
-
         },
         fallbacks=[CommandHandler('start',start)],
         allow_reentry=True,

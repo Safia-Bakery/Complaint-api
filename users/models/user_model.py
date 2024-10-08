@@ -87,5 +87,8 @@ class Users(Base):
     communication = relationship("Communications",back_populates="user")
     created_at = Column(DateTime(timezone=True), default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    branch_id = Column(BIGINT, ForeignKey("branchs.id"))
+    branch = relationship("Branchs",back_populates="user")
+    stamp = Column(String,nullable=True)
 
 

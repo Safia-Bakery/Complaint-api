@@ -74,6 +74,7 @@ class Branchs(Base):
     rating = relationship("Ratings",back_populates="branch")
     created_at = Column(DateTime(timezone=True), default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    user = relationship("Users",back_populates="branch")
 
 
 

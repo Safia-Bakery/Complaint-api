@@ -5,6 +5,7 @@ from passlib.context import CryptContext
 import bcrypt
 import random
 import string
+import pandas as pd
 
 from sqlalchemy.orm import Session
 from typing import Union, Any
@@ -185,6 +186,356 @@ def send_file_telegram(bot_token, chat_id, file_path, caption=None, reply_to_mes
             # Make a POST request to the Telegram API
             response = requests.post(url, data=data, files=files)
         return response.json()
+
+
+
+def generate_excell( data ):
+    ready_data = {
+        'от гостя': {
+            "1":[
+                'автоматически',
+                '№ заявки',
+            ],
+            "2":   [
+                'автоматически в день заполнения заявки',
+                'Дата:',
+            ],
+            "3":   [
+                'заполняет тот, кто подает заявку',
+                'Название магазина'
+            ],
+            "4":   [
+                'заполняет тот, кто подает заявку',
+                'от кого жалоба: гость или магазин'
+            ],
+            "5":   [
+                'дата покупки',
+                '  '
+            ],
+            "6":   [
+                'заполняет тот, кто подает заявку',
+                'имя гостя, номер телефона',
+            ],
+            "7":   [
+                'заполняет тот, кто подает заявку',
+                'Наименование изделия/ СиМ',
+            ],
+            "8":   [
+                'заполняет тот, кто подает заявку',
+                'Причина жалобы',
+            ],
+            "9":   [
+                'заполняет тот, кто подает заявку',
+                'дата поступления в магазин',
+            ],
+            "10":  [
+                'заполняет тот, кто подает заявку',
+                'Описание жалобы',
+            ],
+            "11":  [
+                'заполняет тот, кто подает заявку',
+                'фото/видео?',
+            ],
+            "12":  [
+                'автоматически во время нажатия в обработке',
+                'дата принятия заявки',
+            ],
+            "13":  [
+                'заполняет отдел качества',
+                'ответ магазину',
+            ],
+            "14":  [
+                'заполняет тот, кто подает заявку',
+                'номер машины/ Ф.И. водителя',
+            ],
+            "15":  [
+                'автоматически после нажатия принят товар',
+                'дата поступления на фабрику',
+            ],
+            "16":  [
+                'заполняет отдел качества',
+                'категория жалобы',
+            ],
+            "17":  [
+                'заполняет отдел качества',
+                'Есть ли вина цеха/магазина (да/нет)',
+            ],
+            "18":  [
+                'заполняет отдел качества',
+                'Номер и название виновного цеха/магазина',
+            ],
+            "19":  [
+                'заполняет отдел качества',
+                'бригадир/ управляющий'
+            ],
+            "20":  [
+                'заполняет отдел качества',
+                'причины',
+            ],
+            "21":  [
+                'заполняет отдел качества',
+                'Корректирующие действия'
+            ],
+            "22":  [
+                'текст для гостя для заключения',
+                'заключение лаборатории'
+            ],
+        },
+        'от магазина': {
+                "1": [
+                    'автоматически',
+                    '№ заявки',
+                ],
+                "2": [
+                    'автоматически в день заполнения заявки',
+                    'Дата:',
+                ],
+                "3": [
+                    'заполняет тот, кто подает заявку',
+                    'Название магазина'
+                ],
+                "4": [
+                    'заполняет тот, кто подает заявку',
+                    'от кого жалоба: гость или магазин'
+                ],
+
+                "5": [
+                    'заполняет тот, кто подает заявку',
+                    'Причина жалобы',
+                ],
+                "6": [
+                    'заполняет тот, кто подает заявку',
+                    'Наименование изделия/ СиМ',
+                ],
+                "7": [
+                    'заполняет тот, кто подает заявку',
+                    'дата поступления в магазин',
+                ],
+                "8": [
+                    'заполняет тот, кто подает заявку',
+                    'Описание жалобы',
+                ],
+                "9": [
+                    'заполняет тот, кто подает заявку',
+                    'фото/видео?',
+                ],
+                "10": [
+                    'автоматически во время нажатия в обработке',
+                    'дата принятия заявки',
+                ],
+                "11": [
+                    'заполняет отдел качества',
+                    'ответ магазину',
+                ],
+                "12": [
+                    'заполняет тот, кто подает заявку',
+                    'номер машины/ Ф.И. водителя',
+                ],
+                "13": [
+                    'автоматически после нажатия принят товар',
+                    'дата поступления на фабрику',
+                ],
+                "14": [
+                    'заполняет отдел качества',
+                    'категория жалобы',
+                ],
+                "15": [
+                    'заполняет отдел качества',
+                    'Есть ли вина цеха/магазина (да/нет)',
+                ],
+                "16": [
+                    'заполняет отдел качества',
+                    'Номер и название виновного цеха/магазина',
+                ],
+                "17": [
+                    'заполняет отдел качества',
+                    'бригадир/ управляющий'
+                ],
+                "18": [
+                    'заполняет отдел качества',
+                    'причины',
+                ],
+                "19": [
+                    'заполняет отдел качества',
+                    'Корректирующие действия'
+                ],
+            },
+    }
+    for i in data:
+        if i.is_client:
+
+            ready_data['от гостя']['1'] = i.id
+            if i.created_at is not None:
+                ready_data['от гостя']['2'] =  i.created_at.strftime("%Y-%m-%d %H:%M")
+            else:
+                ready_data['от гостя']['2'] = '  '
+            if i.branch_id is not None:
+                ready_data['от гостя']['3'] = i.branch.name
+            else:
+                ready_data['от гостя']['3'] = '  '
+
+            ready_data['от гостя']['4'] = 'от гостя'
+
+            if i.date_purchase is not None:
+                ready_data['от гостя']['5'] = i.date_purchase.strftime("%Y-%m-%d %H:%M")
+            else:
+                ready_data['от гостя']['5'] = '  '
+
+            if i.client_name is not None:
+                ready_data['от гостя']['6'] = i.client_name + ' \n' + i.client_number
+            else:
+                ready_data['от гостя']['6'] = '  '
+
+            if i.product_name is not None:
+                ready_data['от гостя']['7'] = i.product_name
+            else:
+                ready_data['от гостя']['7'] = '  '
+
+            if i.comment is not None:
+                ready_data['от гостя']['8'] = i.comment
+            else:
+                ready_data['от гостя']['8'] = '  '
+
+            if i.date_return is not None:
+                 ready_data['от гостя']['9'] = i.date_return.strftime("%Y-%m-%d %H:%M")
+            else:
+                ready_data['от гостя']['9'] = '  '
+
+            if i.product_name is not None:
+                ready_data['от гостя']['10'] = i.product_name
+            else:
+                ready_data['от гостя']['10'] = '  '
+
+            ready_data['от гостя']['11'] = 'не экспортировать в таблицу'
+
+            if i.updated_at is not None:
+                ready_data['от гостя']['12'] = i.updated_at.strftime("%Y-%m-%d %H:%M")
+            else:
+                ready_data['от гостя']['12'] = ' '
+
+            ready_data['от гостя']['13'] = ' '
+
+            if i.autonumber is not None:
+                ready_data['от гостя']['14'] = i.autonumber
+            else:
+                ready_data['от гостя']['14'] = '  '
+
+            if i.date_return is not None:
+                ready_data['от гостя']['15'] = i.date_return.strftime("%Y-%m-%d %H:%M")
+            else:
+                ready_data['от гостя']['15'] = '  '
+
+            if i.subcategory_id is not None:
+                ready_data['от гостя']['16'] = i.subcategory.name
+            else:
+                ready_data['от гостя']['16'] = '  '
+            if i.producer_guilty is not None:
+                if i.producer_guilty:
+                    ready_data['от гостя']['17'] = 'да'
+                else:
+                    ready_data['от гостя']['17'] = 'нет'
+            else:
+                ready_data['от гостя']['17'] = '  '
+
+            ready_data['от гостя']['18'] = '  '
+            ready_data['от гостя']['19'] = '  '
+
+            ready_data['от гостя']['20'] = '  '
+
+            if i.corrections is not None:
+                ready_data['от гостя']['21'] = i.corrections
+            else:
+                ready_data['от гостя']['21'] = '  '
+
+            ready_data['от гостя']['22'] = '  '
+        else:
+            ready_data['от магазина']['1'] = i.id
+            if i.created_at is not None:
+                ready_data['от магазина']['2'] = i.created_at.strftime("%Y-%m-%d %H:%M")
+            else:
+                ready_data['от магазина']['2'] = '  '
+            if i.branch_id is not None:
+                ready_data['от магазина']['3'] = i.branch.name
+            else:
+                ready_data['от магазина']['3'] = '  '
+
+            ready_data['от магазина']['4'] = 'от магазина'
+
+            if i.product_name is not None:
+                ready_data['от магазина']['5'] = i.product_name
+            else:
+                ready_data['от магазина']['5'] = '  '
+
+            if i.product_name is not None:
+                ready_data['от магазина']['6'] = i.product_name
+            else:
+                ready_data['от магазина']['6'] = '  '
+
+            if i.date_return is not None:
+                ready_data['от магазина']['7'] = i.date_return.strftime("%Y-%m-%d %H:%M")
+            else:
+                ready_data['от магазина']['7'] = '  '
+
+            if i.comment is not None:
+                ready_data['от магазина']['8'] = i.comment
+            else:
+                ready_data['от магазина']['8'] = '  '
+
+            ready_data['от магазина']['9'] = 'не экспортировать в таблицу'
+
+            if i.updated_at is not None:
+                ready_data['от магазина']['10'] = i.updated_at.strftime("%Y-%m-%d %H:%M")
+            else:
+                ready_data['от магазина']['10'] = ' '
+
+            ready_data['от магазина']['11'] = ' '
+
+            if i.autonumber is not None:
+                ready_data['от магазина']['12'] = i.autonumber
+            else:
+                ready_data['от магазина']['12'] = '  '
+
+            if i.date_return is not None:
+                ready_data['от магазина']['13'] = i.date_return.strftime("%Y-%m-%d %H:%M")
+
+            if i.subcategory_id is not None:
+                ready_data['от магазина']['14'] = i.subcategory.name
+
+            if i.producer_guilty is not None:
+                if i.producer_guilty:
+                    ready_data['от магазина']['15'] = 'да'
+                else:
+                    ready_data['от магазина']['15'] = 'нет'
+            else:
+                ready_data['от магазина']['15'] = '  '
+
+            ready_data['от магазина']['16'] = '  '
+            ready_data['от магазина']['17'] = '  '
+
+            ready_data['от магазина']['18'] = '  '
+
+            if i.corrections is not None:
+                ready_data['от магазина']['19'] = i.corrections
+            else:
+                ready_data['от магазина']['19'] = '  '
+
+    filename = 'files/ТЗ для бота Жалобы ' +  datetime.now().strftime("%Y-%m-%d") + '.xlsx'
+
+    with pd.ExcelWriter(filename , engine='xlsxwriter') as writer:
+        for key,value in ready_data.items():
+            pd.DataFrame(value).to_excel(writer,sheet_name=str(key[:30]))
+    return filename
+
+
+
+
+
+
+
+
+
+
+
 
 
 

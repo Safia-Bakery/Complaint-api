@@ -250,7 +250,6 @@ async def update_complaint(
         if not query.file:
             if query.subcategory.category_id == 1:
                 send_textmessage_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=quality_id, message_text=text_to_send)
-
             else:
                 send_textmessage_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=service_id, message_text=text_to_send)
         else:

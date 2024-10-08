@@ -14,6 +14,7 @@ from hrcomplaint.routes.hr_routes import hr_router
 from complaints.routes.route import complain_router
 #from routes import user_route,product_route
 from stats.routes.route import  stats_router
+from complaints.routes.complaints_excell import excell_router
 
 app = FastAPI()
 
@@ -24,6 +25,7 @@ app.include_router(user_router, tags=["User"])
 app.include_router(hr_router, tags=["HR"])
 app.include_router(complain_router, tags=["Complaint"])
 app.include_router(stats_router,tags=['Statistics'])
+app.include_router(excell_router,tags=['Excell'])
 
 Page.max_size = 500
 
