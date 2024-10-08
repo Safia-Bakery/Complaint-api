@@ -363,8 +363,7 @@ def generate_excell( data ):
     }
     for i in data:
         if i.is_client:
-
-            ready_data['от гостя']['столбец1'] = i.id
+            ready_data['от гостя']['столбец1'] = str(i.id)
             if i.created_at is not None:
                 ready_data['от гостя']['столбец2'] =  i.created_at.strftime("%Y-%m-%d %H:%M")
             else:
@@ -449,7 +448,7 @@ def generate_excell( data ):
 
             ready_data['от гостя']['столбец22'] = '  '
         else:
-            ready_data['от магазина']['столбец1'] = i.id
+            ready_data['от магазина']['столбец1'] = str(i.id)
             if i.created_at is not None:
                 ready_data['от магазина']['столбец2'] = i.created_at.strftime("%Y-%m-%d %H:%M")
             else:
