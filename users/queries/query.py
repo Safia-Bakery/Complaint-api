@@ -7,9 +7,9 @@ from sqlalchemy.sql import func
 from datetime import datetime,timedelta
 from sqlalchemy import or_, and_, Date, cast
 from uuid import UUID
-from users.models.user_model import Users  
-from users.models import user_model
-from users.schemas import user_sch
+from query.models.user_model import Users
+from query.models import user_model
+from query.schemas import user_sch
 
 
 def hash_password(password):

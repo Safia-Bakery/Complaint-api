@@ -1,29 +1,17 @@
 from fastapi import APIRouter
 from sqlalchemy.orm import Session
-from fastapi import Depends, HTTPException, status, Form, UploadFile
-from fastapi_pagination import paginate, Page, add_pagination
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from typing import Optional, Annotated
-from fastapi.middleware.trustedhost import TrustedHostMiddleware
-from uuid import UUID
-import random
+from fastapi import Depends, HTTPException, Form, UploadFile
+from fastapi_pagination import paginate, Page
+from typing import Annotated
 from services import (
-    create_access_token,
-    create_refresh_token,
     get_db,
     get_current_user,
-    verify_password,
-    verify_refresh_token,
     generate_random_filename,
     send_file_telegram,
     send_textmessage_telegram
 )
 
 from typing import Optional
-from fastapi.middleware.cors import CORSMiddleware
-from typing import Union, Any
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-
 
 from dotenv import load_dotenv
 import os
@@ -169,7 +157,6 @@ async def update_category(
         db: Session = Depends(get_db),
         current_user: user_sch.User = Depends(get_current_user)):
     return hr_crud.update_hrcategory(db, form_data)
-
 
 
 @hr_router.get('/hello/world', summary="Get messages", tags=["HR"])

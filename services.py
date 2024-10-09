@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-import pytz
 from jose import jwt
 from passlib.context import CryptContext
 import bcrypt
@@ -14,18 +13,15 @@ from fastapi import (
     HTTPException,
     status,
 )
-import smtplib
-from database import SessionLocal, Base,engine
+from database import SessionLocal
 from pydantic import ValidationError
 from fastapi.security import OAuth2PasswordBearer
-import xml.etree.ElementTree as ET
 import os
 from users.schemas import user_sch
 #from schemas import user_schema
 #from queries import user_query as crud
 from dotenv import load_dotenv
 import requests
-from users.queries import query
 
 load_dotenv()
 

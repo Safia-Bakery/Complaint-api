@@ -1,12 +1,7 @@
 from fastapi import APIRouter
 from sqlalchemy.orm import Session
 from fastapi import Depends, HTTPException, status
-from fastapi_pagination import paginate, Page, add_pagination
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from typing import Optional
-from fastapi.middleware.trustedhost import TrustedHostMiddleware
-from uuid import UUID
-import random
+from fastapi_pagination import paginate, Page
 from services import (
     create_access_token,
     create_refresh_token,
@@ -16,13 +11,11 @@ from services import (
     verify_refresh_token,
 )
 from typing import Optional
-from fastapi.middleware.cors import CORSMiddleware
-from typing import Union, Any
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordRequestForm
 
 
 from dotenv import load_dotenv
-import os
+
 load_dotenv()
 from users.queries import query
 from users.schemas import user_sch
@@ -98,7 +91,7 @@ async def reset_password(
     db: Session = Depends(get_db),
     current_user: user_sch.User = Depends(get_current_user)
 ):
-    query.user_update(db=db,id=form_data.id,password=form_data.password,phone_number=form_data.phone_number,name=form_data.name,role_id=form_data.role_id,status=form_data.status)
+    query.user_update(db=db, id=form_data.id, password=form_data.password, phone_number=form_data.phone_number, name=form_data.name, role_id=form_data.role_id, status=form_data.status)
     return {"message":"Updated successfully",'success':True}
 
 
@@ -110,7 +103,7 @@ async def get_users(name: Optional[str]=None,
                     role_id: Optional[int]=None,
                     db: Session = Depends(get_db),
                     current_user: user_sch.User = Depends(get_current_user)):
-    users = query.get_users(db,name=name,id=id,phone_number=phone_number,status=status,role_id=role_id)
+    users = query.get_users(db, name=name, id=id, phone_number=phone_number, status=status, role_id=role_id)
     return paginate(users)
 
 
@@ -121,7 +114,7 @@ async def create_role(
     current_user: user_sch.User = Depends(get_current_user)
 ):
     
-    return query.create_role(db=db,form_data=form_data)
+    return query.create_role(db=db, form_data=form_data)
 
 
 
@@ -133,7 +126,7 @@ async def get_roles(
     db: Session = Depends(get_db),
     current_user: user_sch.User = Depends(get_current_user)
 ):
-    roles = query.get_roles(db,name=name,status=status,id=id)
+    roles = query.get_roles(db, name=name, status=status, id=id)
     return paginate(roles)
 
 
@@ -145,10 +138,10 @@ async def update_role(
 ):
     
     if form_data.permissions is not None:
-        query.delete_permissions(db=db,role_id=form_data.id)
+        query.delete_permissions(db=db, role_id=form_data.id)
         for permission in form_data.permissions:
-            query.create_permissions(db=db,role_id=form_data.id,action_id=permission)
-    role_update = query.update_role(db=db,form_data=form_data)
+            query.create_permissions(db=db, role_id=form_data.id, action_id=permission)
+    role_update = query.update_role(db=db, form_data=form_data)
     return role_update
 
 
