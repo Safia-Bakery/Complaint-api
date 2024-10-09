@@ -12,16 +12,11 @@ def get_product(db:Session,id):
 
 def create_product(db:Session,product):
     query = IikoProducts(
-            id=product['id'],
-            num=product['num'],
-            code=product['code'],
-            producttype=product['type'],
-            name=product['name'],
-            price=0,
-            total_price=product['defaultSalePrice'],
-            parentid=product['parent'],
-            quantity=0,
-           mainunit=product['mainUnit']
+        id=product['id'],
+        name=product['name'],
+        num=product['num'],
+        code=product['code'],
+        parentid=product['parentid']
     )
 
     db.add(query)
