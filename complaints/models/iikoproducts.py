@@ -17,6 +17,7 @@ import uuid
 
 from database import SessionLocal, Base
 
+
 class IikoProducts(Base):
     __tablename__ = "iiko_products"
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)

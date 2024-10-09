@@ -6,6 +6,30 @@ from fastapi import Form
 from uuid import UUID
 
 
+class Folder(BaseModel):
+    id: UUID
+    num: Optional[str] = None
+    code: Optional[str] = None
+    name: str
+    parent_id: Optional[UUID] = None
+    category: Optional[str] = None
+    description: Optional[str] = None
+
+    class Config:
+        orm_mode = True
+
+
+class Product(BaseModel):
+    id: UUID
+    name: Optional[str] = None
+    num: Optional[str] = None
+    code: Optional[str] = None
+    parentid: Optional[str] = None
+    status: Optional[int] = 1
+
+    class Config:
+        orm_mode = True
+
 
 class CreateCountry(BaseModel):
     name: Optional[str]=None

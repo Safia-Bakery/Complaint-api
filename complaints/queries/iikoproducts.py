@@ -3,6 +3,14 @@ from sqlalchemy.orm import Session
 from complaints.models.iikoproducts import IikoProducts
 
 
+def get_found_products(db: Session, q):
+    query = db.query(IikoProducts).filter(q.lower() in IikoProducts.name.lower()).all()
+    return query
+
+
+def get_child_products(db: Session, id):
+    query = db.query(IikoProducts).filter(IikoProducts.parentid == id).all()
+    return query
 
 
 def get_product(db:Session,id):
