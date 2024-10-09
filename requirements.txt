@@ -12,3 +12,5 @@ openpyxl
 requests
 alembic
 python-telegram-bot
+pandas
+apscheduler

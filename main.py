@@ -15,6 +15,8 @@ from complaints.routes.route import complain_router
 #from routes import user_route,product_route
 from stats.routes.route import  stats_router
 from complaints.routes.complaints_excell import excell_router
+from complaints.routes.folders import folder_cron_router
+from complaints.routes.products import product_cron_router
 
 app = FastAPI()
 
@@ -26,6 +28,9 @@ app.include_router(hr_router, tags=["HR"])
 app.include_router(complain_router, tags=["Complaint"])
 app.include_router(stats_router,tags=['Statistics'])
 app.include_router(excell_router,tags=['Excell'])
+app.include_router(folder_cron_router,tags=['Folders'])
+app.include_router(product_cron_router,tags=['Products'])
+
 
 Page.max_size = 500
 
