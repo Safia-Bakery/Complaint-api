@@ -10,6 +10,8 @@ from complaints.schemas import schema
 from users.schemas import user_sch
 from typing import Optional
 from complaints.queries import iikofolders
+from complaints.queries.iikoproducts import get_iiko_products_by_parent_id
+from uuid import UUID
 
 
 folder_cron_router = APIRouter()
@@ -17,22 +19,23 @@ folder_cron_router = APIRouter()
 timezonetash = pytz.timezone('Asia/Tashkent')
 
 
-@folder_cron_router.get("/folders", summary="Get parent folders", tags=["Folders"], response_model=Page[schema.Folder])
-async def get_parent_folders(db: Session = Depends(get_db), current_user: user_sch.User = Depends(get_current_user)):
+@folder_cron_router.get("/folders/search/", summary="Search folders", tags=["Folders"], response_model=schema.Folder)
+async def get_searched_folders(
+        name: Optional[str] =None,
+        parent_id : Optional[UUID] = None,
+        db: Session = Depends(get_db),
+        current_user: user_sch.User = Depends(get_current_user)):
+    folders_result = iikofolders.get_found_folders(db=db, name=name, parent_id=parent_id)
+    if name is not None and parent_id is not None:
+        products_result = get_iiko_products_by_parent_id(db=db, parent_id=parent_id, name=name)
+    else:
+        products_result = []
 
-    return paginate(iikofolders.get_parent_folders(db))
+    results = {
+        "folders": folders_result,
+        "products": products_result
+    }
 
-
-@folder_cron_router.get("/folders/{id}", summary="Get child folders", tags=["Folders"], response_model=Page[schema.Folder])
-async def get_child_folders(id: int, db: Session = Depends(get_db), current_user: user_sch.User = Depends(get_current_user)):
-
-    return paginate(iikofolders.get_child_folders(db=db, id=id)),
-
-
-@folder_cron_router.get("/search/folders", summary="Search folders", tags=["Folders"], response_model=schema.Folder)
-async def get_searched_folders(q: str = Query(None, description="Search folder"), db: Session = Depends(get_db),
-                               current_user: user_sch.User = Depends(get_current_user)):
-    results = iikofolders.get_found_folders(db=db, q=q)
     return results
 
 

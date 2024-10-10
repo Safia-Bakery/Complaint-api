@@ -7,9 +7,16 @@ def get_parent_folders(db: Session):
     return query
 
 
-def get_found_folders(db: Session, q):
-    query = db.query(IikoFolders).filter(q.lower() in IikoFolders.name.lower()).all()
-    return query
+def get_found_folders(db: Session, name, parent_id):
+    query = db.query(IikoFolders)
+    if name is None and parent_id is None:
+        query  = query.filter(IikoFolders.parent_id.is_(None))
+    else:
+        if name:
+            query = query.filter(IikoFolders.name.ilike(f"%{name}%"))
+        if parent_id:
+            query = query.filter(IikoFolders.parent_id == parent_id)
+    return query.all()
 
 
 def get_child_folders(db: Session, id):

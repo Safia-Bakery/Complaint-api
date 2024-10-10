@@ -51,3 +51,13 @@ def update_create_products(db:Session, data):
             update_product(db, product)
         else:
             create_product(db, product)
+
+
+def get_iiko_products_by_parent_id(db: Session, parent_id,name):
+    query = db.query(IikoProducts)
+    if parent_id is not None:
+        query = query.filter(IikoProducts.parentid == parent_id)
+    if name is not None:
+        query = query.filter(IikoProducts.name.ilike(f"%{name}%"))
+
+    return query.all()
