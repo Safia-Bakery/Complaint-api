@@ -19,14 +19,14 @@ folder_cron_router = APIRouter()
 timezonetash = pytz.timezone('Asia/Tashkent')
 
 
-@folder_cron_router.get("/folders/search/", summary="Search folders", tags=["Folders"], response_model=schema.Folder)
+@folder_cron_router.get("/folders/search/", summary="Search folders", tags=["Folders"])
 async def get_searched_folders(
         name: Optional[str] =None,
-        parent_id : Optional[UUID] = None,
+        parent_id : Optional[str] = None,
         db: Session = Depends(get_db),
         current_user: user_sch.User = Depends(get_current_user)):
     folders_result = iikofolders.get_found_folders(db=db, name=name, parent_id=parent_id)
-    if name is not None and parent_id is not None:
+    if name is not None or parent_id is not None:
         products_result = get_iiko_products_by_parent_id(db=db, parent_id=parent_id, name=name)
     else:
         products_result = []

@@ -17,6 +17,8 @@ from database import SessionLocal
 from pydantic import ValidationError
 from fastapi.security import OAuth2PasswordBearer
 import os
+
+from users.queries import query
 from users.schemas import user_sch
 #from schemas import user_schema
 #from queries import user_query as crud

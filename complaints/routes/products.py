@@ -16,17 +16,6 @@ product_cron_router = APIRouter()
 timezonetash = pytz.timezone('Asia/Tashkent')
 
 
-# @product_cron_router.get("/folders/{id}/products", summary="Get child products", tags=["Products"], response_model=Page[schema.Product])
-# async def get_child_products(id: int, db: Session = Depends(get_db), current_user: user_sch.User = Depends(get_current_user)):
-#
-#     return paginate(iikoproducts.get_child_products(db=db, id=id))
-
-
-# @product_cron_router.get("/products/search/", summary="Search products", tags=["Products"], response_model=schema.Product)
-# async def get_searched_products(q: str = Query(None, description="Search product"), db: Session = Depends(get_db),
-#                                 current_user: user_sch.User = Depends(get_current_user)):
-#     results = iikoproducts.get_found_products(db=db, q=q)
-#     return results
 
 
 def products_job(db: Session):
