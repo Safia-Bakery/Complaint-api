@@ -11,7 +11,6 @@ from sqlalchemy.orm import Session
 from services import (
     get_db,
     get_current_user
-
 )
 
 load_dotenv()

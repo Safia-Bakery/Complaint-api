@@ -2,9 +2,7 @@ from sqlalchemy.orm import Session
 from complaints.models.iikofolders import IikoFolders
 
 
-def get_parent_folders(db: Session):
-    query = db.query(IikoFolders).filter(IikoFolders.parent_id is None).all()
-    return query
+
 
 
 def get_found_folders(db: Session, name, parent_id):
@@ -19,9 +17,7 @@ def get_found_folders(db: Session, name, parent_id):
     return query.all()
 
 
-def get_child_folders(db: Session, id):
-    query = db.query(IikoFolders).filter(IikoFolders.parent_id == id).all()
-    return query
+
 
 
 def get_folder(db:Session,id):

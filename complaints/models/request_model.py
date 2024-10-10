@@ -1,3 +1,5 @@
+from sqlalchemy.dialects.postgresql import UUID, ARRAY, JSONB
+
 import pytz
 from sqlalchemy import (
     Column,
@@ -14,6 +16,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
 from database import  Base
+
 
 
 timezonetash = pytz.timezone("Asia/Tashkent")
@@ -134,6 +137,7 @@ class Complaints(Base):
     client = relationship("Clients",back_populates="complaint")
     changes = Column(JSONB, nullable=True)
     updated_by = Column(String,nullable=True)
+    complaint_product = relationship("ComplaintProducts",back_populates="complaint")
     created_at = Column(DateTime(timezone=True), default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 

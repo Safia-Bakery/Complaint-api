@@ -50,3 +50,4 @@ Base = declarative_base()
 # from complaints.models.helpdesk import HelpDeskChats
 # from complaints.models.iikofolders import IikoFolders
 # from complaints.models.iikoproducts import IikoProducts
+# from complaints.models.complaint_products import ComplaintProducts

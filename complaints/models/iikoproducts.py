@@ -26,6 +26,7 @@ class IikoProducts(Base):
     code = Column(String, nullable=True)
     parentid = Column(String)
     status = Column(Integer, default=1)
+    complaint_product = relationship("ComplaintProducts", back_populates="product")
     created_at = Column(DateTime(timezone=True), default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
