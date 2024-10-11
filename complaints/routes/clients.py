@@ -10,7 +10,7 @@ from complaints.utils.utils import file_name_generator
 from services import get_db, get_current_user
 from complaints.utils.api_requests import ApiRoutes
 from users.schemas import user_sch
-from complaints.queries.clients import get_clients
+from complaints.queries.clients import get_clients as get_clients_query
 
 client_router = APIRouter()
 
@@ -24,4 +24,4 @@ async def get_clients(
     """
     Get all clients
     """
-    return get_clients(db=db, telegram_id=telegram_id)
+    return get_clients_query(db=db, telegram_id=telegram_id)
