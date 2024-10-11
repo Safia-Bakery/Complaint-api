@@ -138,6 +138,10 @@ class Complaints(Base):
     changes = Column(JSONB, nullable=True)
     updated_by = Column(String,nullable=True)
     complaint_product = relationship("ComplaintProducts",back_populates="complaint")
+    first_response = Column(String,nullable=True)
+    first_response_time = Column(DateTime,nullable=True)
+    second_response = Column(String,nullable=True)
+    second_response_time = Column(DateTime,nullable=True)
     created_at = Column(DateTime(timezone=True), default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
