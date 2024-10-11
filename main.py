@@ -18,6 +18,7 @@ from complaints.routes.complaints_excell import excell_router
 from complaints.routes.folders import folder_cron_router
 from complaints.routes.products import product_cron_router
 from complaints.routes.v2complaints import v2_complaints_router
+from complaints.routes.files import files_router
 
 app = FastAPI()
 
@@ -32,6 +33,7 @@ app.include_router(excell_router,tags=['Excell'])
 app.include_router(folder_cron_router,tags=['Folders'])
 app.include_router(product_cron_router,tags=['Products'])
 app.include_router(v2_complaints_router,prefix="/api/v2",tags=['V2 Complaints'])
+app.include_router(files_router,prefix="/api/v2",tags=['Files'])
 
 
 Page.max_size = 500

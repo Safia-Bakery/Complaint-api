@@ -29,6 +29,3 @@ def startup_event():
     trigger = CronTrigger(hour=15, minute=00, second=00, timezone=timezonetash)  # Set the desired time for the function to run (here, 12:00 PM)
     scheduler.add_job(products_job, trigger=trigger, args=[next(get_db())])
     scheduler.start()
-
-
-

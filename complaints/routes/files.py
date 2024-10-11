@@ -15,7 +15,7 @@ files_router = APIRouter()
 timezonetash = pytz.timezone('Asia/Tashkent')
 
 
-@files_router.on_event("/files")
+@files_router.on_event("/files/")
 async def folders_job(
         file: UploadFile = File(...),
         db: Session = Depends(get_db),
