@@ -91,7 +91,7 @@ class Users(Base):
     branch_id = Column(BIGINT, ForeignKey("branchs.id"))
     branch = relationship("Branchs",back_populates="user")
     stamp = Column(String,nullable=True)
-    complaint_stamp = relationship("ComplaintStampers",back_populates="complaint")
+    complaint_stamp = relationship("ComplaintStampers",back_populates="user")
 
 
 
