@@ -15,8 +15,6 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from sqlalchemy.dialects.postgresql import UUID, ARRAY, JSONB
 from database import SessionLocal, Base
-from sqlalchemy.dialects.postgresql import UUID, ARRAY, JSONB
-
 
 class ComplaintProducts(Base):
     __tablename__ = "complaint_products"

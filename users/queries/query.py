@@ -130,3 +130,7 @@ def create_permissions(db:Session,role_id:int,action_id:int):
 def get_pages(db:Session):
     return db.query(user_model.Pages).all()
 
+
+def get_users_by_role(db:Session,role_id:int):
+    return db.query(Users).filter(Users.role_id == role_id).all()
+

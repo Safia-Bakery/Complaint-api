@@ -14,9 +14,6 @@ from typing import Optional
 from fastapi.security import OAuth2PasswordRequestForm
 
 
-from dotenv import load_dotenv
-
-load_dotenv()
 from users.queries import query
 from users.schemas import user_sch
 
@@ -152,6 +149,16 @@ async def get_permissions(
 ):
     permissions = query.get_pages(db)
     return paginate(permissions)
+
+
+@user_router.get('/users/{role_id}',summary="Get users by role",tags=["User"],response_model=Page[user_sch.Users])
+async def get_users_by_role(
+    role_id:int,
+    db: Session = Depends(get_db),
+    current_user: user_sch.User = Depends(get_current_user)
+):
+    users = query.get_users_by_role(db, role_id=role_id)
+    return paginate(users)
 
 
 

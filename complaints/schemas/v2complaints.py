@@ -5,6 +5,8 @@ from datetime import datetime, time
 from fastapi import Form
 from uuid import UUID
 from complaints.schemas.files import GetFiles
+from complaints.schemas.complaint_stampers import GetComplaintStampers
+
 
 
 class ProductsGet(BaseModel):
@@ -99,6 +101,7 @@ class V2GetOneComplaint(BaseModel):
     second_response: Optional[str] = None
     first_response_time: Optional[datetime] = None
     second_response_time: Optional[datetime] = None
+    complaint_stamp : Optional[list[GetComplaintStampers]] = None
 
     class Config:
         orm_mode = True

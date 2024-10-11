@@ -80,6 +80,9 @@ class Users(BaseModel):
 
 
 
+
+
+
 class UserCreate(BaseModel):
     username:str
     password:str

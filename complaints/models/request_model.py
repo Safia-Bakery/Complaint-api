@@ -144,6 +144,7 @@ class Complaints(Base):
     second_response_time = Column(DateTime,nullable=True)
     created_at = Column(DateTime(timezone=True), default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    complaint_stamp = relationship("ComplaintStampers",back_populates="complaint")
 
 
 

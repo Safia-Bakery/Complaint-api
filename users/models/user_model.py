@@ -53,6 +53,7 @@ class Roles(Base):
     id = Column(BIGINT, primary_key=True, index=True)
     name = Column(String, nullable=True)
     status = Column(Integer, default=1)
+    has_stamp = Column(Integer, default=0)
     permission = relationship("Permissions",back_populates="role")
     user = relationship("Users",back_populates="role")
     created_at = Column(DateTime(timezone=True), default=func.now())
@@ -90,5 +91,8 @@ class Users(Base):
     branch_id = Column(BIGINT, ForeignKey("branchs.id"))
     branch = relationship("Branchs",back_populates="user")
     stamp = Column(String,nullable=True)
+    complaint_stamp = relationship("ComplaintStampers",back_populates="complaint")
+
+
 
 
