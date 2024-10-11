@@ -14,6 +14,17 @@ from complaints.queries import iikoproducts
 from complaints.queries.v2complaints import create_complaint,get_my_complaints,get_one_complaint,update_complaint,update_otk_status
 from complaints.queries.complaint_product import create_complaint_product
 from complaints.queries.files import create_file
+import os
+from dotenv import load_dotenv
+
+
+load_dotenv()
+
+
+BOT_TOKEN_HR = os.getenv("BOT_TOKEN_HR")
+BOT_TOKEN_COMPLAINT = os.getenv("BOT_TOKEN_COMPLAINT")
+
+
 
 
 
