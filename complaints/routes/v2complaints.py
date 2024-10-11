@@ -74,7 +74,7 @@ async def create_complaints(
         for i in form_data.files:
             file_sended = send_file_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=call_center_id, file_path=i,
                                              caption=None, reply_to_message_id=message_sended['result']['message_id'])
-    return create_complaint
+    return complaint_created
 
 
 
