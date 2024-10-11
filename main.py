@@ -20,6 +20,7 @@ from complaints.routes.products import product_cron_router
 from complaints.routes.v2complaints import v2_complaints_router
 from complaints.routes.files import files_router
 from complaints.routes.complaint_stamp import stamp_router
+from users.routes.v2roles import roles_router
 
 app = FastAPI()
 
@@ -36,6 +37,7 @@ app.include_router(product_cron_router,tags=['Products'])
 app.include_router(v2_complaints_router,prefix="/api/v2",tags=['V2 Complaints'])
 app.include_router(files_router,prefix="/api/v2",tags=['Files'])
 app.include_router(stamp_router,prefix="/api/v2",tags=['Stamp'])
+app.include_router(roles_router,prefix="/api/v2",tags=['Roles'])
 
 
 Page.max_size = 500

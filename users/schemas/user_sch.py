@@ -112,6 +112,7 @@ class ResetPassword(BaseModel):
 class RoleCreate(BaseModel):
     name:str
     status:Optional[int]=1
+    has_stamp: Optional[str]=None
 
 
 
@@ -145,3 +146,4 @@ class RoleUpdate(BaseModel):
     name:Optional[str]=None
     status:Optional[int]=None
     permissions:Optional[list[int]]=None
+    has_stamp : Optional[str]=None
