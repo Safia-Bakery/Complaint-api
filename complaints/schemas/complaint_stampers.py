@@ -28,6 +28,7 @@ class GetComplaintStampers(BaseModel):
 
     user_id : Optional[int] = None
     user : Optional[GetStampUsers] = None
+    status : Optional[int] = None
 
     class Config:
         orm_mode = True
