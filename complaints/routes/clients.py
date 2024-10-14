@@ -12,6 +12,7 @@ from complaints.utils.api_requests import ApiRoutes
 from users.schemas import user_sch
 from complaints.queries.clients import get_clients as get_clients_query
 from complaints.schemas.clients import GetClients
+from complaints.queries.branchs import get_branchs
 
 
 client_router = APIRouter()
@@ -26,4 +27,7 @@ async def get_clients(
     """
     Get all clients
     """
-    return get_clients_query(db=db, telegram_id=telegram_id)
+    query = get_clients_query(db=db, telegram_id=telegram_id)
+    branch = get_branchs(db=db, id=query.branch_id)
+    query.branch = branch
+    return query
