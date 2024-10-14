@@ -38,6 +38,21 @@ async def get_roles(
     return v2roles.get_has_stamp(db=db)
 
 
+@roles_router.get("/users/has_stamp/{id}", summary="Get role by id",response_model=list[user_sch.Users])
+async def get_users(
+    role_id:int,
+    db: Session = Depends(get_db),
+    current_user: user_sch.User = Depends(get_current_user),
+):
+    """
+    Get role by id
+    """
+    return v2roles.get_users(db=db,role_id=role_id)
+
+
+
+
+
 
 
 
