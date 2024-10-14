@@ -90,6 +90,7 @@ class UserCreate(BaseModel):
     role_id:Optional[int]=None
     phone_number: Optional[str]=None,
     status:Optional[int]=1
+    telegram_id: Optional[str]=None
     
 
 class UserUpdate(BaseModel):
@@ -101,6 +102,7 @@ class UserUpdate(BaseModel):
     role_id:Optional[int]=None
     status:Optional[int]=None
     stamp : Optional[str]=None
+    telegram_id: Optional[str]=None
 
 
 
