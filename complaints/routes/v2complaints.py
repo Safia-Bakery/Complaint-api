@@ -81,14 +81,26 @@ async def create_complaints(
 @v2_complaints_router.get("/complaints/my/", response_model=Page[V2ComplaintsGet])
 async def get_complaints_function(
         client_id:int,
-        status : Optional[int]=None,
+        archived: Optional[bool] = False,
+        in_process: Optional[bool] = False,
+        results : Optional[bool] = False,
+
         db: Session = Depends(get_db),
         current_user: user_sch.User = Depends(get_current_user),
 ):
     """
     Get all complaints
     """
-    return paginate(get_my_complaints(db=db, client_id=client_id, status=status))
+    if archived:
+        pass
+    elif in_process:
+        pass
+    elif results:
+        pass
+    else:
+        return paginate(get_my_complaints(db=db, client_id=client_id))
+
+
 
 
 
@@ -152,6 +164,9 @@ async def update_complaint_api(
 
     if form_data.status == 1 and query.subcategory.category_id in [1, 5]:
         update_otk_status(db=db, complaint_id=query.id, otk_status=1)
+
+
+
 
     # if status is one send message to channel
     # if complaint category_id is equal to one thend send message to quality group

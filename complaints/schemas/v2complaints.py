@@ -48,19 +48,25 @@ class V2UpdateComplaints(BaseModel):
     product_name: Optional[str] = None
     client_name: Optional[str] = None
     client_number: Optional[str] = None
+    client_gender: Optional[str] = None
     date_purchase: Optional[datetime] = None
     date_return: Optional[datetime] = None
+    is_returned: Optional[bool] = None
+    producer_guilty: Optional[bool] = None
     comment: Optional[str] = None
+    otk_status: Optional[int] = None
+    deny_reason: Optional[str] = None
+    status: Optional[int] = None
+    corrections: Optional[str] = None
+    autonumber: Optional[str] = None
     subcategory_id: Optional[int] = None
     branch_id: Optional[int] = None
     expense: Optional[float] = None
-    status: Optional[int] = None
-    otk_status: Optional[int] = None
-    products : Optional[list[UUID]] = None
-    client_id: Optional[int] = None
     first_response: Optional[str] = None
     second_response: Optional[str] = None
     id : int
+
+
     class Config:
         orm_mode = True
 

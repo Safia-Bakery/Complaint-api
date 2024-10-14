@@ -34,10 +34,26 @@ def create_complaint(db:Session,form_data:V2CreateComplaints):
 
 
 
-def get_my_complaints(db:Session,client_id,status):
+def get_my_complaints(db:Session,client_id,):
     query = db.query(Complaints).filter(Complaints.client_id==client_id)
-    if status is not None:
-        query = query.filter(Complaints.status==status)
+    return query.all()
+
+
+def get_my_archive_complaints(db:Session,client_id):
+    query = db.query(Complaints).filter(
+        Complaints.client_id==client_id,
+        Complaints.status.in_([2,3]),
+        Complaints.updated_at >= datetime.now(timezone_tash).date()
+    )
+    return query.all()
+
+
+def get_my_result_complaints(db:Session,client_id):
+    query = db.query(Complaints).filter(
+        Complaints.client_id==client_id,
+        Complaints.status.in_([2,3]),
+
+    )
     return query.all()
 
 
@@ -67,14 +83,29 @@ def update_complaint(db:Session,complaint_id,form_data:V2UpdateComplaints):
         query.branch_id = form_data.branch_id
     if form_data.expense is not None:
         query.expense = form_data.expense
-    if form_data.client_id is not None:
-        query.client_id = form_data.client_id
+
     if form_data.first_response is not None:
         query.first_response_time = datetime.now(timezone_tash)
         query.first_response = form_data.first_response
     if form_data.second_response is not None:
         query.second_response_time = datetime.now(timezone_tash)
         query.second_response = form_data.second_response
+    if form_data.status is not None:
+        query.status = form_data.status
+    if form_data.otk_status is not None:
+        if form_data.otk_status in [2,3]:
+            query.status = form_data.status
+        query.otk_status = form_data.otk_status
+
+    if form_data.autonumber is not None:
+        query.autonumber = form_data.autonumber
+    if form_data.corrections is not None:
+        query.corrections = form_data.corrections
+    if form_data.deny_reason is not None:
+        query.deny_reason = form_data.deny_reason
+
+
+
     db.commit()
 
     return query
