@@ -18,7 +18,7 @@ def get_has_stamp(db: Session):
     return query
 
 def get_users(db:Session,role_id:int):
-    query = db.query(Users).filter(Users.role_id==role_id).all()
+    query = db.query(Users).filter(Users.role_id==role_id,Users.stamp.isnot(None)).all()
     return query
 
 
