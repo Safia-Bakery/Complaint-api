@@ -11,7 +11,6 @@ from users.schemas.v2role import GetStampUsers
 class CreateComplaintStampers(BaseModel):
     complaint_id: int
     user_id: int
-    user : Optional[GetStampUsers] = None
     class Config:
         orm_mode = True
 
