@@ -13,6 +13,7 @@ from users.schemas import user_sch
 
 
 def get_has_stamp(db: Session):
-    return db.query(Roles).filter(Roles.has_stamp == 1).all()
-
+    # get role where user has stamp is not null
+    query = db.query(Roles).join(Users).filter(Users.stamp.isnot(None)).all()
+    return query
 
