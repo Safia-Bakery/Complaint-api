@@ -6,7 +6,7 @@ from fastapi import Form
 from uuid import UUID
 from complaints.schemas.files import GetFiles
 from complaints.schemas.complaint_stampers import GetComplaintStampers
-
+from complaints.schemas.subcategories import GetSubCategories
 
 
 class ProductsGet(BaseModel):
@@ -103,6 +103,7 @@ class V2GetOneComplaint(BaseModel):
     date_return: Optional[datetime] = None
     comment: Optional[str] = None
     subcategory_id: Optional[int] = None
+    subcategory: Optional[GetSubCategories] = None
     branch_id: Optional[int] = None
     expense: Optional[float] = None
     complaint_product : Optional[list[ComplaintProducts]] = None
@@ -115,6 +116,8 @@ class V2GetOneComplaint(BaseModel):
     complaint_stamp : Optional[list[GetComplaintStampers]] = None
     certificate: Optional[str]=None
 
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
     class Config:
         orm_mode = True
 

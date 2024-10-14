@@ -12,6 +12,7 @@ from complaints.utils.api_requests import ApiRoutes
 from users.schemas import user_sch
 from complaints.queries.clients import get_clients as get_clients_query
 
+
 client_router = APIRouter()
 
 
