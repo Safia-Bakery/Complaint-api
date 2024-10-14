@@ -75,6 +75,8 @@ class Users(BaseModel):
     created_at: Optional[datetime]=None
     updated_at: Optional[datetime]=None
     role: Optional[Roles]=None
+    stamp   : Optional[str]=None
+    telegram_id: Optional[str]=None
     class Config:
         orm_mode = True
 

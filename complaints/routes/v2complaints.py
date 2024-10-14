@@ -80,7 +80,7 @@ async def create_complaints(
 
 @v2_complaints_router.get("/complaints/my/", response_model=Page[V2ComplaintsGet])
 async def get_complaints_function(
-        client_id:Optional[int]=None,
+        client_id:int,
         status : Optional[int]=None,
         db: Session = Depends(get_db),
         current_user: user_sch.User = Depends(get_current_user),
