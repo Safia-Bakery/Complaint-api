@@ -40,7 +40,7 @@ async def delete_complaint_stampers_api(
     Delete complaint
     """
     query = delete_complaint_stampers(db=db, complaint_id=form_data.complaint_id, user_id=form_data.user_id)
-    return {"status": "success", "message": "Complaint deleted successfully"}
+    return {"status": "success", "message": query}
 
 
 
