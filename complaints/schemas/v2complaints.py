@@ -4,6 +4,9 @@ from typing import Optional, Annotated, Dict
 from datetime import datetime, time
 from fastapi import Form
 from uuid import UUID
+
+from complaints.schemas.branchs import GetBranchs
+from complaints.schemas.clients import GetClients
 from complaints.schemas.files import GetFiles
 from complaints.schemas.complaint_stampers import GetComplaintStampers
 from complaints.schemas.subcategories import GetSubCategories
@@ -82,17 +85,16 @@ class V2ComplaintsGet(BaseModel):
     date_return: Optional[datetime] = None
     comment: Optional[str] = None
     subcategory_id: Optional[int] = None
+    client : Optional[GetClients] = None
     branch_id: Optional[int] = None
     subcategory: Optional[GetSubCategories] = None
-
+    branch : Optional[GetBranchs] = None
     expense: Optional[float] = None
     complaint_product : Optional[list[ComplaintProducts]] = None
     client_id: Optional[int] = None
-    first_response: Optional[str] = None
-    second_response: Optional[str] = None
-    first_response_time: Optional[datetime] = None
-    second_response_time: Optional[datetime] = None
-    # file : Optional[list[GetFiles]] = None
+    created_at: Optional[datetime] = None
+    status : Optional[int] = None
+    id : int
 
     class Config:
         orm_mode = True
@@ -117,6 +119,7 @@ class V2GetOneComplaint(BaseModel):
     second_response_time: Optional[datetime] = None
     complaint_stamp : Optional[list[GetComplaintStampers]] = None
     certificate: Optional[str]=None
+    id : int
 
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
