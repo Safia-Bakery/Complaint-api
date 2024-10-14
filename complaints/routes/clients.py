@@ -11,12 +11,13 @@ from services import get_db, get_current_user
 from complaints.utils.api_requests import ApiRoutes
 from users.schemas import user_sch
 from complaints.queries.clients import get_clients as get_clients_query
+from complaints.schemas.clients import GetClients
 
 
 client_router = APIRouter()
 
 
-@client_router.get("/clients/")
+@client_router.get("/clients/", response_model=GetClients)
 async def get_clients(
         telegram_id: int ,
         db: Session = Depends(get_db),
