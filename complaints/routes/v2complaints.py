@@ -11,7 +11,15 @@ from complaints.utils.api_requests import ApiRoutes
 from users.schemas import user_sch
 from complaints.schemas.v2complaints import V2CreateComplaints,V2ComplaintsGet,V2GetOneComplaint,V2UpdateComplaints
 from complaints.queries import iikoproducts
-from complaints.queries.v2complaints import create_complaint,get_my_complaints,get_one_complaint,update_complaint,update_otk_status
+from complaints.queries.v2complaints import (create_complaint,
+                                             get_my_complaints,
+                                             get_one_complaint,
+                                             update_complaint,
+                                             update_otk_status,
+                                                get_my_archive_complaints,
+                                                get_my_result_complaints,
+                                                get_my_inprocess_complaints,
+                                             )
 from complaints.queries.complaint_product import create_complaint_product
 from complaints.queries.files import create_file
 import os
@@ -92,11 +100,11 @@ async def get_complaints_function(
     Get all complaints
     """
     if archived:
-        pass
+        return paginate(get_my_archive_complaints(db=db, client_id=client_id))
     elif in_process:
-        pass
+        return paginate(get_my_inprocess_complaints(db=db, client_id=client_id))
     elif results:
-        pass
+        return paginate(get_my_result_complaints(db=db, client_id=client_id))
     else:
         return paginate(get_my_complaints(db=db, client_id=client_id))
 

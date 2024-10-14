@@ -43,7 +43,7 @@ def get_my_archive_complaints(db:Session,client_id):
     query = db.query(Complaints).filter(
         Complaints.client_id==client_id,
         Complaints.status.in_([2,3]),
-        Complaints.updated_at >= datetime.now(timezone_tash).date()
+        Complaints.updated_at > datetime.now(timezone_tash).date()
     )
     return query.all()
 
@@ -51,8 +51,15 @@ def get_my_archive_complaints(db:Session,client_id):
 def get_my_result_complaints(db:Session,client_id):
     query = db.query(Complaints).filter(
         Complaints.client_id==client_id,
-        Complaints.status.in_([2,3]),
+        Complaints.status.in_([2]),
+        Complaints.updated_at <= datetime.now(timezone_tash).date()
+    )
+    return query.all()
 
+def get_my_inprocess_complaints(db:Session,client_id):
+    query = db.query(Complaints).filter(
+        Complaints.client_id==client_id,
+        Complaints.status.in_([0,1]),
     )
     return query.all()
 
