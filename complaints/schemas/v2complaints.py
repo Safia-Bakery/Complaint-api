@@ -83,6 +83,8 @@ class V2ComplaintsGet(BaseModel):
     comment: Optional[str] = None
     subcategory_id: Optional[int] = None
     branch_id: Optional[int] = None
+    subcategory: Optional[GetSubCategories] = None
+
     expense: Optional[float] = None
     complaint_product : Optional[list[ComplaintProducts]] = None
     client_id: Optional[int] = None
