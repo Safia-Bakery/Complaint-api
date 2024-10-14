@@ -17,7 +17,7 @@ from telegram.ext import (
     ConversationHandler,
     MessageHandler,
     filters,
-     PicklePersistence
+    PicklePersistence, CallbackQueryHandler
 )
 
 
@@ -458,7 +458,11 @@ async def verify(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=ReplyKeyboardMarkup([["Оформить жалобу", "Настройки"]],resize_keyboard=True)
         )
         return MANU
-    
+
+
+
+async def handle_callback_query(update:Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    pass
 
 
 
@@ -469,9 +473,11 @@ async def verify(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 def main() -> None:
     """Run the bot."""
+    callback_query_handler = CallbackQueryHandler(handle_callback_query)
     # Create the Application and pass it your bot's token.
     persistence = PicklePersistence(filepath="complaintbotcommunication")
     application = Application.builder().token(BOTTOKEN).persistence(persistence).build()
+    application.add_handler(callback_query_handler)
     #add states phone fullname category desction and others 
     conv_handler = ConversationHandler(
         entry_points=[CommandHandler("start", start)],

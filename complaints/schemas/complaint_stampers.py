@@ -25,6 +25,7 @@ class DeleteComplaintStampers(BaseModel):
 class GetComplaintStampers(BaseModel):
     id :Optional[int] = None
     complaint_id : Optional[int] = None
+
     user_id : Optional[int] = None
     user : Optional[GetStampUsers] = None
 

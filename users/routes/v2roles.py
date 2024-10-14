@@ -16,7 +16,7 @@ from users.queries import query
 
 from users.schemas import user_sch
 from users.queries import v2roles
-from users.schemas.v2role import GetHastStamRoles
+from users.schemas.v2role import GetHastStamRoles,GetStampUsers
 
 
 
@@ -38,7 +38,7 @@ async def get_roles(
     return v2roles.get_has_stamp(db=db)
 
 
-@roles_router.get("/users/has_stamp/{id}", summary="Get role by id",response_model=list[user_sch.Users])
+@roles_router.get("/users/has_stamp/{id}", summary="Get role by id",response_model=list[GetStampUsers])
 async def get_users(
     role_id:int,
     db: Session = Depends(get_db),
