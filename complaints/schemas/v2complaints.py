@@ -38,6 +38,7 @@ class V2CreateComplaints(BaseModel):
     expense: Optional[float] = None
     products : Optional[list[UUID]] = None
     client_id: Optional[int] = None
+
     class Config:
         orm_mode = True
 
@@ -79,6 +80,10 @@ class V2ComplaintsGet(BaseModel):
     expense: Optional[float] = None
     complaint_product : Optional[list[ComplaintProducts]] = None
     client_id: Optional[int] = None
+    first_response: Optional[str] = None
+    second_response: Optional[str] = None
+    first_response_time: Optional[datetime] = None
+    second_response_time: Optional[datetime] = None
     # file : Optional[list[GetFiles]] = None
 
     class Config:
