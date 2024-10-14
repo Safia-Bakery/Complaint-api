@@ -107,6 +107,7 @@ class V2GetOneComplaint(BaseModel):
     first_response_time: Optional[datetime] = None
     second_response_time: Optional[datetime] = None
     complaint_stamp : Optional[list[GetComplaintStampers]] = None
+    certificate: Optional[str]=None
 
     class Config:
         orm_mode = True

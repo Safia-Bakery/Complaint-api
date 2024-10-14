@@ -42,7 +42,7 @@ def user_create(db: Session, user: user_sch.UserCreate):
     db.refresh(db_user)
     return db_user
 
-def user_update(db:Session,id:int,status:Optional[int]=None,password:Optional[str]=None,role_id:Optional[int]=None,phone_number:Optional[str]=None,name:Optional[str]=None):
+def user_update(db:Session,id:int,status:Optional[int]=None,password:Optional[str]=None,role_id:Optional[int]=None,phone_number:Optional[str]=None,name:Optional[str]=None,stamp:Optional[str]=None):
     db_user = db.query(Users).filter(Users.id == id).first()
     if status is not None:
         db_user.status = status
@@ -56,6 +56,8 @@ def user_update(db:Session,id:int,status:Optional[int]=None,password:Optional[st
         db_user.name = name
     if role_id is not None:
         db_user.role_id = role_id
+    if stamp is not None:
+        db_user.stamp = stamp
     db.commit()
     db.refresh(db_user)
     return db_user

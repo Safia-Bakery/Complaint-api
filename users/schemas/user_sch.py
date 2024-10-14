@@ -100,6 +100,7 @@ class UserUpdate(BaseModel):
     id:int
     role_id:Optional[int]=None
     status:Optional[int]=None
+    stamp : Optional[str]=None
 
 
 
@@ -146,4 +147,3 @@ class RoleUpdate(BaseModel):
     name:Optional[str]=None
     status:Optional[int]=None
     permissions:Optional[list[int]]=None
-    has_stamp : Optional[str]=None
