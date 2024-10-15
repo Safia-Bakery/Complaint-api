@@ -469,9 +469,10 @@ async def handle_callback_query(update:Update, context: ContextTypes.DEFAULT_TYP
     blank_reply_murkup = [[]]
     text_of_order = query.message.text
     requests_id = re.findall(r'\d+', text_of_order)[0]
-    crud.get_user_with_telegram_id(telegram_id=query.from_user.id)
-    crud.update_stamper_status(complaint_id=requests_id,user_id=query.id,status=selected_option)
-    await query.message.edit_text(text=text_of_order, reply_markup=InlineKeyboardMarkup(blank_reply_murkup))
+    user_query = crud.get_user_with_telegram_id(telegram_id=query.from_user.id)
+    if user_query:
+        crud.update_stamper_status(complaint_id=requests_id,user_id=user_query.id,status=selected_option)
+        await query.message.edit_text(text=text_of_order, reply_markup=InlineKeyboardMarkup(blank_reply_murkup))
 
 
 
