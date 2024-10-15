@@ -111,7 +111,7 @@ def create_file(complaint_id,file_name):
 def get_user_with_telegram_id(telegram_id):
     with SessionLocal() as db:
 
-        return db.query(Users).filter(Users.telegram_id==telegram_id).first()
+        return db.query(Users).filter(Users.telegram_id==str(telegram_id)).first()
 
 
 def update_stamper_status(complaint_id,user_id,status):
