@@ -9,6 +9,8 @@ from datetime import datetime, timedelta
 from sqlalchemy import or_, and_, Date, cast
 from uuid import UUID
 from complaints.models import request_model as model
+from users.models.user_model import Users
+from complaints.models.complaint_stampers import ComplaintStampers
 
 from database import SessionLocal, Base
 
@@ -105,6 +107,21 @@ def create_file(complaint_id,file_name):
         return query
 
 
+
+def get_user_with_telegram_id(telegram_id):
+    with SessionLocal() as db:
+
+        return db.query(Users).filter(Users.telegram_id==telegram_id).first()
+
+
+def update_stamper_status(complaint_id,user_id,status):
+    with SessionLocal() as db:
+        query = db.query(ComplaintStampers).filter(ComplaintStampers.complaint_id==complaint_id,ComplaintStampers.user_id==user_id).first()
+        if query:
+            query.status = status
+            db.commit()
+            db.refresh(query)
+        return query
 
 
 

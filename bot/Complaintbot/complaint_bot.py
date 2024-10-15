@@ -1,6 +1,7 @@
 import sys
 import os
 from datetime import datetime
+import re
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append('.')
@@ -462,7 +463,17 @@ async def verify(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def handle_callback_query(update:Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    pass
+    query = update.callback_query
+    selected_option = int(query.data)
+    message = query.message
+    blank_reply_murkup = [[]]
+    text_of_order = query.message.text
+    requests_id = re.findall(r'\d+', text_of_order)[0]
+    crud.get_user_with_telegram_id(telegram_id=query.from_user.id)
+    crud.update_stamper_status(complaint_id=requests_id,user_id=query.id,status=selected_option)
+    await query.message.edit_text(text=text_of_order, reply_markup=InlineKeyboardMarkup(blank_reply_murkup))
+
+
 
 
 
