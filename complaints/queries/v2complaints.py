@@ -25,7 +25,8 @@ def create_complaint(db:Session,form_data:V2CreateComplaints):
         branch_id=form_data.branch_id,
         expense=form_data.expense,
         client_id=form_data.client_id,
-        status = 0
+        status = 0,
+        manager_number = form_data.manager_number
     )
     db.add(query)
     db.commit()
@@ -110,6 +111,9 @@ def update_complaint(db:Session,complaint_id,form_data:V2UpdateComplaints):
         query.corrections = form_data.corrections
     if form_data.deny_reason is not None:
         query.deny_reason = form_data.deny_reason
+
+    if form_data.manager_number is not None:
+        query.manager_number = form_data.manager_number
 
 
 

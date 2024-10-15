@@ -146,6 +146,9 @@ class Complaints(Base):
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
     complaint_stamp = relationship("ComplaintStampers",back_populates="complaint")
     certificate = Column(String,nullable=True)
+    manager_number = Column(String,nullable=True)
+
+
 
 
 

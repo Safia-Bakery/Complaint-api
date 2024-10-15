@@ -41,6 +41,7 @@ class V2CreateComplaints(BaseModel):
     expense: Optional[float] = None
     products : Optional[list[UUID]] = None
     client_id: Optional[int] = None
+    manager_number : Optional[str] = None
 
     class Config:
         orm_mode = True
@@ -67,6 +68,7 @@ class V2UpdateComplaints(BaseModel):
     expense: Optional[float] = None
     first_response: Optional[str] = None
     second_response: Optional[str] = None
+    manager_number: Optional[str] = None
     id : int
 
 
@@ -103,6 +105,7 @@ class V2GetOneComplaint(BaseModel):
     product_name: Optional[str] = None
     client_name: Optional[str] = None
     client_number: Optional[str] = None
+    client_gender: Optional[str] = None
     date_purchase: Optional[datetime] = None
     date_return: Optional[datetime] = None
     comment: Optional[str] = None
@@ -120,6 +123,21 @@ class V2GetOneComplaint(BaseModel):
     complaint_stamp : Optional[list[GetComplaintStampers]] = None
     certificate: Optional[str]=None
     id : int
+    manager_number: Optional[str] = None
+    branch : Optional[GetBranchs] = None
+    client : Optional[GetClients] = None
+    status : Optional[int] = None
+    otk_status : Optional[int] = None
+    autonumber : Optional[str] = None
+    corrections : Optional[str] = None
+    deny_reason : Optional[str] = None
+    producer_guilty : Optional[bool] = None
+    is_returned : Optional[bool] = None
+    is_client : Optional[bool] = None
+    changes : Optional[Dict] = None
+    updated_by : Optional[str] = None
+    is_internal : Optional[int] = None
+
 
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
