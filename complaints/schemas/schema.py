@@ -73,6 +73,7 @@ class Country(BaseModel):
 class CreateCategory(BaseModel):
     name: Optional[str]=None
     status: Optional[int]=None
+    description: Optional[str]=None
     class Config:
         orm_mode = True
     
@@ -80,6 +81,7 @@ class UpdateCategory(BaseModel):
     id:int
     name: Optional[str]=None
     status: Optional[int]=None
+    description: Optional[str]=None
     class Config:
         orm_mode = True
 
@@ -87,6 +89,7 @@ class Category(BaseModel):
     id:int
     name: Optional[str]=None
     status: Optional[int]=None
+    description: Optional[str]=None
     created_at: Optional[datetime]=None
     updated_at: Optional[datetime]=None
     class Config:
@@ -94,6 +97,7 @@ class Category(BaseModel):
 
 class CategoryName(BaseModel):
     name: Optional[str]=None
+    description: Optional[str]=None
     class Config:
         orm_mode = True
 

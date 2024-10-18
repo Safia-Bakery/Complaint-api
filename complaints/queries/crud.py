@@ -56,7 +56,8 @@ def get_country(db: Session, id: Optional[int] = None,status:Optional[int]=None)
 def create_category(db: Session, form_data: schema.CreateCategory):
     query = request_model.Categories(
         name=form_data.name,
-        status=form_data.status
+        status=form_data.status,
+        description=form_data.description
     )
     db.add(query)
     db.commit()
@@ -69,6 +70,8 @@ def update_category(db:Session,form_data:schema.UpdateCategory):
         query.name = form_data.name
     if form_data.status is not None:
         query.status = form_data.status
+    if form_data.description is not None:
+        query.description = form_data.description
     db.commit()
     db.refresh(query)
     return query

@@ -41,6 +41,7 @@ class Categories(Base):
     __tablename__ = "categories"
     id = Column(BIGINT, primary_key=True, index=True)
     name = Column(String)
+    description = Column(String, nullable=True)
     status = Column(Integer, default=1)
     subcategory = relationship("Subcategories",back_populates="category")
     created_at = Column(DateTime(timezone=True), default=func.now())
