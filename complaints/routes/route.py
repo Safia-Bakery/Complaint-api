@@ -194,6 +194,7 @@ async def create_complaint(
 🧑‍💼Имя: {create_complaint.client_name}
 📞Номер: +{create_complaint.client_number}
 📍Филиал: {create_complaint.branch.name}
+🍰Блюдо: {create_complaint.product_name}
 🕘Дата покупки: {create_complaint.date_purchase}
 🚛Дата отправки: {create_complaint.date_return}\n
 💬Комментарии: {create_complaint.comment}
@@ -235,6 +236,7 @@ async def update_complaint(
 🔘Категория: {query.subcategory.name}
 🧑‍💼Имя: {query.client_name}
 📍Филиал: {query.branch.name}
+🍰Блюдо: {create_complaint.product_name}
 🕘Дата покупки: {query.date_purchase}
 🚛Дата отправки: {query.date_return}\n
 💬Комментарии: {query.comment}
