@@ -236,7 +236,7 @@ async def update_complaint(
 🔘Категория: {query.subcategory.name}
 🧑‍💼Имя: {query.client_name}
 📍Филиал: {query.branch.name}
-🍰Блюдо: {create_complaint.product_name}
+🍰Блюдо: {query.product_name}
 🕘Дата покупки: {query.date_purchase}
 🚛Дата отправки: {query.date_return}\n
 💬Комментарии: {query.comment}
