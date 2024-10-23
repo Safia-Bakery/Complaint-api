@@ -242,12 +242,12 @@ async def update_complaint(
 💬Комментарии: {query.comment}
             """
         if not query.file:
-            if query.subcategory.category_id == 1:
+            if query.subcategory.category_id in [1, 5]:
                 send_textmessage_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=quality_id, message_text=text_to_send)
             else:
                 send_textmessage_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=service_id, message_text=text_to_send)
         else:
-            if query.subcategory.category_id == 1:
+            if query.subcategory.category_id in [1, 5]:
                 message_sended = send_file_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=quality_id,
                                                     file_path=None, caption=text_to_send)
 
