@@ -247,7 +247,6 @@ async def update_complaint(
             else:
                 send_textmessage_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=service_id, message_text=text_to_send)
         else:
-
             if query.subcategory.category_id == 1:
                 message_sended = send_file_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=quality_id,
                                                     file_path=None, caption=text_to_send)
