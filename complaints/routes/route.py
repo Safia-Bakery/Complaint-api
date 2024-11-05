@@ -200,7 +200,7 @@ async def create_complaint(
 💬Комментарии: {create_complaint.comment}
             """
     call_center_id = create_complaint.subcategory.country.callcenter_id
-    if create_complaint.subcategory.category_id == 2:
+    if create_complaint.subcategory.category_id == 5:
         chat_id = create_complaint.subcategory.country.callcenter_id
     else:
         chat_id = call_center_id

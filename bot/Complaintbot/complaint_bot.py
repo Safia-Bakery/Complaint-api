@@ -445,7 +445,7 @@ async def verify(update: Update, context: ContextTypes.DEFAULT_TYPE):
 💬Комментарии: {create_complaint.comment}\n
 🍰Продукт: {create_complaint.product_name}
 """
-        if create_complaint.subcategory.category_id == 2:
+        if create_complaint.subcategory.category_id == 5:
             call_center_id = '-1001375080908'
         else:
             call_center_id = create_complaint.subcategory.country.callcenter_id
