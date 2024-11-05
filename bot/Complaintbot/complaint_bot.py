@@ -445,7 +445,10 @@ async def verify(update: Update, context: ContextTypes.DEFAULT_TYPE):
 💬Комментарии: {create_complaint.comment}\n
 🍰Продукт: {create_complaint.product_name}
 """
-        call_center_id = create_complaint.subcategory.country.callcenter_id
+        if create_complaint.subcategory.category_id == 2:
+            call_center_id = '-1001375080908'
+        else:
+            call_center_id = create_complaint.subcategory.country.callcenter_id
 
         #send to call center group
         message_sended = send_file_telegram(bot_token=BOTTOKEN,chat_id=call_center_id,file_path=None,caption=text_to_send)

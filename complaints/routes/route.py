@@ -200,18 +200,24 @@ async def create_complaint(
 💬Комментарии: {create_complaint.comment}
             """
     call_center_id = create_complaint.subcategory.country.callcenter_id
+    if create_complaint.subcategory.category_id == 2:
+        chat_id = create_complaint.subcategory.country.callcenter_id
+    else:
+        chat_id = call_center_id
+
     if not create_complaint.file:
-        send_textmessage_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=call_center_id, message_text=text_to_send)
+        send_textmessage_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=chat_id, message_text=text_to_send)
 
     else:
         # send_file_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=call_center_id, file_path=create_complaint.file[0].url,
         #                        caption=text_to_send)
 
-        message_sended = send_file_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=call_center_id,
+        message_sended = send_file_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=chat_id,
                                             file_path=None, caption=text_to_send)
 
+
         for i in create_complaint.file:
-            file_sended = send_file_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=call_center_id, file_path=i.url,
+            file_sended = send_file_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=chat_id, file_path=i.url,
                                              caption=None, reply_to_message_id=message_sended['result']['message_id'])
 
     return create_complaint
