@@ -148,6 +148,7 @@ class Complaints(Base):
     complaint_stamp = relationship("ComplaintStampers",back_populates="complaint")
     certificate = Column(String,nullable=True)
     manager_number = Column(String,nullable=True)
+    match_standard = Column(Integer,nullable=True)
 
 
 

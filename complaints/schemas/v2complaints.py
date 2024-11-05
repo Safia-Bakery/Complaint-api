@@ -69,6 +69,7 @@ class V2UpdateComplaints(BaseModel):
     first_response: Optional[str] = None
     second_response: Optional[str] = None
     manager_number: Optional[str] = None
+    match_standard:Optional[int] = None
     id : int
 
 
@@ -137,6 +138,7 @@ class V2GetOneComplaint(BaseModel):
     changes : Optional[Dict] = None
     updated_by : Optional[str] = None
     is_internal : Optional[int] = None
+    match_standard : Optional[int] = None
 
 
     created_at: Optional[datetime] = None

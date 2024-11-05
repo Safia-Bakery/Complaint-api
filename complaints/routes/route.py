@@ -207,7 +207,6 @@ async def create_complaint(
 
     if not create_complaint.file:
         send_textmessage_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=chat_id, message_text=text_to_send)
-
     else:
         # send_file_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=call_center_id, file_path=create_complaint.file[0].url,
         #                        caption=text_to_send)

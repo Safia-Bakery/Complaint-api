@@ -114,6 +114,8 @@ def update_complaint(db:Session,complaint_id,form_data:V2UpdateComplaints):
 
     if form_data.manager_number is not None:
         query.manager_number = form_data.manager_number
+    if form_data.match_standard is not None:
+        query.match_standard = form_data.match_standard
 
 
 
