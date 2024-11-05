@@ -201,7 +201,7 @@ async def create_complaint(
             """
     call_center_id = create_complaint.subcategory.country.callcenter_id
     if create_complaint.subcategory.category_id == 5:
-        chat_id = create_complaint.subcategory.country.callcenter_id
+        chat_id = '-1001375080908'
     else:
         chat_id = call_center_id
 
