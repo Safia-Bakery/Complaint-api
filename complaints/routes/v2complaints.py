@@ -68,19 +68,24 @@ async def create_complaints(
     🚛Дата отправки: {complaint_created.date_return}\n
     💬Комментарии: {complaint_created.comment}
                 """
+
     call_center_id = complaint_created.subcategory.country.callcenter_id
+    if complaint_created.subcategory.category_id == 5:
+        chat_id = '-1001375080908'
+    else:
+        chat_id = call_center_id
     if not form_data.files:
-        send_textmessage_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=call_center_id, message_text=text_to_send)
+        send_textmessage_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=chat_id, message_text=text_to_send)
 
     else:
         # send_file_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=call_center_id, file_path=create_complaint.file[0].url,
         #                        caption=text_to_send)
 
-        message_sended = send_file_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=call_center_id,
+        message_sended = send_file_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=chat_id,
                                             file_path=None, caption=text_to_send)
 
         for i in form_data.files:
-            file_sended = send_file_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=call_center_id, file_path=i,
+            file_sended = send_file_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=chat_id, file_path=i,
                                              caption=None, reply_to_message_id=message_sended['result']['message_id'])
     return complaint_created
 
