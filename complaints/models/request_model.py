@@ -149,6 +149,7 @@ class Complaints(Base):
     certificate = Column(String,nullable=True)
     manager_number = Column(String,nullable=True)
     match_standard = Column(Integer,nullable=True)
+    date_clients_complaint = Column(DateTime,nullable=True)
 
 
 
