@@ -137,8 +137,8 @@ def generate_stamp(report):
             image_height = 60  # Desired height of the image
             pdf.drawImage(image_path, image_x, image_y, width=image_width, height=image_height)
 
-        if user.user.signeture:
-            image_path = f"/var/www/Complaint-api/"+user.user.signeture
+        if user.user.signature:
+            image_path = f"/var/www/Complaint-api/"+user.user.signature
             image_x = signeture_x_start_position  # X position of the image
             image_y = signeture_y_start_position-60  # Y position of the image
             image_width = 90  # Desired width of the image
