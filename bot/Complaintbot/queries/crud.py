@@ -1,9 +1,7 @@
 from sqlalchemy.orm import Session
 from typing import Optional
 import bcrypt
-
 import pytz
-
 from sqlalchemy.sql import func
 from datetime import datetime, timedelta
 from sqlalchemy import or_, and_, Date, cast
@@ -119,6 +117,23 @@ def update_stamper_status(complaint_id,user_id,status):
         query = db.query(ComplaintStampers).filter(ComplaintStampers.complaint_id==complaint_id,ComplaintStampers.user_id==user_id).first()
         if query:
             query.status = status
+            db.commit()
+            db.refresh(query)
+        return query
+
+
+def get_one_report(complaint_id):
+    with SessionLocal() as db:
+        query = db.query(model.Complaints).filter(model.Complaints.id==complaint_id).first()
+        return query
+
+
+
+def set_certificate(complaint_id,certificate):
+    with SessionLocal() as db:
+        query = db.query(model.Complaints).filter(model.Complaints.id==complaint_id).first()
+        if query:
+            query.certificate = certificate
             db.commit()
             db.refresh(query)
         return query

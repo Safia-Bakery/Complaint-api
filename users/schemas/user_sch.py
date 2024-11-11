@@ -77,6 +77,7 @@ class Users(BaseModel):
     role: Optional[Roles]=None
     stamp   : Optional[str]=None
     telegram_id: Optional[str]=None
+    signature: Optional[str]=None
     class Config:
         orm_mode = True
 
@@ -105,6 +106,7 @@ class UserUpdate(BaseModel):
     status:Optional[int]=None
     stamp : Optional[str]=None
     telegram_id: Optional[str]=None
+    signature: Optional[str]=None
 
 
 

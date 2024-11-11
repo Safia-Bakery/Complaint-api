@@ -1,10 +1,12 @@
 import random
 import string
 import requests
+from datetime import datetime
 
 def file_name_generator(length=20):
-    letters = string.ascii_lowercase
-    return ''.join(random.choice(letters) for i in range(length))
+    current_date = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
+
+    return current_date
 
 
 

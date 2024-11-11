@@ -6,6 +6,7 @@ import re
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append('.')
 from service import transform_list,validate_date,validate_only_date,send_file_telegram
+from complaints.utils.generate_stamp import generate_stamp
 
 
 from telegram.constants import ParseMode
@@ -477,6 +478,21 @@ async def handle_callback_query(update:Update, context: ContextTypes.DEFAULT_TYP
     if user_query:
         crud.update_stamper_status(complaint_id=requests_id,user_id=user_query.id,status=selected_option)
         await query.message.edit_text(text=text_of_order, reply_markup=InlineKeyboardMarkup(blank_reply_murkup))
+        one_report = crud.get_one_report(complaint_id=requests_id)
+        generate_status = True
+        for stampers in one_report.complaint_stamp:
+            if stampers.status !=1:
+                generate_status = False
+
+        if generate_status:
+            stamp_url = generate_stamp(one_report)
+            crud.set_certificate(complaint_id=requests_id,certificate=stamp_url)
+
+
+
+
+
+
 
 
 

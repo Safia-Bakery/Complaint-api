@@ -43,7 +43,16 @@ def user_create(db: Session, user: user_sch.UserCreate):
     db.refresh(db_user)
     return db_user
 
-def user_update(db:Session,id:int,status:Optional[int]=None,password:Optional[str]=None,role_id:Optional[int]=None,phone_number:Optional[str]=None,name:Optional[str]=None,stamp:Optional[str]=None,telegram_id:Optional[str]=None):
+def user_update(db:Session,id:int,
+                status:Optional[int]=None,
+                password:Optional[str]=None,
+                role_id:Optional[int]=None,
+                phone_number:Optional[str]=None,
+                name:Optional[str]=None,
+                stamp:Optional[str]=None,
+                telegram_id:Optional[str]=None,
+                signature:Optional[str]=None
+                ):
     db_user = db.query(Users).filter(Users.id == id).first()
     if status is not None:
         db_user.status = status
@@ -61,6 +70,8 @@ def user_update(db:Session,id:int,status:Optional[int]=None,password:Optional[st
     if telegram_id is not None:
         db_user.telegram_id = telegram_id
 
+
+    db_user.signature = signature
     db_user.stamp = stamp
     db.commit()
     db.refresh(db_user)
