@@ -40,7 +40,7 @@ def generate_stamp(report):
         return_date = ""
 
     # Register Cyrillic-supporting font (like DejaVu)
-    pdfmetrics.registerFont(TTFont('DejaVu', '../assets/gothampro.ttf'))
+    pdfmetrics.registerFont(TTFont('DejaVu', '/var/www/Complaint-api/assets/gothampro.ttf'))
 
     # Create a PDF document
     file_name = f"{file_name_generator()}-report.pdf"
@@ -52,7 +52,7 @@ def generate_stamp(report):
     # A4 dimensions: width = 595.27 points, height = 841.89 points
     pdf.drawCentredString(500, 740, f"№ {report.id} от {report_date}")
     # Insert an image (e.g., logo) at the top of the page
-    image_path = '../assets/output-onlinepngtools.png'  # Replace with your image path
+    image_path = '/var/www/Complaint-api/assets/output-onlinepngtools.png'  # Replace with your image path
     image_x = 70  # X position of the image
     image_y = 740  # Y position of the image
     image_width = 70  # Desired width of the image
