@@ -43,7 +43,7 @@ def generate_stamp(report):
     pdfmetrics.registerFont(TTFont('DejaVu', '/var/www/Complaint-api/assets/gothampro.ttf'))
 
     # Create a PDF document
-    file_name = f"files/{file_name_generator()}-report.pdf"
+    file_name = f"/var/www/Complaint-api/files/{file_name_generator()}-report.pdf"
     pdf = canvas.Canvas(file_name, pagesize=A4)
 
     # Set the font for the entire document
