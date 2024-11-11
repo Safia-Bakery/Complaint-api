@@ -44,6 +44,8 @@ def generate_stamp(report):
 
     # Create a PDF document
     file_name = f"/var/www/Complaint-api/files/{file_name_generator()}-report.pdf"
+    return_name = f"files/{file_name_generator()}-report.pdf"
+
     pdf = canvas.Canvas(file_name, pagesize=A4)
 
     # Set the font for the entire document
@@ -148,4 +150,4 @@ def generate_stamp(report):
     # Save the PDF document
     pdf.save()
 
-    return file_name
+    return return_name
