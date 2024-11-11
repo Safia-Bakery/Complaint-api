@@ -9,9 +9,6 @@ def file_name_generator(length=20):
     return current_date
 
 
-
-
-
 def sendtotelegram_inline_buttons(bot_token,chat_id,message_text):
     keyboard = {
         'inline_keyboard': [
