@@ -26,7 +26,9 @@ def create_complaint(db:Session,form_data:V2CreateComplaints):
         expense=form_data.expense,
         client_id=form_data.client_id,
         status = 0,
-        manager_number = form_data.manager_number
+        manager_number = form_data.manager_number,
+        is_client = False,
+        is_internal = 0
     )
     db.add(query)
     db.commit()
