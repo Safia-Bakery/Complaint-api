@@ -119,7 +119,6 @@ class ResetPassword(BaseModel):
 class RoleCreate(BaseModel):
     name:str
     status:Optional[int]=1
-    has_stamp: Optional[str]=None
 
 
 

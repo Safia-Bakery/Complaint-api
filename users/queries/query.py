@@ -102,7 +102,6 @@ def create_role(db:Session,form_data:user_sch.RoleCreate):
     query = user_model.Roles(
         name=form_data.name,
         status=form_data.status,
-        has_stamp=form_data.has_stamp
     )
     db.add(query)
     db.commit()
