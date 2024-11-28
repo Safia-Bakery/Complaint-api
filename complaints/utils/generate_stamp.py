@@ -109,13 +109,14 @@ def generate_stamp(report):
             pdf.drawString(50, y_position, line.strip())
             y_position -= 20  # Move to the next line
 
-    match_standard = "Предоставленный образец несоответствует стандартам компании."
-    pdf.drawString(50, 400, match_standard)
 
-    if report.match_standard:
-        pdf.drawString(480, 400, "Да")
+
+    if report.match_standard==1:
+        match_standard = "Предоставленный образец соответствует стандартам компании."
+        pdf.drawString(50, 400, match_standard)
     else:
-        pdf.drawString(480, 400, "Нет")
+        match_standard = "Предоставленный образец несоответствует стандартам компании."
+        pdf.drawString(50, 400, match_standard)
 
     role_y_start_position = 300
     role_x_start_position = 50
