@@ -126,7 +126,7 @@ def update_stamper_status(complaint_id,user_id,status):
 def get_one_report(complaint_id):
     db = SessionLocal()
     query = db.query(model.Complaints).filter(model.Complaints.id == complaint_id).options(
-        joinedload(model.Complaints.complaintq_stamp)
+        joinedload(model.Complaints.complaint_stamp)
         .joinedload(ComplaintStampers.user)
         .joinedload(Users.role)
     ).first()
