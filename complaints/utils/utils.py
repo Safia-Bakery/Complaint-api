@@ -2,6 +2,7 @@ import random
 import string
 import requests
 from datetime import datetime
+from urllib.parse import quote
 
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.openapi.docs import get_swagger_ui_html
@@ -60,7 +61,7 @@ def sendtotelegram_inline_buttons_with_image(bot_token, chat_id, message_text,me
     media_payload = [
         {
             'type': 'photo',
-            'media': f"https://api.complaint.safiabakery.uz/{media.url}",  # Image URL or file ID
+            'media': quote(f"https://api.complaint.safiabakery.uz/{media.url}", safe=':/'),  # Image URL or file ID
             'caption': message_text if index == 0 else "",  # Caption only for the first image
             'parse_mode': 'HTML'
         }
