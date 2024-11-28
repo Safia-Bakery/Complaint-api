@@ -58,7 +58,7 @@ app.mount("/files", StaticFiles(directory="files"), name="files")
 #app.include_router(user_route.user_router, tags=["User"])
 #app.include_router(product_route.product_router, tags=["Product"])
 
-origins = ["https://complaints.safiabakery.uz"]
+origins = ["https://complaints.safiabakery.uz","http://localhost:5173"]
 
 app.add_middleware(
     CORSMiddleware,

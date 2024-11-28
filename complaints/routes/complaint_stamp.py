@@ -45,7 +45,7 @@ async def create_complaint_stampers_api(
             bot_token=BOT_TOKEN_COMPLAINT,
             chat_id=query.user.telegram_id,
             message_text=message_text,
-            image_url=f"https://api.service.safiabakery.uz/{query.complaint.file[0]}"
+            media_list=query.complaint.file
         )
 
 
