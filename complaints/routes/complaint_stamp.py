@@ -30,14 +30,13 @@ async def create_complaint_stampers_api(
     """
     query = create_complaint_stampers(db=db, complaint_id=form_data.complaint_id, user_id=form_data.user_id)
 
-    message_text = f"""id #{form_data.complaint_id}s 
-📁{query.complaint.subcategory.category.name}
-📁{query.complaint.subcategory.name}
-📝{query.complaint.comment}
-📅{query.complaint.created_at.strftime("%d-%m-%Y %H:%M")} 
-👤{query.complaint.client_name}
-📞{query.complaint.client_number}
-🏦{query.complaint.branch.name}
+    message_text = f"""Заявка: №{form_data.complaint_id}
+Филиал: {query.complaint.branch.name}
+Качество: {query.complaint.subcategory.category.name}
+Категория: {query.complaint.subcategory.name}
+Комментарии: {query.complaint.comment}
+Дата поступления: {query.complaint.created_at.strftime("%d.%m.%Y %H:%M")} \n\n
+Заключение: {query.complaint.second_response}
 """
     sendtotelegram_inline_buttons(BOT_TOKEN_COMPLAINT, query.user.telegram_id, message_text )
 
