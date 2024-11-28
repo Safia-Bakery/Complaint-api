@@ -8,7 +8,7 @@ from complaints.queries.iikofolders import update_create_folders
 from complaints.utils.utils import file_name_generator
 from services import get_db, get_current_user
 from complaints.utils.api_requests import ApiRoutes
-from complaints.utils.utils import sendtotelegram_inline_buttons
+from complaints.utils.utils import sendtotelegram_inline_buttons,sendtotelegram_inline_buttons_with_image
 from users.schemas import user_sch
 from complaints.core.config import BOT_TOKEN_COMPLAINT
 from complaints.schemas.complaint_stampers import CreateComplaintStampers,GetComplaintStampers,DeleteComplaintStampers
@@ -38,7 +38,15 @@ async def create_complaint_stampers_api(
 Дата поступления: {query.complaint.created_at.strftime("%d.%m.%Y %H:%M")} \n\n
 Заключение: {query.complaint.second_response}
 """
-    sendtotelegram_inline_buttons(BOT_TOKEN_COMPLAINT, query.user.telegram_id, message_text )
+    if not query.complaint.file:
+        sendtotelegram_inline_buttons(BOT_TOKEN_COMPLAINT, query.user.telegram_id, message_text )
+    else:
+        sendtotelegram_inline_buttons_with_image(
+            bot_token=BOT_TOKEN_COMPLAINT,
+            chat_id=query.user.telegram_id,
+            message_text=message_text,
+            image_url=f"https://api.service.safiabakery.uz/{query.complaint.file[0]}"
+        )
 
 
     return query

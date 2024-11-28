@@ -45,6 +45,38 @@ def sendtotelegram_inline_buttons(bot_token,chat_id,message_text):
 
 
 
+import requests
+
+def sendtotelegram_inline_buttons_with_image(bot_token, chat_id, image_url, message_text):
+    # Define the inline keyboard
+    keyboard = {
+        'inline_keyboard': [
+            [{'text': 'Yes', 'callback_data': '1'}],
+            [{'text': 'No', 'callback_data': '2'}],
+        ]
+    }
+
+    # Create the request payload
+    payload = {
+        'chat_id': chat_id,
+        'photo': image_url,  # URL or file ID of the image
+        'caption': message_text,  # Text shown with the image
+        'reply_markup': keyboard,  # Inline buttons
+        'parse_mode': 'HTML'
+    }
+
+    # Send the request to send the image with inline buttons
+    response = requests.post(f"https://api.telegram.org/bot{bot_token}/sendPhoto", json=payload)
+
+    # Check the response status
+    if response.status_code == 200:
+        return response
+    else:
+        print(f"Error: {response.text}")
+        return False
+
+
+
 def get_current_user_for_docs(credentials: HTTPBasicCredentials = Depends(security)):
     correct_username = DOCS_USERNAME
     correct_password = DOCS_PASSWORD
