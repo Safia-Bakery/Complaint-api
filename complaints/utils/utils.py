@@ -73,6 +73,7 @@ def sendtotelegram_inline_buttons_with_image(bot_token, chat_id, message_text,me
         'media': media_payload,
         'reply_markup': keyboard  # Inline buttons
     }
+    print(payload)
 
     # Send the request
     response = requests.post(f"https://api.telegram.org/bot{bot_token}/sendMediaGroup", json=payload)
