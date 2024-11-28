@@ -126,6 +126,7 @@ def get_one_report(complaint_id):
     db = SessionLocal()
     query = db.query(model.Complaints).filter(model.Complaints.id==complaint_id).first()
     query.complaint_product_name = query.complaint_product[0].product.name if query.complaint_product else query.product_name
+    query.branch_name = query.branch.name
     return query
 
 
