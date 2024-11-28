@@ -2,7 +2,6 @@ import random
 import string
 import requests
 from datetime import datetime
-from urllib.parse import quote
 
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.openapi.docs import get_swagger_ui_html
@@ -48,27 +47,19 @@ def sendtotelegram_inline_buttons(bot_token,chat_id,message_text):
 
 import requests
 
-def sendtotelegram_inline_buttons_with_image(bot_token, chat_id, message_text,media_list):
-    media_payload = [
-        {
-            'type': 'photo',
-            'media': quote(media, safe=':/'),  # Ensure proper URL encoding
-            'caption': captions[index] if index < len(captions) else ""
-        }
-        for index, media in enumerate(media_list)
-    ]
-
-    # Create payload
+def sendtotelegram_inline_buttons_with_image(bot_token, chat_id, reply_to_message_id,file_path):
+    # Define the inline keyboard
     payload = {
         'chat_id': chat_id,
-        'media': media_payload
+        'reply_to_message_id': reply_to_message_id,
     }
 
-    # Send media group
-    response = requests.post(
-        f"https://api.telegram.org/bot{bot_token}/sendMediaGroup",
-        json=payload
-    )
+    url = f"https://api.telegram.org/bot{bot_token}/sendDocument"
+    # Attach the file
+    with open(file_path, 'rb') as file:
+        files = {'document': file}
+        response = requests.post(url, data=payload, files=files)
+
     # Check the response status
     if response.status_code == 200:
         return response

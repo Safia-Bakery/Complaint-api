@@ -41,14 +41,20 @@ async def create_complaint_stampers_api(
     if not query.complaint.file:
         sendtotelegram_inline_buttons(BOT_TOKEN_COMPLAINT, query.user.telegram_id, message_text )
     else:
-        sendtotelegram_inline_buttons_with_image(
+        send_message = sendtotelegram_inline_buttons(
             bot_token=BOT_TOKEN_COMPLAINT,
             chat_id=query.user.telegram_id,
-            message_text=message_text,
-            media_list=query.complaint.file
+            message_text=message_text
         )
+        print(send_message.json())
+        for file in query.complaint.file:
 
-
+            sendtotelegram_inline_buttons_with_image(
+                bot_token=BOT_TOKEN_COMPLAINT,
+                chat_id=query.user.telegram_id,
+                reply_to_message_id=send_message.json()['message_id'],
+                file_path=file.url
+            )
     return query
 
 
