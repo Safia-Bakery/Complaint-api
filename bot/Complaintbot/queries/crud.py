@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, selectinload
 from typing import Optional
 import bcrypt
 import pytz
@@ -11,6 +11,7 @@ from users.models.user_model import Users
 from complaints.models.complaint_stampers import ComplaintStampers
 
 from database import SessionLocal, Base
+
 
 
 def get_client(id: Optional[int] = None):
@@ -124,9 +125,12 @@ def update_stamper_status(complaint_id,user_id,status):
 
 def get_one_report(complaint_id):
     db = SessionLocal()
-    query = db.query(model.Complaints).filter(model.Complaints.id==complaint_id).first()
+    query = db.query(model.Complaints).options(
+    selectinload(ComplaintStampers.user).selectinload(Users.role)
+).filter(model.Complaints.id==complaint_id).first()
     query.complaint_product_name = query.complaint_product[0].product.name if query.complaint_product else query.product_name
     query.branch_name = query.branch.name
+
     return query
 
 
