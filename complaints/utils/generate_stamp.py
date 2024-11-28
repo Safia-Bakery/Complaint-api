@@ -127,26 +127,30 @@ def generate_stamp(report):
     signeture_y_start_position = 265
     signeture_x_start_position = 300
     for user in report.complaint_stamp:
-        pdf.drawString(role_x_start_position, role_y_start_position-60, user.user.role.name)
-        pdf.drawString(name_x_start_position, name_y_start_position-60, user.user.name)
+        role_y_start_position = role_y_start_position - 60
+        name_y_start_position = name_y_start_position - 60
+        pdf.drawString(role_x_start_position, role_y_start_position, user.user.role.name)
+        pdf.drawString(name_x_start_position, name_y_start_position, user.user.name)
 
 
           # Replace with your image path
         if user.user.stamp:
             image_path = f"/var/www/Complaint-api/"+user.user.stamp
             image_x = stamp_x_start_position  # X position of the image
-            image_y = stamp_y_start_position-60  # Y position of the image
+            stamp_y_start_position = stamp_y_start_position - 60
+            image_y = stamp_y_start_position  # Y position of the image
             image_width = 70  # Desired width of the image
             image_height = 60  # Desired height of the image
             pdf.drawImage(image_path, image_x, image_y, width=image_width, height=image_height)
 
-        if user.user.signature:
-            image_path = f"/var/www/Complaint-api/"+user.user.signature
-            image_x = signeture_x_start_position  # X position of the image
-            image_y = signeture_y_start_position-60  # Y position of the image
-            image_width = 90  # Desired width of the image
-            image_height = 90  # Desired height of the image
-            pdf.drawImage(image_path, image_x, image_y, width=image_width, height=image_height, mask='auto')
+        # if user.user.signature:
+        #     image_path = f"/var/www/Complaint-api/"+user.user.signature
+        #     image_x = signeture_x_start_position  # X position of the image\
+        #     signeture_y_start_position  = signeture_y_start_position - 60
+        #     image_y = signeture_y_start_position-60  # Y position of the image
+        #     image_width = 90  # Desired width of the image
+        #     image_height = 90  # Desired height of the image
+        #     pdf.drawImage(image_path, image_x, image_y, width=image_width, height=image_height, mask='auto')
 
     # Save the PDF document
     pdf.save()
