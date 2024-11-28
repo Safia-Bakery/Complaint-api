@@ -67,7 +67,7 @@ def generate_stamp(report):
 
     # Data for the table
     data = [
-        ['Наименование изделия:', report.complaint_product[0].product.name if report.complaint_product else report.product_name],
+        ['Наименование изделия:', report.complaint_product_name],
         ['Наименование филиала, где куплено:', report.branch.name],
         ['Дата покупки:', purchased_date ],
         ['Дата поступления образца в лабораторию:', return_date],
