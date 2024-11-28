@@ -125,6 +125,7 @@ def update_stamper_status(complaint_id,user_id,status):
 def get_one_report(complaint_id):
     db = SessionLocal()
     query = db.query(model.Complaints).filter(model.Complaints.id==complaint_id).first()
+    query.complaint_product = query.complaint_product
     return query
 
 
