@@ -49,36 +49,26 @@ def sendtotelegram_inline_buttons(bot_token,chat_id,message_text):
 import requests
 
 def sendtotelegram_inline_buttons_with_image(bot_token, chat_id, message_text,media_list):
-    # Define the inline keyboard
-    keyboard = {
-        'inline_keyboard': [
-            [{'text': 'Yes', 'callback_data': '1'}],
-            [{'text': 'No', 'callback_data': '2'}],
-        ]
-    }
-
-    # Create the request payload
     media_payload = [
         {
             'type': 'photo',
-            'media': quote(f"https://api.complaint.safiabakery.uz/{media.url}", safe=':/'),  # Image URL or file ID
-            'caption': message_text if index == 0 else "",  # Caption only for the first image
-            'parse_mode': 'HTML'
+            'media': quote(media, safe=':/'),  # Ensure proper URL encoding
+            'caption': captions[index] if index < len(captions) else ""
         }
         for index, media in enumerate(media_list)
     ]
 
-    # Send the request to send the image with inline buttons
+    # Create payload
     payload = {
         'chat_id': chat_id,
-        'media': media_payload,
-        'reply_markup': keyboard  # Inline buttons
+        'media': media_payload
     }
-    print(payload)
 
-    # Send the request
-    response = requests.post(f"https://api.telegram.org/bot{bot_token}/sendMediaGroup", json=payload)
-
+    # Send media group
+    response = requests.post(
+        f"https://api.telegram.org/bot{bot_token}/sendMediaGroup",
+        json=payload
+    )
     # Check the response status
     if response.status_code == 200:
         return response
