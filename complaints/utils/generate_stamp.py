@@ -63,8 +63,8 @@ def generate_stamp(report):
 
 
     quality_path = '/var/www/Complaint-api/assets/control.png'
-    image_x = 285  # X position of the image
-    image_y = 740  # Y position of the image
+    image_x = 260  # X position of the image
+    image_y = 738  # Y position of the image
     image_width = 105  # Desired width of the image
     image_height = 60  # Desired height of the image
     pdf.drawImage(quality_path, image_x, image_y, width=image_width, height=image_height)
