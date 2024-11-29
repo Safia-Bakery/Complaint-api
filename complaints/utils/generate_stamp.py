@@ -61,6 +61,14 @@ def generate_stamp(report):
     image_height = 40  # Desired height of the image
     pdf.drawImage(image_path, image_x, image_y, width=image_width, height=image_height)
 
+
+    quality_path = '/var/www/Complaint-api/assets/controlquality.png'
+    image_x = 285  # X position of the image
+    image_y = 740  # Y position of the image
+    image_width = 70  # Desired width of the image
+    image_height = 40  # Desired height of the image
+    pdf.drawImage(quality_path, image_x, image_y, width=image_width, height=image_height)
+
     # Example: Place the title at a specific position (centered)
 
 
