@@ -99,6 +99,8 @@ class V2ComplaintsGet(BaseModel):
     client_id: Optional[int] = None
     created_at: Optional[datetime] = None
     status : Optional[int] = None
+    first_response : Optional[str]=None
+    second_response: Optional[str]=None
     id : int
 
     class Config:
