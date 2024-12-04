@@ -235,13 +235,16 @@ async def update_complaint(
 
     service_id = query.subcategory.country.service_id
     quality_id = query.subcategory.country.quality_id
+    product_name = query.complaint_product[0].product.name if query.complaint_product else query.product_name
+
+
     if form_data.status == 1:
         text_to_send = f"""
 📁{query.subcategory.category.name}
 🔘Категория: {query.subcategory.name}
+🍰Наименование: {product_name}
 🧑‍💼Имя: {query.client_name}
 📍Филиал: {query.branch.name}
-🍰Блюдо: {query.product_name}
 🕘Дата покупки: {query.date_purchase}
 🚛Дата отправки: {query.date_return}\n
 💬Комментарии: {query.comment}

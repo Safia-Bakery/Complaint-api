@@ -58,15 +58,17 @@ async def create_complaints(
     if form_data.files is not None:
         for file in form_data.files:
             create_file(db=db, complaint_id=complaint_created.id, url=file)
+    product_name = complaint_created.complaint_product[0].product.name if complaint_created.complaint_product else complaint_created.product_name
     text_to_send = f"""
-    📁{complaint_created.subcategory.category.name}
-    🔘Категория: {complaint_created.subcategory.name}
-    🧑‍💼Имя: {complaint_created.client_name}
-    📞Номер: +{complaint_created.client_number}
-    📍Филиал: {complaint_created.branch.name}
-    🕘Дата покупки: {complaint_created.date_purchase}
-    🚛Дата отправки: {complaint_created.date_return}\n
-    💬Комментарии: {complaint_created.comment}
+📁{complaint_created.subcategory.category.name}
+🔘Категория: {complaint_created.subcategory.name}
+🍰Наименование: {product_name}
+🧑‍💼Имя: {complaint_created.client_name}
+📞Номер: +{complaint_created.client_number}
+📍Филиал: {complaint_created.branch.name}
+🕘Дата покупки: {complaint_created.date_purchase}
+🚛Дата отправки: {complaint_created.date_return}\n
+💬Комментарии: {complaint_created.comment}
                 """
 
     call_center_id = complaint_created.subcategory.country.callcenter_id
@@ -142,16 +144,18 @@ async def update_complaint_api(
     query =update_complaint(db=db, complaint_id=form_data.id, form_data=form_data)
     service_id = query.subcategory.country.service_id
     quality_id = query.subcategory.country.quality_id
+    product_name = query.complaint_product[0].product.name if query.complaint_product else query.product_name
     if form_data.status == 1:
         text_to_send = f"""
-    📁{query.subcategory.category.name}
-    🔘Категория: {query.subcategory.name}
-    🧑‍💼Имя: {query.client_name}
-    📍Филиал: {query.branch.name}
-    🕘Дата покупки: {query.date_purchase}
-    🚛Дата отправки: {query.date_return}\n
-    💬Комментарии: {query.comment}
-                """
+📁{query.subcategory.category.name}
+🔘Категория: {query.subcategory.name}
+🍰Наименование: {product_name}
+🧑‍💼Имя: {query.client_name}
+📍Филиал: {query.branch.name}
+🕘Дата покупки: {query.date_purchase}
+🚛Дата отправки: {query.date_return}\n
+💬Комментарии: {query.comment}
+"""
         if not query.file:
             if query.subcategory.category_id == 1:
                 send_textmessage_telegram(bot_token=BOT_TOKEN_COMPLAINT, chat_id=quality_id, message_text=text_to_send)
