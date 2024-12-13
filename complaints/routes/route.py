@@ -187,14 +187,15 @@ async def create_complaint(
                     buffer.write(chunk)
 
             crud.create_file(db=db, complaint_id=create_complaint.id, file_path=file_path)
+    product_name = create_complaint.complaint_product[0].product.name if create_complaint.complaint_product else create_complaint.product_name
 
     text_to_send = f"""
 📁{create_complaint.subcategory.category.name}
 🔘Категория: {create_complaint.subcategory.name}
+🍰Наименование: {product_name}
 🧑‍💼Имя: {create_complaint.client_name}
 📞Номер: +{create_complaint.client_number}
 📍Филиал: {create_complaint.branch.name}
-🍰Блюдо: {create_complaint.product_name}
 🕘Дата покупки: {create_complaint.date_purchase}
 🚛Дата отправки: {create_complaint.date_return}\n
 💬Комментарии: {create_complaint.comment}

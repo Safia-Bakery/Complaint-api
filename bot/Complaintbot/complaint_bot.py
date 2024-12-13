@@ -88,10 +88,10 @@ async def branch_update(update:Update,context:ContextTypes.DEFAULT_TYPE) -> int:
     if branch_name: 
         crud.update_client(id=update.message.from_user.id,branch_id=branch_name.id)
         await update.message.reply_text(
-            f"Пожалуйста введите пароль который вы получили от системного администратора",
-            reply_markup=ReplyKeyboardMarkup([['Branch','⬅️Назад']],resize_keyboard=True)
+            f"Ваш филиал - {branch_name.name}",
+            reply_markup=ReplyKeyboardMarkup([["Оформить жалобу", "Настройки"]],resize_keyboard=True)
         )
-        return  SETTINGS
+        return MANU
     else:
         await update.message.reply_text(
             f"Пароль не верный. Попробуйте еще раз",
