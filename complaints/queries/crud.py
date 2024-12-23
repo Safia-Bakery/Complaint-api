@@ -311,7 +311,7 @@ def get_complaints(db:Session,
         query = query.filter(cast(request_model.Complaints.created_at,Date)==created_at)
     if product is not None:
         # query= query.join(ComplaintProducts).join(IikoProducts)
-        query = query.filter(or_(IikoProducts.name.ilike(f"%{product}%"),request_model.Complaints.product_name.ilike(f"%{product}%")))
+        query = query.filter(request_model.Complaints.product_name.ilike(f"%{product}%"))
 
     if phone_number is not None:
         query = query.filter(request_model.Complaints.client_number.ilike(f"%{phone_number}%"))
