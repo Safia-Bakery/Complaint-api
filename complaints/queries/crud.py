@@ -8,6 +8,8 @@ from datetime import datetime,timedelta,date
 from sqlalchemy import or_, and_, Date, cast
 from uuid import UUID
 from complaints.models import request_model
+from complaints.models.iikoproducts import IikoProducts
+from complaints.models.complaint_products import ComplaintProducts
 from complaints.schemas import schema   
 from complaints.models.request_model import Branchs,Communications
 
@@ -278,6 +280,8 @@ def get_complaints(db:Session,
                    id,
                    branch_id,
                    subcategory_id,
+                   product,
+                   created_at,
                    status,
                    otk_status,
                    updated_by,
@@ -303,6 +307,12 @@ def get_complaints(db:Session,
         query = query.filter(request_model.Complaints.client_name.ilike(f"%{client_name}%"))
     if date_return is not None:
         query = query.filter(cast(request_model.Complaints.date_return,Date) == date_return)
+    if created_at is not None:
+        query = query.filter(cast(request_model.Complaints.created_at,Date)==created_at)
+    if product is not None:
+        query= query.join(ComplaintProducts).join(IikoProducts)
+        query = query.filter(or_(IikoProducts.name.ilike(f"%{product}%"),request_model.Complaints.product_name.ilike(f"%{product}%")))
+
     if phone_number is not None:
         query = query.filter(request_model.Complaints.client_number.ilike(f"%{phone_number}%"))
     if expense is not None:

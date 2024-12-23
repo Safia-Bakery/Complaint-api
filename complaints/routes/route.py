@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from fastapi import Depends, HTTPException, Form, UploadFile
 from fastapi_pagination import paginate, Page
 from typing import Annotated
-from datetime import datetime
+from datetime import datetime,date
 from services import (
     get_db,
     get_current_user,
@@ -286,6 +286,8 @@ async def update_complaint(
 async def get_complaints(
         id: Optional[int] = None,
         country_id: Optional[int] = None,
+        created_at: Optional[date]=None,
+        product:Optional[str]=None,
         category_id: Optional[int] = None,
         client_name: Optional[str] = None,
         phone_number: Optional[str] = None,
@@ -316,7 +318,9 @@ async def get_complaints(
                                               updated_by=updated_by,
                                               is_client=is_client,
                                               otk=otk,
-                                              is_internal=is_internal
+                                              is_internal=is_internal,
+                                              product=product,
+                                              created_at=created_at
                                               ))
 
 
