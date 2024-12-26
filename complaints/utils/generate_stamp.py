@@ -71,7 +71,7 @@ def generate_stamp(report):
 
     # Example: Place the title at a specific position (centered)
 
-
+    report_comment= add_newline_every_n_chars(report.comment,n=50)
 
     # Data for the table
     data = [
@@ -79,7 +79,7 @@ def generate_stamp(report):
         ['Наименование филиала, где куплено:', report.branch_name],
         ['Дата покупки:', purchased_date ],
         ['Дата поступления образца в лабораторию:', return_date],
-        ['Причина обращения:', report.comment],
+        ['Причина обращения:', report_comment],
     ]
 
     # Create the table
