@@ -71,7 +71,7 @@ def generate_stamp(report):
 
     # Example: Place the title at a specific position (centered)
 
-    report_comment= add_newline_every_n_chars(report.comment,n=50)
+    report_comment= add_newline_every_n_chars(report.comment,n=40)
 
     # Data for the table
     data = [
