@@ -71,7 +71,7 @@ def generate_stamp(report):
 
     # Example: Place the title at a specific position (centered)
 
-    report_comment= add_newline_every_n_chars(report.comment,n=30)
+    report_comment= add_newline_every_n_chars(report.commentq,n=30)
 
     # Data for the table
     data = [
@@ -83,7 +83,7 @@ def generate_stamp(report):
     ]
 
     # Create the table
-    table = Table(data, colWidths=[100 * mm, 80 * mm])
+    table = Table(data, colWidths=[100 * mm, 100 * mm])
 
     # Set the table style (for borders, alignment, etc.)
     table.setStyle(TableStyle([
