@@ -22,7 +22,7 @@ def sendtotelegram_inline_buttons(bot_token,chat_id,message_text):
     keyboard = {
         'inline_keyboard': [
             [{'text': 'Подтверждаю', 'callback_data': '1'}],
-            [{'text': 'Не подтверждаю / Передалайте', 'callback_data': '2'}],
+            [{'text': 'Не подтверждаю / Переделайте', 'callback_data': '2'}],
         ]
     }
 
