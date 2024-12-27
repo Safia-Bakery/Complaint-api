@@ -132,6 +132,7 @@ def get_one_report(complaint_id):
     ).first()
     query.complaint_product_name = query.complaint_product[0].product.name if query.complaint_product else query.product_name
     query.branch_name = query.branch.name
+    query.category_name = query.subcategory.name
 
     return query
 

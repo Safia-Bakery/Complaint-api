@@ -71,7 +71,7 @@ def generate_stamp(report):
 
     # Example: Place the title at a specific position (centered)
 
-    report_comment= add_newline_every_n_chars(report.comment,n=50)
+    # report_comment= add_newline_every_n_chars(report.comment,n=50)
 
     # Data for the table
     data = [
@@ -79,7 +79,7 @@ def generate_stamp(report):
         ['Наименование филиала, где куплено:', report.branch_name],
         ['Дата покупки:', purchased_date ],
         ['Дата поступления образца в лабораторию:', return_date],
-        ['Причина обращения:', report_comment],
+        ['Категория:', report.category_name],
     ]
 
     # Create the table
@@ -97,7 +97,7 @@ def generate_stamp(report):
 
     # Define table position (x, y) - here starting at 200 points from bottom-left corner
     table.wrapOn(pdf, 400, 600)   # Width and height to wrap content (table size)
-    table.drawOn(pdf, 50, 580)    # Position (x=50, y=600) to place the table
+    table.drawOn(pdf, 50, 600)    # Position (x=50, y=600) to place the table
 
     # Add a paragraph of text below the table
     pdf.setFont("DejaVu", 12)
