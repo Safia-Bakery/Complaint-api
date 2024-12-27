@@ -79,7 +79,7 @@ def generate_stamp(report):
         ['Наименование филиала, где куплено:', report.branch_name],
         ['Дата покупки:', purchased_date ],
         ['Дата поступления образца в лабораторию:', return_date],
-        ['Категория:', report.category_name],
+        ['Причина обращения:', report.category_name],
     ]
 
     # Create the table
