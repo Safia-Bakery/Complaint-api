@@ -97,7 +97,7 @@ def generate_stamp(report):
 
     # Define table position (x, y) - here starting at 200 points from bottom-left corner
     table.wrapOn(pdf, 400, 600)   # Width and height to wrap content (table size)
-    table.drawOn(pdf, 50, 620)    # Position (x=50, y=600) to place the table
+    table.drawOn(pdf, 50, 640)    # Position (x=50, y=600) to place the table
 
     # Add a paragraph of text below the table
     pdf.setFont("DejaVu", 12)
