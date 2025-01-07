@@ -29,12 +29,14 @@ async def create_complaint_stampers_api(
     Create new complaint
     """
     query = create_complaint_stampers(db=db, complaint_id=form_data.complaint_id, user_id=form_data.user_id)
+    product_name =  query.complaint.complaint_product[0].product.name if query.complaint.complaint_product else query.complaint.product_name
 
     message_text = f"""Заявка: №{form_data.complaint_id}
 Филиал: {query.complaint.branch.name}
 Качество: {query.complaint.subcategory.category.name}
 Категория: {query.complaint.subcategory.name}
 Комментарии: {query.complaint.comment}
+Наименование: {product_name}
 Дата поступления: {query.complaint.created_at.strftime("%d.%m.%Y %H:%M")} \n\n
 Заключение: {query.complaint.second_response}
 """
