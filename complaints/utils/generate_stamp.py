@@ -66,12 +66,12 @@ def generate_stamp(report):
     # Insert logo
     image_path = '/var/www/Complaint-api/assets/output-onlinepngtools.png'
     pdf.drawImage(image_path, 70, y_position, width=70, height=40)
-    y_position -= 50
+
 
     # Quality control image
     quality_path = '/var/www/Complaint-api/assets/control.png'
     pdf.drawImage(quality_path, 260, y_position + 10, width=105, height=60)
-    y_position -= 60
+    y_position -= 10
 
     # Data Table
     data = [
@@ -109,9 +109,11 @@ def generate_stamp(report):
             y_position -= 20
             y_position = check_page_break(pdf, y_position)
 
+    y_position -= 30
+
     match_standard = "Предоставленный образец соответствует стандартам компании." if report.match_standard == 1 else "Предоставленный образец несоответствует стандартам компании."
     pdf.drawString(50, y_position, match_standard)
-    y_position -= 40
+    y_position -= 50
     y_position = check_page_break(pdf, y_position)
 
     # Stamps and roles
