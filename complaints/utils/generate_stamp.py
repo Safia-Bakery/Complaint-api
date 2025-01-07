@@ -71,7 +71,7 @@ def generate_stamp(report):
     # Quality control image
     quality_path = '/var/www/Complaint-api/assets/control.png'
     pdf.drawImage(quality_path, 260, y_position + 10, width=105, height=60)
-    y_position -= 10
+    y_position -= 13
 
     # Data Table
     data = [
@@ -103,7 +103,7 @@ def generate_stamp(report):
 
     if report.second_response:
         text = add_newline_every_n_chars(report.second_response, 100)
-        pdf.setFont("DejaVu", 8)
+        pdf.setFont("DejaVu", 9)
         for line in text.split('\n'):
             pdf.drawString(50, y_position, line.strip())
             y_position -= 20
@@ -113,7 +113,7 @@ def generate_stamp(report):
 
     match_standard = "Предоставленный образец соответствует стандартам компании." if report.match_standard == 1 else "Предоставленный образец несоответствует стандартам компании."
     pdf.drawString(50, y_position, match_standard)
-    y_position -= 50
+    y_position -= 60
     y_position = check_page_break(pdf, y_position)
 
     # Stamps and roles
