@@ -120,7 +120,8 @@ def get_complaints(db:Session,id: Optional[int] = None,
                    sphere_id: Optional[int] = None,
                    category_id:Optional[int]=None,
                    status:Optional[int]=None,
-                   client_name:Optional[str]=None
+                   client_name:Optional[str]=None,
+                   complaint:Optional[str]=None
                    ):
     query = db.query(hr_model.Hrcomplaints).join(hr_model.Hrcomplaints.hrclient)
     if id is not None:
@@ -135,6 +136,8 @@ def get_complaints(db:Session,id: Optional[int] = None,
         query = query.filter(hr_model.Hrcomplaints.category_id== category_id)
     if client_name is not None:
         query = query.filter(hr_model.Hrclients.name.ilike(f"%{client_name}%"))
+    if complaint is not None:
+        query = query.filter(hr_model.Hrcomplaints.complaint.ilike(f"%{complaint}%"))
     return query.order_by(hr_model.Hrcomplaints.created_at.desc()).all()
 
 def create_hrcategory(db: Session, form_data: hr_schema.HrCategoryCreate):
