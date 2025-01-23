@@ -115,14 +115,26 @@ def get_hrclients(db:Session,id: Optional[int] = None):
     return query.order_by(hr_model.Hrcommunications.created_at.desc()).all()
 
 
-def get_complaints(db:Session,id: Optional[int] = None,hrtype: Optional[int] = None,sphere_id: Optional[int] = None):
-    query = db.query(hr_model.Hrcomplaints)
+def get_complaints(db:Session,id: Optional[int] = None,
+                   hrtype: Optional[int] = None,
+                   sphere_id: Optional[int] = None,
+                   category_id:Optional[int]=None,
+                   status:Optional[int]=None,
+                   client_name:Optional[str]=None
+                   ):
+    query = db.query(hr_model.Hrcomplaints).join(hr_model.Hrcomplaints.hrclient)
     if id is not None:
         query = query.filter(hr_model.Hrcomplaints.id == id)
     if hrtype is not None:
         query = query.filter(hr_model.Hrcomplaints.hrtype == hrtype)
     if sphere_id is not None:
         query = query.filter(hr_model.Hrcomplaints.sphere_id == sphere_id)
+    if status is not None:
+        query  =query.filter(hr_model.Hrcomplaints.status==status)
+    if category_id is not None:
+        query = query.filter(hr_model.Hrcomplaints.category_id== category_id)
+    if client_name is not None:
+        query = query.filter(hr_model.Hrclients.name.ilike(f"%{client_name}%"))
     return query.order_by(hr_model.Hrcomplaints.created_at.desc()).all()
 
 def create_hrcategory(db: Session, form_data: hr_schema.HrCategoryCreate):
