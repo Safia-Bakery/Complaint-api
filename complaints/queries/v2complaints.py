@@ -122,6 +122,8 @@ def update_complaint(db:Session,complaint_id,form_data:V2UpdateComplaints):
         query.date_clients_complaint = form_data.date_clients_complaint
     if form_data.producer_guilty is not None:
         query.producer_guilty = form_data.producer_guilty
+    if form_data.is_returned is not None:
+        query.is_returned = form_data.is_returned
 
 
     db.commit()
