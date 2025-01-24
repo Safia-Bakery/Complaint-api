@@ -120,7 +120,8 @@ def update_complaint(db:Session,complaint_id,form_data:V2UpdateComplaints):
         query.match_standard = form_data.match_standard
     if form_data.date_clients_complaint is not None:
         query.date_clients_complaint = form_data.date_clients_complaint
-
+    if form_data.producer_guilty is not None:
+        query.producer_guilty = form_data.producer_guilty
 
 
     db.commit()

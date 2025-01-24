@@ -256,7 +256,7 @@ def update_complaints(db:Session,form_data:schema.UpdateComplaint,updated_by):
         query.is_returned = form_data.is_returned
     if form_data.producer_guilty is not None:
         query.producer_guilty = form_data.producer_guilty
-    query.updated_by = updated_by   
+    query.updated_by = updated_by
     
         
     db.commit()
