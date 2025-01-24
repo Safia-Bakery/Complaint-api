@@ -125,8 +125,6 @@ def update_role(db:Session,form_data:user_sch.RoleUpdate):
         db_role.name = form_data.name
     if form_data.status is not None:
         db_role.status = form_data.status
-    if form_data.stamp is not None:
-        db_role.has_stamp = form_data.has_stamp
     db.commit()
     db.refresh(db_role)
     return db_role
