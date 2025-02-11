@@ -27,5 +27,3 @@ class ComplaintStampers(Base):
     status = Column(Integer, default=0)
     created_at = Column(DateTime(timezone=True), default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
-    class Config:
-        orm_mode = True
