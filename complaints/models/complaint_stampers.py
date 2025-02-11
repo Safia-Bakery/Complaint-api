@@ -12,6 +12,7 @@ from sqlalchemy import (
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
+from users.models.user_model import Users
 
 from database import SessionLocal, Base
 
