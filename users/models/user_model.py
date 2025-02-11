@@ -20,6 +20,7 @@ from sqlalchemy.dialects.postgresql import UUID, ARRAY, JSONB
 from datetime import datetime
 import pytz
 import uuid
+from complaints.models.complaint_stampers import ComplaintStampers
 
 from database import SessionLocal, Base
 
