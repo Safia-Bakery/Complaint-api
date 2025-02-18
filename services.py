@@ -5,6 +5,7 @@ import bcrypt
 import random
 import string
 import pandas as pd
+import mimetypes
 
 from sqlalchemy.orm import Session
 from typing import Union, Any
@@ -168,22 +169,28 @@ def send_textmessage_telegram(bot_token, chat_id, message_text):
         return False
 
 
-
 def send_file_telegram(bot_token, chat_id, file_path, caption=None, reply_to_message_id=None):
-    url = f"https://api.telegram.org/bot{bot_token}/sendDocument"
-
-    # 'files' for sending documents is a dictionary with a tuple (optional filename, file data)
     if file_path is None:
-        return requests.post(f"https://api.telegram.org/bot{bot_token}/sendMessage", data={"chat_id": chat_id, "text": caption}).json()
-    else:
+        return requests.post(
+            f"https://api.telegram.org/bot{bot_token}/sendMessage",
+            data={"chat_id": chat_id, "text": caption}
+        ).json()
 
-        with open(file_path, 'rb') as file:
-            files = {'document': (file_path, file)}
-            data = {'chat_id': chat_id,'reply_to_message_id':reply_to_message_id}
+    # Detect file type
+    mime_type, _ = mimetypes.guess_type(file_path)
+    is_image = mime_type and mime_type.startswith("image")
 
-            # Make a POST request to the Telegram API
-            response = requests.post(url, data=data, files=files)
-        return response.json()
+    url = f"https://api.telegram.org/bot{bot_token}/sendPhoto" if is_image else f"https://api.telegram.org/bot{bot_token}/sendDocument"
+    file_key = "photo" if is_image else "document"
+
+    with open(file_path, 'rb') as file:
+        files = {file_key: (file_path, file)}
+        data = {'chat_id': chat_id, 'caption': caption, 'reply_to_message_id': reply_to_message_id}
+
+        # Make a POST request to the Telegram API
+        response = requests.post(url, data=data, files=files)
+
+    return response.json()
 
 
 

@@ -188,6 +188,8 @@ async def create_complaint(
 
             crud.create_file(db=db, complaint_id=create_complaint.id, file_path=file_path)
     product_name = create_complaint.complaint_product[0].product.name if create_complaint.complaint_product else create_complaint.product_name
+    date_return_text =create_complaint.date_return if create_complaint.date_return else 'Не заполнено'
+    date_purchase_text = create_complaint.date_purchase if create_complaint.date_return else 'Не заполнено'
 
     text_to_send = f"""
 📁{create_complaint.subcategory.category.name}
@@ -196,8 +198,8 @@ async def create_complaint(
 🧑‍💼Имя: {create_complaint.client_name}
 📞Номер: +{create_complaint.client_number}
 📍Филиал: {create_complaint.branch.name}
-🕘Дата покупки: {create_complaint.date_purchase}
-🚛Дата отправки: {create_complaint.date_return}\n
+🕘Дата покупки: {date_purchase_text}
+🚛Дата отправки: {date_return_text}\n
 💬Комментарии: {create_complaint.comment}
             """
     call_center_id = create_complaint.subcategory.country.callcenter_id
@@ -237,6 +239,8 @@ async def update_complaint(
     service_id = query.subcategory.country.service_id
     quality_id = query.subcategory.country.quality_id
     product_name = query.complaint_product[0].product.name if query.complaint_product else query.product_name
+    date_return_text =query.date_return if query.date_return else 'Не заполнено'
+    date_purchase_text = query.date_purchase if query.date_return else 'Не заполнено'
 
 
     if form_data.status == 1:
@@ -246,8 +250,8 @@ async def update_complaint(
 🍰Наименование: {product_name}
 🧑‍💼Имя: {query.client_name}
 📍Филиал: {query.branch.name}
-🕘Дата покупки: {query.date_purchase}
-🚛Дата отправки: {query.date_return}\n
+🕘Дата покупки: {date_purchase_text}
+🚛Дата отправки: {date_return_text}\n
 💬Комментарии: {query.comment}
             """
         if not query.file:
