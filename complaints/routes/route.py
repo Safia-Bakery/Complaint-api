@@ -189,9 +189,10 @@ async def create_complaint(
             crud.create_file(db=db, complaint_id=create_complaint.id, file_path=file_path)
     product_name = create_complaint.complaint_product[0].product.name if create_complaint.complaint_product else create_complaint.product_name
     date_return_text =create_complaint.date_return if create_complaint.date_return else 'Не заполнено'
-    date_purchase_text = create_complaint.date_purchase if create_complaint.date_return else 'Не заполнено'
+    date_purchase_text = create_complaint.date_purchase if create_complaint.date_purchase else 'Не заполнено'
 
     text_to_send = f"""
+#{create_complaint.id}
 📁{create_complaint.subcategory.category.name}
 🔘Категория: {create_complaint.subcategory.name}
 🍰Наименование: {product_name}
@@ -240,11 +241,12 @@ async def update_complaint(
     quality_id = query.subcategory.country.quality_id
     product_name = query.complaint_product[0].product.name if query.complaint_product else query.product_name
     date_return_text =query.date_return if query.date_return else 'Не заполнено'
-    date_purchase_text = query.date_purchase if query.date_return else 'Не заполнено'
+    date_purchase_text = query.date_purchase if query.date_purchase else 'Не заполнено'
 
 
     if form_data.status == 1:
         text_to_send = f"""
+#{query.id}s
 📁{query.subcategory.category.name}
 🔘Категория: {query.subcategory.name}
 🍰Наименование: {product_name}

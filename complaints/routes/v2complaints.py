@@ -61,9 +61,10 @@ async def create_complaints(
     product_name = complaint_created.complaint_product[0].product.name if complaint_created.complaint_product else complaint_created.product_name
 
     date_return_text =complaint_created.date_return if complaint_created.date_return else 'Не заполнено'
-    date_purchase_text = complaint_created.date_purchase if complaint_created.date_return else 'Не заполнено'
+    date_purchase_text = complaint_created.date_purchase if complaint_created.date_purchase else 'Не заполнено'
 
     text_to_send = f"""
+#{complaint_created.id}s
 📁{complaint_created.subcategory.category.name}
 🔘Категория: {complaint_created.subcategory.name}
 🍰Наименование: {product_name}
@@ -151,10 +152,11 @@ async def update_complaint_api(
     product_name = query.complaint_product[0].product.name if query.complaint_product else query.product_name
 
     date_return_text =query.date_return if query.date_return else 'Не заполнено'
-    date_purchase_text = query.date_purchase if query.date_return else 'Не заполнено'
+    date_purchase_text = query.date_purchase if query.date_purchase else 'Не заполнено'
 
     if form_data.status == 1:
         text_to_send = f"""
+#{query.id}s
 📁{query.subcategory.category.name}
 🔘Категория: {query.subcategory.name}
 🍰Наименование: {product_name}
