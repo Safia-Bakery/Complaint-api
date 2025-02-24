@@ -6,3 +6,6 @@ from hrcomplaint.models.hr_model import (Hrspheras,
                                          Hrquestions,
 
                                          )
+
+
+from users.models.user_model import Users
