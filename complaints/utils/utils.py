@@ -8,6 +8,7 @@ from fastapi.openapi.docs import get_swagger_ui_html
 from fastapi.openapi.utils import get_openapi
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from complaints.core.config import DOCS_PASSWORD,DOCS_USERNAME
+import mimetypes
 
 security = HTTPBasic()
 
@@ -47,17 +48,28 @@ def sendtotelegram_inline_buttons(bot_token,chat_id,message_text):
 
 import requests
 
-def sendtotelegram_inline_buttons_with_image(bot_token, chat_id, reply_to_message_id,file_path):
-    # Define the inline keyboard
+
+def sendtotelegram_inline_buttons_with_image(bot_token, chat_id, reply_to_message_id, file_path):
+    # Determine the MIME type of the file
+    mime_type, _ = mimetypes.guess_type(file_path)
+
+    # Define the base payload
     payload = {
         'chat_id': chat_id,
         'reply_to_message_id': reply_to_message_id,
     }
 
-    url = f"https://api.telegram.org/bot{bot_token}/sendDocument"
-    # Attach the file
+    # Check if the file is an image
+    if mime_type and mime_type.startswith("image"):
+        url = f"https://api.telegram.org/bot{bot_token}/sendPhoto"
+        file_key = 'photo'
+    else:
+        url = f"https://api.telegram.org/bot{bot_token}/sendDocument"
+        file_key = 'document'
+
+    # Send the file
     with open(file_path, 'rb') as file:
-        files = {'document': file}
+        files = {file_key: file}
         response = requests.post(url, data=payload, files=files)
 
     # Check the response status
@@ -66,7 +78,6 @@ def sendtotelegram_inline_buttons_with_image(bot_token, chat_id, reply_to_messag
     else:
         print(f"Error: {response.text}")
         return False
-
 
 
 def get_current_user_for_docs(credentials: HTTPBasicCredentials = Depends(security)):
