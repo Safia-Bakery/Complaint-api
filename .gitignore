@@ -11,8 +11,7 @@ alembic.ini
 bot/Complaintbot/complaintbotcommunication
 bot/Helpbot/helpbotcommunication
 bot/Hrbot/hrbotcommunication
-
-
+hrbotcommunication
 # Distribution / packaging
 .Python
 build/sudo apt install python3.10-distutils
