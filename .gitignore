@@ -6,6 +6,13 @@ alembic.ini
 # C extensions
 *.so
 
+*.pdf
+*.xlsx
+bot/Complaintbot/complaintbotcommunication
+bot/Helpbot/helpbotcommunication
+bot/Hrbot/hrbotcommunication
+
+
 # Distribution / packaging
 .Python
 build/sudo apt install python3.10-distutils
