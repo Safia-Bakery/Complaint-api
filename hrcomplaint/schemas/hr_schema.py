@@ -1,6 +1,6 @@
 from pydantic import BaseModel, validator
 from fastapi import Form, UploadFile, File
-from typing import Optional, Annotated, Dict
+from typing import Optional, Annotated, Dict, List
 from datetime import datetime, time
 from fastapi import Form
 from uuid import UUID
@@ -9,6 +9,7 @@ from users.schemas.user_sch import User
 class Sphere(BaseModel):
     id:int
     name: Optional[str]=None
+    name_uz: Optional[str] = None
     status: int
     created_at: Optional[datetime]=None
     updated_at: Optional[datetime]=None
@@ -19,6 +20,7 @@ class Sphere(BaseModel):
 
 class SphereCreate(BaseModel):
     name: Optional[str]=None
+    name_uz: Optional[str]=None
     status: Optional[int]=1
     class Config:
         orm_mode = True
@@ -96,6 +98,7 @@ class GetHrcommunication(BaseModel):
 
 class HrCategoryCreate(BaseModel):
     name: Optional[str]=None
+    name_uz: Optional[str]=None
     status: Optional[int]=1
     hrsphere_id: Optional[int]=None
     class Config:
@@ -105,6 +108,7 @@ class HrCategoryCreate(BaseModel):
 class HrCategory(BaseModel):
     id:int
     name: Optional[str]=None
+    name_uz: Optional[str] = None
     status: Optional[int]=None
     hrsphere_id: Optional[int]=None
     hrsphere: Optional[Sphere]=None
@@ -117,6 +121,7 @@ class HrCategory(BaseModel):
 class HrCategoryUpdate(BaseModel):   
     id:int
     name: Optional[str]=None
+    name_uz: Optional[str] = None
     status:Optional[int]=None
     hrsphere_id: Optional[int]=None
 
@@ -150,3 +155,8 @@ class Hrcomplaints(BaseModel):
 
 
 #hello world
+
+class Notification(BaseModel):
+    text: Optional[str]
+    time: Optional[datetime] = None
+    users_sphere: Optional[List[int]] = None

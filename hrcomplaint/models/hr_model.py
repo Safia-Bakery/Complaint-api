@@ -29,6 +29,7 @@ class Hrspheras(Base):
     __tablename__ = "hrspheras"
     id = Column(BIGINT, primary_key=True, index=True)
     name = Column(String, nullable=True)
+    name_uz = Column(String, nullable=True)
     status = Column(Integer, default=1)
     created_at = Column(DateTime(timezone=True), default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
@@ -41,6 +42,7 @@ class HrCategories(Base):
     __tablename__ = "hrcategories"
     id = Column(BIGINT, primary_key=True, index=True)
     name = Column(String, nullable=True)
+    name_uz = Column(String, nullable=True)
     status = Column(Integer, default=1)
     hrsphere_id = Column(BIGINT, ForeignKey("hrspheras.id"),nullable=True)
     hrsphere = relationship("Hrspheras",back_populates="hrcategory")

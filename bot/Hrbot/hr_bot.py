@@ -3,6 +3,7 @@ import sys
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append('.')
+from bot.Hrbot.variables import buttons
 
 import os
 from telegram import ReplyKeyboardMarkup, Update
@@ -26,8 +27,6 @@ from bot.Hrbot.bot_services import transform_list
 languagees = {'1': 'uz', '2': 'ru'}
 
 load_dotenv()
-manu_button = [['Задать вопрос❔', 'Отправить жалобу'], ['Часто задаваемые вопосы❓', 'Отправить предложение🧠'],
-               ['Настройки⚙️', 'О ботеℹ️'], ['Chat']]
 
 backend_location = 'app/'
 
@@ -43,10 +42,12 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     """Starts the conversation and asks the user about their gender."""
     user = crud.get_user(update.message.from_user.id)
     if user:
-        await update.message.reply_text(text['ru']['manu'],
-                                        reply_markup=ReplyKeyboardMarkup(manu_button, resize_keyboard=True))
         context.user_data['lang'] = str(user.lang)
         context.user_data['sphere'] = user.sphere
+        lang = languagees.get(context.user_data.get('lang'))
+        await update.message.reply_text(text[lang]['manu'],
+                                        reply_markup=ReplyKeyboardMarkup(buttons[lang]["manu_button"], resize_keyboard=True))
+
         return MANU
     await update.message.reply_text(text['ru']['start'])
     await update.message.reply_text(text['ru']['lang'], reply_markup=ReplyKeyboardMarkup([['🇺🇿O`zbekcha', '🇷🇺Русский']],
@@ -59,203 +60,249 @@ async def language(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         context.user_data['lang'] = '1'
     else:
         context.user_data['lang'] = '2'
+    lang = languagees[context.user_data['lang']]
     spheres = crud.get_spheres()
-    await update.message.reply_text(text[languagees[context.user_data['lang']]]['sphere'],
-                                    reply_markup=ReplyKeyboardMarkup([[i.name for i in spheres]], resize_keyboard=True))
+    await update.message.reply_text(
+        text[lang]['sphere'],
+        reply_markup=ReplyKeyboardMarkup([[i.name if lang == 'ru' else i.name_uz for i in spheres]], resize_keyboard=True)
+    )
     return SPHERE
 
 
 async def sphere(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     sphere = crud.get_spheres(update.message.text)
     context.user_data['sphere'] = sphere[0].id
+    lang = languagees[context.user_data['lang']]
     crud.create_user( id=update.message.from_user.id, lang=context.user_data['lang'],
                      sphere=context.user_data['sphere'], name=update.message.from_user.first_name)
-    await update.message.reply_text(text[languagees[context.user_data['lang']]]['success'],
-                                    reply_markup=ReplyKeyboardMarkup(manu_button, resize_keyboard=True))
+    await update.message.reply_text(
+        text[lang]['success'],
+        reply_markup=ReplyKeyboardMarkup(buttons[lang]["manu_button"], resize_keyboard=True)
+    )
     return MANU
 
 
 async def manu(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     input_text = update.message.text
-    if input_text == 'Задать вопрос❔':
+    lang = languagees[context.user_data['lang']]
+    if input_text == 'Задать вопрос❔' or input_text == 'Savol berish❔':
         context.user_data['commentsphere'] = 1
         context.user_data['category'] = None
-        await update.message.reply_text('Задайте вопрос', reply_markup=ReplyKeyboardMarkup(
-            [[text[languagees[context.user_data['lang']]]['back']]], resize_keyboard=True))
+        message_text = 'Задайте вопрос' if lang == 'ru' else 'Savolingizni yuboring'
+        await update.message.reply_text(message_text, reply_markup=ReplyKeyboardMarkup(
+            [[text[lang]['back']]], resize_keyboard=True))
         return COMMENTS
 
-    elif input_text == 'Отправить жалобу':
+    elif input_text == 'Отправить жалобу' or input_text == 'Shikoyat yuborish':
         context.user_data['commentsphere'] = 2
         data = crud.get_categories(hrsphere_id=context.user_data['sphere'])
-        buttons = transform_list(data, 2, 'name')
+        keyboard = transform_list(data, 2, 'name', lang)
 
-        buttons.append([text[languagees[context.user_data['lang']]]['back']])
-        await update.message.reply_text('Категогрия', reply_markup=ReplyKeyboardMarkup(buttons, resize_keyboard=True))
+        keyboard.append([text[lang]['back']])
+        message_text = "Категория" if lang == 'ru' else "Kategoriya"
+        await update.message.reply_text(message_text, reply_markup=ReplyKeyboardMarkup(keyboard, resize_keyboard=True))
         return CATEGORY
 
-    elif input_text == 'Часто задаваемые вопосы❓':
-        qeuestions = crud.get_questions( name=None, sphere=context.user_data['sphere'])
+    elif input_text == 'Часто задаваемые вопосы❓' or input_text == 'Tez-tez beriladigan savollar❓':
+        qeuestions = crud.get_questions(name=None, sphere=context.user_data['sphere'])
         if questions:
             question_list = []
             for i in qeuestions:
-                if context.user_data['lang'] == '1':
+                if lang == 'uz':
                     question_list.append([i.question_uz])
                 else:
                     question_list.append([i.question_ru])
-            question_list.append([text[languagees[context.user_data['lang']]]['back']])
-            await update.message.reply_text('Часто задаваемые вопосы',
+            question_list.append([text[lang]['back']])
+
+            message_text = "Часто задаваемые вопосы" if lang == 'ru' else "Tez-tez beriladigan savollar"
+            await update.message.reply_text(message_text,
                                             reply_markup=ReplyKeyboardMarkup(question_list, resize_keyboard=True))
             return QUESTIONS
         else:
-            await update.message.reply_text("Главная страница",
-                                            reply_markup=ReplyKeyboardMarkup(manu_button, resize_keyboard=True))
+            await update.message.reply_text(text[lang]['home'],
+                                            reply_markup=ReplyKeyboardMarkup(buttons[lang]["manu_button"], resize_keyboard=True))
             return MANU
-    elif input_text == 'Отправить предложение🧠':
+
+    elif input_text == 'Отправить предложение🧠' or input_text == 'Taklif yuborish🧠':
         context.user_data['commentsphere'] = 3
         context.user_data['category'] = None
-        await update.message.reply_text('Отправить предложение', reply_markup=ReplyKeyboardMarkup(
-            [[text[languagees[context.user_data['lang']]]['back']]], resize_keyboard=True))
+        message_text = "Отправьте предложение" if lang == 'ru' else "Taklif yuboring"
+        await update.message.reply_text(message_text, reply_markup=ReplyKeyboardMarkup(
+            [[text[lang]['back']]], resize_keyboard=True))
         return COMMENTS
-    elif input_text == 'Настройки⚙️':
-        #await update.message.reply_text('Настройки',reply_markup=ReplyKeyboardMarkup([['🇺🇿O`zbekcha','🇷🇺Русский']],resize_keyboard=True))
-        await update.message.reply_text('Настройки', reply_markup=ReplyKeyboardMarkup(
-            [["Поменять сферу", 'Изменить язык'], [text[languagees[context.user_data['lang']]]['back']]],
+
+    elif input_text == 'Настройки⚙️' or input_text == 'Sozlamalar⚙️':
+        message_text = "Настройки" if lang == 'ru' else "Sozlamalar"
+        await update.message.reply_text(message_text, reply_markup=ReplyKeyboardMarkup(
+            buttons[lang]["settings"],
             resize_keyboard=True))
         return SETTINGS
-    elif input_text == 'О ботеℹ️':
-        await update.message.reply_text(text[languagees[context.user_data['lang']]]['about'],
-                                        reply_markup=ReplyKeyboardMarkup(manu_button, resize_keyboard=True))
+
+    elif input_text == 'О ботеℹ️' or input_text == 'Bot haqidaℹ️':
+        await update.message.reply_text(text[lang]['about'],
+                                        reply_markup=ReplyKeyboardMarkup(buttons[lang]["manu_button"], resize_keyboard=True))
         return MANU
+
     elif input_text == 'Chat':
-        await update.message.reply_text('Чат', reply_markup=ReplyKeyboardMarkup(
-            [[text[languagees[context.user_data['lang']]]['back']]], resize_keyboard=True))
+        message_text = "Чат" if lang == 'ru' else "Chat"
+        await update.message.reply_text(message_text, reply_markup=ReplyKeyboardMarkup(
+            [[text[lang]['back']]], resize_keyboard=True))
         return CHAT
     else:
-        await update.message.reply_text('Главная страница',
-                                        reply_markup=ReplyKeyboardMarkup(manu_button, resize_keyboard=True))
+        await update.message.reply_text(text[lang]['home'],
+                                        reply_markup=ReplyKeyboardMarkup(buttons[lang]["manu_button"], resize_keyboard=True))
         return MANU
 
 
 async def category(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    if update.message.text == text[languagees[context.user_data['lang']]]['back']:
-        await update.message.reply_text('Главная страница',
-                                        reply_markup=ReplyKeyboardMarkup(manu_button, resize_keyboard=True))
+    lang = languagees[context.user_data['lang']]
+
+    if update.message.text == text[lang]['back']:
+        await update.message.reply_text(text[lang]['home'],
+                                        reply_markup=ReplyKeyboardMarkup(buttons[lang]["manu_button"], resize_keyboard=True))
         return MANU
 
-    category_data = crud.get_categories( name=update.message.text)
+    category_data = crud.get_categories(name=update.message.text)
     if category_data:
         context.user_data['category'] = category_data[0].id
-        await update.message.reply_text('Введите текст', reply_markup=ReplyKeyboardMarkup(
-            [[text[languagees[context.user_data['lang']]]['back']]], resize_keyboard=True))
+        message_text = "Введите текст" if lang == 'ru' else "Matn kiriting"
+        await update.message.reply_text(message_text, reply_markup=ReplyKeyboardMarkup(
+            [[text[lang]['back']]], resize_keyboard=True))
         return COMMENTS
     else:
         data = crud.get_categories( hrsphere_id=context.user_data['sphere'])
-        reply_keyboard = transform_list(data, 3, 'name').append([text[languagees[context.user_data['lang']]]['back']])
-        await update.message.reply_text('Категория не найдена',
+        reply_keyboard = transform_list(data, 3, 'name', lang).append([text[lang]['back']])
+        message_text = "Категория не найдена" if lang == 'ru' else "Turkum topilmadi"
+        await update.message.reply_text(message_text,
                                         reply_markup=ReplyKeyboardMarkup(reply_keyboard, resize_keyboard=True))
         return CATEGORY
 
 
 async def settings(update: Update, context: ContextTypes.DEFAULT_TYPE,) -> int:
-    if update.message.text == text[languagees[context.user_data['lang']]]['back']:
-        await update.message.reply_text("Главная страница",
-                                        reply_markup=ReplyKeyboardMarkup(manu_button, resize_keyboard=True))
+    lang = languagees[context.user_data['lang']]
+    if update.message.text == text[lang]['back']:
+        await update.message.reply_text(text[lang]['home'],
+                                        reply_markup=ReplyKeyboardMarkup(buttons[lang]["manu_button"], resize_keyboard=True))
         return MANU
-    if update.message.text == 'Поменять сферу':
+    if update.message.text == 'Поменять сферу' or update.message.text == "Sferani o'zgartirish":
         spheres = crud.get_spheres()
-        await update.message.reply_text(text[languagees[context.user_data['lang']]]['sphere'],
-                                        reply_markup=ReplyKeyboardMarkup([[i.name for i in spheres]],
+        keyboard = transform_list(spheres, 2, 'name', lang)
+        await update.message.reply_text(text[lang]['sphere'],
+                                        reply_markup=ReplyKeyboardMarkup(keyboard,
                                                                          resize_keyboard=True))
         return SPHEREUPDATE
     else:
-        await update.message.reply_text('Язык', reply_markup=ReplyKeyboardMarkup(
-            [['🇺🇿O`zbekcha', '🇷🇺Русский'], [text[languagees[context.user_data['lang']]]['back']]],
+        message_text = "Выберите язык" if lang == 'ru' else "Tilni tanlang"
+        await update.message.reply_text(message_text, reply_markup=ReplyKeyboardMarkup(
+            [['🇺🇿O`zbekcha', '🇷🇺Русский'], [text[lang]['back']]],
             resize_keyboard=True))
         return LANGUPDATE
 
 
 async def sphereupdate(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    if update.message.text == text[languagees[context.user_data['lang']]]['back']:
-        await update.message.reply_text('Настройки', reply_markup=ReplyKeyboardMarkup(
-            [["Поменять сферу", 'Изменить язык'], [text[languagees[context.user_data['lang']]]['back']]],
-            resize_keyboard=True))
+    lang = languagees[context.user_data['lang']]
+    if update.message.text == text[lang]['back']:
+        message_text = "Настройки" if lang == 'ru' else "Sozlamalar"
+        await update.message.reply_text(
+            message_text,
+            reply_markup=ReplyKeyboardMarkup(
+                buttons[lang]["settings"],
+                resize_keyboard=True
+            )
+        )
         return SETTINGS
-    spheres = crud.get_spheres( name=update.message.text)
+
+    spheres = crud.get_spheres(name=update.message.text)
     context.user_data['sphere'] = spheres[0].id
     crud.update_user(id=update.message.from_user.id, lang=context.user_data['lang'],
                      sphere=context.user_data['sphere'])
-    await update.message.reply_text("Главная страница",
-                                    reply_markup=ReplyKeyboardMarkup(manu_button, resize_keyboard=True))
+    await update.message.reply_text(text[lang]['home'],
+                                    reply_markup=ReplyKeyboardMarkup(buttons[lang]['manu_button'], resize_keyboard=True))
     return MANU
 
 
 async def comments(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    if update.message.text == text[languagees[context.user_data['lang']]]['back']:
-        await update.message.reply_text("Главная страница",
-                                        reply_markup=ReplyKeyboardMarkup(manu_button, resize_keyboard=True))
+    lang = languagees[context.user_data['lang']]
+    if update.message.text == text[lang]['back']:
+        await update.message.reply_text(text[lang]['home'],
+                                        reply_markup=ReplyKeyboardMarkup(buttons[lang]['manu_button'], resize_keyboard=True))
         return MANU
     query = crud.create_complaint( tel_id=update.message.from_user.id, complaint=update.message.text,
                                   sphere_id=context.user_data['sphere'], hrtype=context.user_data['commentsphere'],
                                   category=context.user_data['category'])
-    crud.create_message( text=update.message.text, hrcomplaint_id=query.id, url=None)
+    crud.create_message(text=update.message.text, hrcomplaint_id=query.id, url=None)
 
     if context.user_data['commentsphere'] == 1:
-        await update.message.reply_text("""Благодарим за обратную связь, в скором времени мы ответим вам😊\n
-Rahmat savolingiz uchun, tez orada sizga javob beramiz😊""",
-                                        reply_markup=ReplyKeyboardMarkup(manu_button, resize_keyboard=True))
+        message_text = "Благодарим за обратную связь, в скором времени мы ответим вам😊" if lang == 'ru' \
+            else "Rahmat savolingiz uchun, tez orada sizga javob beramiz😊"
+        await update.message.reply_text(message_text,
+                                        reply_markup=ReplyKeyboardMarkup(buttons[lang]['manu_button'], resize_keyboard=True))
     elif context.user_data['commentsphere'] == 2:
-        await update.message.reply_text('Главная страница',
-                                        reply_markup=ReplyKeyboardMarkup(manu_button, resize_keyboard=True))
+        await update.message.reply_text(text[lang]['home'],
+                                        reply_markup=ReplyKeyboardMarkup(buttons[lang]['manu_button'], resize_keyboard=True))
 
     elif context.user_data['commentsphere'] == 3:
-        await update.message.reply_text('Главная страница',
-                                        reply_markup=ReplyKeyboardMarkup(manu_button, resize_keyboard=True))
+        await update.message.reply_text(text[lang]['home'],
+                                        reply_markup=ReplyKeyboardMarkup(buttons[lang]['manu_button'], resize_keyboard=True))
     return MANU
 
 
 async def langupdate(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    if update.message.text == text[languagees[context.user_data['lang']]]['back']:
-        await update.message.reply_text('Настройки', reply_markup=ReplyKeyboardMarkup(
-            [["Поменять сферу", 'Изменить язык'], [text[languagees[context.user_data['lang']]]['back']]],
-            resize_keyboard=True))
+    lang = languagees[context.user_data['lang']]
+    if update.message.text == text[lang]['back']:
+        message_text = "Настройки" if lang == 'ru' else "Sozlamalar"
+        await update.message.reply_text(
+            message_text,
+            reply_markup=ReplyKeyboardMarkup(
+                buttons[lang]["settings"],
+                resize_keyboard=True
+            )
+        )
         return SETTINGS
     if update.message.text == '🇺🇿O`zbekcha':
         context.user_data['lang'] = str(1)
     else:
         context.user_data['lang'] = str(2)
-    await update.message.reply_text("Главная страница",
-                                    reply_markup=ReplyKeyboardMarkup(manu_button, resize_keyboard=True))
+
+    lang = languagees[context.user_data['lang']]
+    crud.update_user(id=update.message.from_user.id, lang=context.user_data['lang'])
+    await update.message.reply_text(text[lang]['home'],
+                                    reply_markup=ReplyKeyboardMarkup(buttons[lang]['manu_button'],
+                                                                     resize_keyboard=True))
     return MANU
 
 
 async def questions(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    if update.message.text == text[languagees[context.user_data['lang']]]['back']:
-        await update.message.reply_text("Главная страница",
-                                        reply_markup=ReplyKeyboardMarkup(manu_button, resize_keyboard=True))
+    lang = languagees[context.user_data['lang']]
+    if update.message.text == text[lang]['back']:
+        await update.message.reply_text(text[lang]['home'],
+                                        reply_markup=ReplyKeyboardMarkup(buttons[lang]['manu_button'],
+                                                                         resize_keyboard=True))
         return MANU
     question = crud.get_questions(name=update.message.text, sphere=context.user_data['sphere'])
     if question:
         await update.message.reply_text(
-            question[0].answer_ru if context.user_data['lang'] == '2' else question[0].answer_uz,
-            reply_markup=ReplyKeyboardMarkup(manu_button, resize_keyboard=True))
+            question[0].answer_ru if lang == 'ru' else question[0].answer_uz,
+            reply_markup=ReplyKeyboardMarkup(buttons[lang]['manu_button'], resize_keyboard=True))
     else:
-        await update.message.reply_text('Вопрос не найден',
-                                        reply_markup=ReplyKeyboardMarkup(manu_button, resize_keyboard=True))
+        message_text = "Вопрос не найден" if lang == 'ru' else "Savol topilmadi"
+        await update.message.reply_text(message_text,
+                                        reply_markup=ReplyKeyboardMarkup(buttons[lang]['manu_button'], resize_keyboard=True))
 
     return MANU
 
 
-async def chat(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+async def chat(update: Update, context: ContextTypes.DEFAULT_TYPE, text=text) -> int:
     """Stores the selected gender and asks for a photo."""
     get_comlaint = crud.get_complaints(id=update.message.from_user.id)
-
+    lang = languagees[context.user_data['lang']]
     if update.message.text:
         input_text = update.message.text
-        if input_text == '⬅️Назад':
+        if input_text == text[lang]['back']:
             #data = crud.get_category_list(db=bot.session,department=4,sphere_status=4)
             #reply_keyboard = transform_list(data,3,'name')
-            await update.message.reply_text('Главная страница',
-                                            reply_markup=ReplyKeyboardMarkup(manu_button, resize_keyboard=True))
+            await update.message.reply_text(text[lang]['home'],
+                                            reply_markup=ReplyKeyboardMarkup(buttons[lang]['manu_button'], resize_keyboard=True))
             return MANU
         else:
             if '/start' != input_text or '':
@@ -267,8 +314,8 @@ async def chat(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
                                                                  complaint=input_text, sphere_id=1)
                         crud.create_message(hrcomplaint_id=create_complaint.id, text=input_text, url=None)
             else:
-                await update.message.reply_text('Главная страница',
-                                                reply_markup=ReplyKeyboardMarkup(manu_button, resize_keyboard=True))
+                await update.message.reply_text(text[lang]['home'],
+                                                reply_markup=ReplyKeyboardMarkup(buttons[lang]['manu_button'], resize_keyboard=True))
                 return MANU
     if update.message.photo or update.message.document:
         if update.message.document:
@@ -287,11 +334,11 @@ async def chat(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
             f.write(file_content)
             f.close()
         if update.message.caption:
-            text = update.message.caption
+            message_text = update.message.caption
         else:
-            text = None
+            message_text = None
 
-        crud.create_message( text=text, hrcomplaint_id=get_comlaint[0].id, url=f"files/{file_name}")
+        crud.create_message(text=message_text, hrcomplaint_id=get_comlaint[0].id, url=f"files/{file_name}")
 
     return CHAT
 

@@ -1,8 +1,14 @@
+import time
+from datetime import datetime
+
+from apscheduler.schedulers.background import BackgroundScheduler
 from fastapi import APIRouter
 from sqlalchemy.orm import Session
 from fastapi import Depends, HTTPException, Form, UploadFile
 from fastapi_pagination import paginate, Page
 from typing import Annotated
+
+from hrcomplaint.queries.hr_crud import get_hr_clients
 from services import (
     get_db,
     get_current_user,
@@ -136,6 +142,8 @@ async def create_communication(
         send_file_telegram(bot_token=BOTTOKEN, chat_id=query.hrcomplaint.hrclient_id, file_path=file_path)
     if text is not None:
         send_textmessage_telegram(bot_token=BOTTOKEN, chat_id=query.hrcomplaint.hrclient_id, message_text=text)
+        send_textmessage_telegram(bot_token=BOTTOKEN, chat_id=query.hrcomplaint.hrclient_id,
+                                  message_text="Пожалуйста чтобы ответить нажмите кнопку Chat и напишите еще раз")
     return query
 
 
@@ -167,3 +175,39 @@ async def update_category(
 @hr_router.get('/hello/world', summary="Get messages", tags=["HR"])
 async def get_communication():
     return {"message": "Hello World!"}
+
+
+
+
+scheduler = BackgroundScheduler()
+scheduler.start()
+
+
+def send_scheduled_notification(bot_token, chat_ids, message_text):
+    for i, chat_id in enumerate(chat_ids):
+        if i % 7 == 0:
+            # print(f"Sleeping before sending {i}-th client ...")
+            time.sleep(3)
+
+        send_textmessage_telegram(bot_token=bot_token, chat_id=chat_id, message_text=message_text)
+
+
+def schedule_notification(chat_ids, message_text, scheduled_time):
+    scheduler.add_job(
+        send_scheduled_notification,
+        "date",
+        run_date=scheduled_time,
+        args=[BOTTOKEN, chat_ids, message_text]
+    )
+
+
+@hr_router.post("/send-notification", summary="Create scheduled notifications", tags=["Notifications"])
+async def send_notification(
+        form_data: hr_schema.Notification,
+        db: Session = Depends(get_db),
+        current_user: user_sch.User = Depends(get_current_user)
+):
+    users = get_hr_clients(db=db, spheres=form_data.users_sphere)
+    chat_ids = [user.id for user in users]
+    schedule_notification(chat_ids=chat_ids, message_text=form_data.text, scheduled_time=form_data.time)
+    return {"Message": f"Notification will sent at {form_data.time} !"}

@@ -10,6 +10,7 @@ from uuid import UUID
 from hrcomplaint.models import hr_model
 from hrcomplaint.schemas import hr_schema
 
+
 def create_questions(db: Session, form_data: hr_schema.QuestionsCreate):
     db_question = hr_model.Hrquestions(
         question_uz=form_data.question_uz,
@@ -94,6 +95,7 @@ def get_communication(db:Session,hrcomplaint_id: Optional[int] = None,hrclient_i
 def create_sphere(db: Session, form_data: hr_schema.SphereCreate):
     query = hr_model.Hrspheras(
         name=form_data.name,
+        name_uz=form_data.name_uz,
         status=form_data.status
     )
     db.add(query)
@@ -113,6 +115,21 @@ def get_hrclients(db:Session,id: Optional[int] = None):
     if id is not None:
         query = query.filter(hr_model.Hrclients.id == id)
     return query.order_by(hr_model.Hrcommunications.created_at.desc()).all()
+
+
+
+def get_hr_clients(db:Session, spheres: Optional[list[int]] = None):
+    query = db.query(hr_model.Hrclients)
+    if spheres is not None:
+        query = query.filter(
+            and_(
+                hr_model.Hrclients.status == 1,
+                hr_model.Hrclients.sphere.in_(spheres)
+            )
+        )
+
+    return query.order_by(hr_model.Hrclients.sphere.asc()).all()
+
 
 
 def get_complaints(db:Session,id: Optional[int] = None,

@@ -40,7 +40,12 @@ def get_questions(name: Optional[str] = None,sphere: Optional[int] = None):
     with SessionLocal() as db:
         query = db.query(hr_model.Hrquestions)
         if name is not None:
-            query = query.filter(or_(hr_model.Hrquestions.question_ru.ilike(f"%{name}%"),hr_model.Hrquestions.question_uz.ilike(f"%{name}%")))
+            query = query.filter(
+                or_(
+                    hr_model.Hrquestions.question_ru.ilike(f"%{name}%"),
+                    hr_model.Hrquestions.question_uz.ilike(f"%{name}%")
+                )
+            )
         if sphere is not None:
             query = query.filter(hr_model.Hrquestions.sphere_id==sphere)
         return query.all()
@@ -65,7 +70,12 @@ def get_spheres(name: Optional[str] = None):
     with SessionLocal() as db:
         query = db.query(hr_model.Hrspheras)
         if name is not None:
-            query = query.filter(hr_model.Hrspheras.name.ilike(f"%{name}%"))
+            query = query.filter(
+                or_(
+                    hr_model.Hrspheras.name.ilike(f"%{name}%"),
+                    hr_model.Hrspheras.name_uz.ilike(f"%{name}%")
+                )
+            )
         return query.all()
 
 
@@ -112,7 +122,12 @@ def get_categories(id: Optional[int] = None,name: Optional[str] = None,hrsphere_
         if id is not None:
             query = query.filter(hr_model.HrCategories.id == id)
         if name is not None:
-            query = query.filter(hr_model.HrCategories.name.ilike(f"%{name}%"))
+            query = query.filter(
+                or_(
+                    hr_model.HrCategories.name.ilike(f"%{name}%"),
+                    hr_model.HrCategories.name_uz.ilike(f"%{name}%")
+                )
+            )
         if hrsphere_id is not None:
             query = query.filter(hr_model.HrCategories.hrsphere_id==hrsphere_id)
         return query.all()
