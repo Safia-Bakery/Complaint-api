@@ -160,6 +160,7 @@ def get_complaints(db:Session,id: Optional[int] = None,
 def create_hrcategory(db: Session, form_data: hr_schema.HrCategoryCreate):
     query = hr_model.HrCategories(
         name=form_data.name,
+        name_uz=form_data.name_uz,
         status=form_data.status,
         hrsphere_id=form_data.hrsphere_id
     )
@@ -182,6 +183,8 @@ def update_hrcategory(db: Session, form_data: hr_schema.HrCategoryUpdate):
     db_category = db.query(hr_model.HrCategories).filter(hr_model.HrCategories.id == form_data.id).first()
     if form_data.name is not None:
         db_category.name = form_data.name
+    if form_data.name_uz is not None:
+        db_category.name_uz = form_data.name_uz
     if form_data.status is not None:
         db_category.status = form_data.status
     if form_data.hrsphere_id is not None:
