@@ -3,7 +3,7 @@ text = {
         'start': "Salom. Bu bot savollar/e'tirozlar bilan ishlash uchun mo'ljallangan.",
         'home': "Bosh sahifa",
         'lang': "Tilni tanlang",
-        'sphere': "Siz ishlayotgan sohani tanlang",
+        'sphere': "Siz ishlayotgan yo'nalishni tanlang",
         'success': "Siz roʻyxatdan oʻtishni tugatdingiz, HR tasdiqlagandan soʻng siz xabarnoma olasiz.",
         'manu': "Maxfiyligingiz haqida qayg'urmang! Sizning barcha ma'lumotlaringiz bot ma'murlaridan, shuningdek, kompaniya rahbariyatidan yashiringan.",
         'about': "Bot va uning imkoniyatlari / maxfiyligi va boshqalar haqida qisqacha tavsif.",
@@ -34,7 +34,7 @@ buttons = {
             ['Savol berish❔', 'Shikoyat yuborish'], ['Tez-tez beriladigan savollar❓', 'Taklif yuborish🧠'],
             ['Sozlamalar⚙️', 'Bot haqidaℹ️'], ['Chat']
         ],
-        "settings": [["Sferani o'zgartirish", "Tilni o'zgartirish"], ["⬅️Orqaga"]]
+        "settings": [["Yo'nalishni o'zgartirish", "Tilni o'zgartirish"], ["⬅️Orqaga"]]
     },
     'ru': {
         "manu_button": [

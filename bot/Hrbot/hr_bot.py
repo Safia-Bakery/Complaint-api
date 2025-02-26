@@ -184,7 +184,7 @@ async def settings(update: Update, context: ContextTypes.DEFAULT_TYPE,) -> int:
         await update.message.reply_text(text[lang]['home'],
                                         reply_markup=ReplyKeyboardMarkup(buttons[lang]["manu_button"], resize_keyboard=True))
         return MANU
-    if update.message.text == 'Поменять сферу' or update.message.text == "Sferani o'zgartirish":
+    if update.message.text == 'Поменять сферу' or update.message.text == "Yo'nalishni o'zgartirish":
         spheres = crud.get_spheres()
         keyboard = transform_list(spheres, 2, 'name', lang)
         await update.message.reply_text(text[lang]['sphere'],
