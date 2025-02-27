@@ -1,11 +1,12 @@
-from hrcomplaint.models.hr_model import (Hrspheras,
-                                         HrCategories,
-                                         Hrcomplaints,
-                                         Hrclients,
-                                         Hrcommunications,
-                                         Hrquestions,
+from hrcomplaint.models.hr_model import (
+    Hrspheras,
+    HrCategories,
+    Hrclients,
+    Hrcomplaints,
+    Hrcommunications,
+    Hrquestions,
+    Notifications
+)
 
-                                         )
 
-
-from users.models.user_model import Users
+# from users.models.user_model import Users
