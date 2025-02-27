@@ -1,17 +1,9 @@
-from sqlalchemy.orm import Session
 from typing import Optional
-import bcrypt
 
-import pytz
+from sqlalchemy import or_
 
-from sqlalchemy.sql import func
-from datetime import datetime,timedelta
-from sqlalchemy import or_, and_, Date, cast
-from uuid import UUID
-from database import SessionLocal, Base
+from database import SessionLocal
 from hrcomplaint.models import hr_model
-
-
 
 
 def get_user(id: Optional[int] = None):
