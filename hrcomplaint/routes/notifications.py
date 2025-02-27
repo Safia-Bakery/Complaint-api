@@ -138,6 +138,8 @@ async def update_notification(
 
     with scheduler_lock:
         updated_notification = edit_notification(db=db, form_data=form_data)
+        if updated_notification is None:
+            raise HTTPException(status_code=404, detail=f"This notification with id №{form_data.id} has been already executed !")
         notification_id = updated_notification.id
         # users = get_hr_clients(db=db, spheres=form_data.receivers_sphere)
         # chat_ids = [user.id for user in users]

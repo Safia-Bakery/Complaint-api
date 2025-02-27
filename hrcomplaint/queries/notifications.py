@@ -24,12 +24,15 @@ def add_notification(db: Session, form_data: CreateNotification, user_id):
 def edit_notification(db: Session, form_data: Optional[UpdateNotification] = None, id: Optional[int] = None, status: Optional[int] = None):
     if form_data is not None:
         query = db.query(hr_model.Notifications).get(ident=form_data.id)
-        if form_data.text is not None:
-            query.text = form_data.text
-        if form_data.scheduled_at is not None:
-            query.scheduled_at = form_data.scheduled_at
-        if form_data.receivers_sphere is not None:
-            query.receivers_sphere = form_data.receivers_sphere
+        if query.status == 0:
+            if form_data.text is not None:
+                query.text = form_data.text
+            if form_data.scheduled_at is not None:
+                query.scheduled_at = form_data.scheduled_at
+            if form_data.receivers_sphere is not None:
+                query.receivers_sphere = form_data.receivers_sphere
+        else:
+            return None
     else:
         query = db.query(hr_model.Notifications).get(ident=id)
         if status is not None:
