@@ -108,3 +108,19 @@ class Hrquestions(Base):
     status = Column(Integer, default=1)
     created_at = Column(DateTime(timezone=True), default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+
+
+
+
+class Notifications(Base):
+    __tablename__ = "notifications"
+    id = Column(BIGINT, primary_key=True)
+    text = Column(String, nullable=False)
+    created_by = Column(BIGINT, ForeignKey("users.id"), nullable=False)
+    user = relationship("Users", back_populates="notifications")
+    scheduled_at = Column(DateTime(timezone=True))
+    status = Column(Integer, default=0)
+    receivers_sphere = Column(ARRAY(Integer))
+    created_at = Column(DateTime(timezone=True), default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+

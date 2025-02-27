@@ -94,6 +94,7 @@ class Users(Base):
     signature = Column(String,nullable=True)
     complaint_stamp = relationship("ComplaintStampers",back_populates="user")
     telegram_id = Column(String,nullable=True)
+    notifications = relationship("Notifications",back_populates="user")
 
 
 

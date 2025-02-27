@@ -13,6 +13,7 @@ from fastapi.staticfiles import StaticFiles
 from database import SessionLocal, Base,engine
 from users.routes.user_routes import user_router
 from hrcomplaint.routes.hr_routes import hr_router
+from hrcomplaint.routes.notifications import notification_router
 from complaints.routes.route import complain_router
 #from routes import user_route,product_route
 from stats.routes.route import  stats_router
@@ -34,6 +35,7 @@ app.version = "0.0.1"
 
 app.include_router(user_router, tags=["User"])
 app.include_router(hr_router, tags=["HR"])
+app.include_router(notification_router)
 app.include_router(complain_router, tags=["Complaint"])
 app.include_router(stats_router,tags=['Statistics'])
 app.include_router(excell_router,tags=['Excell'])

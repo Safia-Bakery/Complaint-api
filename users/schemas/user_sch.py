@@ -82,7 +82,15 @@ class Users(BaseModel):
         orm_mode = True
 
 
+class NotificationUser(BaseModel):
+    id:int
+    name: Optional[str]=None
+    username: Optional[str]=None
+    phone_number: Optional[str]=None
+    status: int
 
+    class Config:
+        orm_mode = True
 
 
 

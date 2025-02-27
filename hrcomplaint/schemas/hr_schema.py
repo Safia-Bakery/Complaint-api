@@ -1,9 +1,6 @@
-from pydantic import BaseModel, validator
-from fastapi import Form, UploadFile, File
-from typing import Optional, Annotated, Dict, List
-from datetime import datetime, time
-from fastapi import Form
-from uuid import UUID
+from pydantic import BaseModel
+from typing import Optional
+from datetime import datetime
 from users.schemas.user_sch import User
 
 class Sphere(BaseModel):
@@ -155,8 +152,3 @@ class Hrcomplaints(BaseModel):
 
 
 #hello world
-
-class Notification(BaseModel):
-    text: Optional[str]
-    time: Optional[datetime] = None
-    users_sphere: Optional[List[int]] = None
