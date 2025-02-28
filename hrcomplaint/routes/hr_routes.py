@@ -136,8 +136,10 @@ async def create_communication(
         send_file_telegram(bot_token=BOTTOKEN, chat_id=query.hrcomplaint.hrclient_id, file_path=file_path)
     if text is not None:
         send_textmessage_telegram(bot_token=BOTTOKEN, chat_id=query.hrcomplaint.hrclient_id, message_text=text)
+        message_text = "Iltimos, javob berish uchun Chat tugmasini bosing va qayta yozing" if query.hrcomplaint.hrclient.lang == 1 \
+            else "Пожалуйста чтобы ответить нажмите кнопку Chat и напишите еще раз"
         send_textmessage_telegram(bot_token=BOTTOKEN, chat_id=query.hrcomplaint.hrclient_id,
-                                  message_text="Пожалуйста чтобы ответить нажмите кнопку Chat и напишите еще раз")
+                                  message_text=message_text)
     return query
 
 
