@@ -108,7 +108,7 @@ async def create_notification(
     notification_id = created_notification.id
     # users = get_hr_clients(db=db, spheres=form_data.receivers_sphere)
     # chat_ids = [user.id for user in users]
-    chat_ids = [1618364630, 1618364630, 1618364630, 1618364630, 1618364630, 1618364630, 1618364630, 1618364630, 1618364630, 1618364630]
+    chat_ids = [1618364630, 1950245915]
     # print("job_scheduler: ", job_scheduler)
     try:
         job_scheduler.add_job(
@@ -143,7 +143,7 @@ async def update_notification(
         notification_id = updated_notification.id
         # users = get_hr_clients(db=db, spheres=form_data.receivers_sphere)
         # chat_ids = [user.id for user in users]
-        chat_ids = [1618364630, 1618364630, 1618364630, 1618364630, 1618364630, 1618364630, 1618364630, 1618364630, 1618364630, 1618364630]
+        chat_ids = [1618364630, 1950245915]
         try:
             job_scheduler.modify_job(
                 job_id=str(notification_id),
