@@ -42,7 +42,7 @@ BOT_TOKEN_HELPDESK = os.environ.get('BOT_TOKEN_HELPDESK')
 
 MESSAGES, FORWARDER = range(2)
 
-forwarding_chat_id = '-1001429563019'
+forwarding_chat_id = "-1002160716263"
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
