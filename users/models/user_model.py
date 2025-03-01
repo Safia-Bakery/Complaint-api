@@ -23,7 +23,7 @@ import uuid
 from complaints.models.complaint_stampers import ComplaintStampers
 
 from database import SessionLocal, Base
-from complaints.models.request_model import Branchs
+# from complaints.models.request_model import Branchs
 
 
 timezonetash = pytz.timezone("Asia/Tashkent")
