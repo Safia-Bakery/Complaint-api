@@ -1,5 +1,5 @@
 from sqlalchemy.dialects.postgresql import UUID, ARRAY, JSONB
-# from users.models.user_model import Users
+from .complaint_products import ComplaintProducts
 import pytz
 from sqlalchemy import (
     Column,
