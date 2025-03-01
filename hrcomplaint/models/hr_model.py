@@ -7,12 +7,17 @@ from sqlalchemy import (
     DateTime,
     BIGINT,
 )
-from sqlalchemy.dialects.postgresql import ARRAY
+# from users.models.user_model import Users
+
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
-from users.models.user_model import Users
+from sqlalchemy.dialects.postgresql import UUID, ARRAY, JSONB
+from datetime import datetime
+import pytz
+import uuid
 
-from database import Base
+from database import SessionLocal, Base
 
 timezonetash = pytz.timezone("Asia/Tashkent")
 
