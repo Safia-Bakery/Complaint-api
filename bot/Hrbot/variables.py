@@ -31,7 +31,7 @@ text = {
 buttons = {
     'uz': {
         "manu_button": [
-            ['Savol berish❔', 'Shikoyat yuborish'], ['Tez-tez beriladigan savollar❓', 'Taklif yuborish🧠'],
+            ['Savol berish❔', 'Shikoyat yuborish'], ['Ko‘p beriladigan savollar❓', 'Taklif yuborish🧠'],
             ['Sozlamalar⚙️', 'Bot haqidaℹ️'], ['Chat']
         ],
         "settings": [["Yo'nalishni o'zgartirish", "Tilni o'zgartirish"], ["⬅️Orqaga"]]
