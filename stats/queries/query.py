@@ -278,7 +278,7 @@ def get_hr_complaint_total_number_stats(db:Session,from_date,to_date,sphere_id):
         .filter(hr_model.Hrcomplaints.status == 3)
         .all()
     )[0][0]
-    total = new + finished
+    total = new + finished + rejected
     data = {
         "new": new,
         "finished": finished,
@@ -316,7 +316,7 @@ def get_hr_question_total_number_stats(db:Session,from_date,to_date,sphere_id):
         .filter(hr_model.Hrcomplaints.status == 3)
         .all()
     )[0][0]
-    total = new + finished
+    total = new + finished + rejected
     data = {
         "new": new,
         "finished": finished,
@@ -354,7 +354,7 @@ def get_hr_advice_total_number_stats(db:Session,from_date,to_date,sphere_id):
         .filter(hr_model.Hrcomplaints.status == 3)
         .all()
     )[0][0]
-    total = new + finished
+    total = new + finished + rejected
     data = {
         "new": new,
         "finished": finished,
