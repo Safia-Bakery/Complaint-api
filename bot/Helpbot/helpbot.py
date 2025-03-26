@@ -94,7 +94,6 @@ async def forwarder(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         else:
             created_message_database = create_message(client_id=client.id, message_text='user didnot send message')
 
-
         message_forwarded  = await context.bot.forward_message(chat_id=forwarding_chat_id, from_chat_id=update.message.from_user.id,
                                           message_id=update.message.id)
         updated_message = update_messsage(message_id=message_forwarded.message_id, id=created_message_database.id)
@@ -143,18 +142,23 @@ def main() -> None:
     persistence = PicklePersistence(filepath="helpbotcommunication")
 
     application = Application.builder().token(BOT_TOKEN_HELPDESK).persistence(persistence).build()
+
     # Add conversation handler with the states GENDER, PHOTO, LOCATION and BIO
     conv_handler = ConversationHandler(
-        entry_points=[CommandHandler("start", start)],
+        entry_points=[MessageHandler(filters.ChatType.PRIVATE, start)],
         states={
             MESSAGES: [MessageHandler(filters.ALL, messages)],
             FORWARDER: [MessageHandler(filters.ALL, forwarder)],
         },
         fallbacks=[CommandHandler("cancel", cancel)],
+        name="my_conversation",
+        persistent=True,
+        per_chat=True
     )
     messagehanle = MessageHandler(filters.ALL, handle_messages)
     application.add_handler(conv_handler)
     application.add_handler(messagehanle)
+
 
     # Run the bot until the user presses Ctrl-C
     application.run_polling(allowed_updates=Update.ALL_TYPES)
