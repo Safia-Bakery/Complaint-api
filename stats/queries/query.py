@@ -251,35 +251,110 @@ def get_hr_complaint_categories_stats(db: Session, from_date, to_date,sphere_id)
 
 
 def get_hr_complaint_total_number_stats(db:Session,from_date,to_date,sphere_id):
-    results = (db.query(func.count(hr_model.Hrcomplaints.id))
-               .filter(hr_model.Hrcomplaints.created_at >= from_date)
-               .filter(hr_model.Hrcomplaints.created_at <= to_date)
-               .filter(hr_model.Hrcomplaints.hrtype==2)
-                .filter(hr_model.Hrcomplaints.sphere_id==sphere_id)
-               .all())
-
-    return results[0][0]
+    new = (
+        db.query(func.count(hr_model.Hrcomplaints.id))
+        .filter(hr_model.Hrcomplaints.created_at >= from_date)
+        .filter(hr_model.Hrcomplaints.created_at <= to_date)
+        .filter(hr_model.Hrcomplaints.hrtype==2)
+        .filter(hr_model.Hrcomplaints.sphere_id==sphere_id)
+        .filter(hr_model.Hrcomplaints.status == 0)
+        .all()
+    )
+    finished = (
+        db.query(func.count(hr_model.Hrcomplaints.id))
+        .filter(hr_model.Hrcomplaints.created_at >= from_date)
+        .filter(hr_model.Hrcomplaints.created_at <= to_date)
+        .filter(hr_model.Hrcomplaints.hrtype == 2)
+        .filter(hr_model.Hrcomplaints.sphere_id == sphere_id)
+        .filter(hr_model.Hrcomplaints.status == 2)
+        .all()
+    )
+    rejected = (
+        db.query(func.count(hr_model.Hrcomplaints.id))
+        .filter(hr_model.Hrcomplaints.created_at >= from_date)
+        .filter(hr_model.Hrcomplaints.created_at <= to_date)
+        .filter(hr_model.Hrcomplaints.hrtype == 2)
+        .filter(hr_model.Hrcomplaints.sphere_id == sphere_id)
+        .filter(hr_model.Hrcomplaints.status == 3)
+        .all()
+    )
+    data = {
+        "new": new[0][0],
+        "finished": finished[0][0],
+        "rejected": rejected[0][0]
+    }
+    return data
 
 
 def get_hr_question_total_number_stats(db:Session,from_date,to_date,sphere_id):
-    results = (db.query(func.count(hr_model.Hrcomplaints.id))
-               .filter(hr_model.Hrcomplaints.created_at >= from_date)
-               .filter(hr_model.Hrcomplaints.created_at <= to_date)
-               .filter(hr_model.Hrcomplaints.hrtype == 1)
-                .filter(hr_model.Hrcomplaints.sphere_id==sphere_id)
-               .all())
-
-    return results[0][0]
+    new = (
+        db.query(func.count(hr_model.Hrcomplaints.id))
+        .filter(hr_model.Hrcomplaints.created_at >= from_date)
+        .filter(hr_model.Hrcomplaints.created_at <= to_date)
+        .filter(hr_model.Hrcomplaints.hrtype == 1)
+        .filter(hr_model.Hrcomplaints.sphere_id==sphere_id)
+        .filter(hr_model.Hrcomplaints.status == 0)
+        .all()
+    )
+    finished = (
+        db.query(func.count(hr_model.Hrcomplaints.id))
+        .filter(hr_model.Hrcomplaints.created_at >= from_date)
+        .filter(hr_model.Hrcomplaints.created_at <= to_date)
+        .filter(hr_model.Hrcomplaints.hrtype == 1)
+        .filter(hr_model.Hrcomplaints.sphere_id == sphere_id)
+        .filter(hr_model.Hrcomplaints.status == 2)
+        .all()
+    )
+    rejected = (
+        db.query(func.count(hr_model.Hrcomplaints.id))
+        .filter(hr_model.Hrcomplaints.created_at >= from_date)
+        .filter(hr_model.Hrcomplaints.created_at <= to_date)
+        .filter(hr_model.Hrcomplaints.hrtype == 1)
+        .filter(hr_model.Hrcomplaints.sphere_id == sphere_id)
+        .filter(hr_model.Hrcomplaints.status == 3)
+        .all()
+    )
+    data = {
+        "new": new[0][0],
+        "finished": finished[0][0],
+        "rejected": rejected[0][0]
+    }
+    return data
 
 
 def get_hr_advice_total_number_stats(db:Session,from_date,to_date,sphere_id):
-    results = (db.query(func.count(hr_model.Hrcomplaints.id))
-               .filter(hr_model.Hrcomplaints.created_at >= from_date)
-               .filter(hr_model.Hrcomplaints.created_at <= to_date)
-               .filter(hr_model.Hrcomplaints.hrtype == 3)
-                .filter(hr_model.Hrcomplaints.sphere_id==sphere_id)
-               .all())
-
-    return results[0][0]
+    new = (
+        db.query(func.count(hr_model.Hrcomplaints.id))
+        .filter(hr_model.Hrcomplaints.created_at >= from_date)
+        .filter(hr_model.Hrcomplaints.created_at <= to_date)
+        .filter(hr_model.Hrcomplaints.hrtype == 3)
+        .filter(hr_model.Hrcomplaints.sphere_id==sphere_id)
+        .filter(hr_model.Hrcomplaints.status == 0)
+        .all()
+    )
+    finished = (
+        db.query(func.count(hr_model.Hrcomplaints.id))
+        .filter(hr_model.Hrcomplaints.created_at >= from_date)
+        .filter(hr_model.Hrcomplaints.created_at <= to_date)
+        .filter(hr_model.Hrcomplaints.hrtype == 3)
+        .filter(hr_model.Hrcomplaints.sphere_id == sphere_id)
+        .filter(hr_model.Hrcomplaints.status == 2)
+        .all()
+    )
+    rejected = (
+        db.query(func.count(hr_model.Hrcomplaints.id))
+        .filter(hr_model.Hrcomplaints.created_at >= from_date)
+        .filter(hr_model.Hrcomplaints.created_at <= to_date)
+        .filter(hr_model.Hrcomplaints.hrtype == 3)
+        .filter(hr_model.Hrcomplaints.sphere_id == sphere_id)
+        .filter(hr_model.Hrcomplaints.status == 3)
+        .all()
+    )
+    data = {
+        "new": new[0][0],
+        "finished": finished[0][0],
+        "rejected": rejected[0][0]
+    }
+    return data
 
 
